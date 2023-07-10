@@ -1,0 +1,42 @@
+<!-- Login modal -->
+
+<div class="modal fade" id="loginModal" role="dialog" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-center w-100" id="loginModalLabel">Sign in</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body m-5">
+        <form action="/" method="POST">
+          {% csrf_token %}
+          
+          <div class="md-form mb-4">
+            <input type="email" class="form-control form-control-lg" placeholder="Email address" required>
+          </div>
+          <div class="md-form mb-4">
+            <input type="password" class="form-control form-control-lg" placeholder="Password" required>
+            <p class="font-small blue-text d-flex justify-content-end"><a href="#" class="blue-text ml-1">Forgot password?</a></p>
+          </div>
+          <div class="text-center mb-3 py-3">
+            <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect">Sign in</button>
+          </div>
+        </form>
+
+        <form action="#" method="POST" class="form-signin">
+          {% csrf_token %}
+
+          <p class="font-small dark-grey-text text-center my-4">or Sign in with:</p>
+          <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-facebook-f"></i></button>
+            <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-twitter"></i></button>
+            <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-google-plus-g"></i></button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer mx-5 pt-3 mb-1">
+        <p class="font-small grey-text text-center">Not a member? <a href="#" class="blue-text ml-1">Sign Up</a></p>
+      </div>
+    </div>
+  </div>
+</div>
