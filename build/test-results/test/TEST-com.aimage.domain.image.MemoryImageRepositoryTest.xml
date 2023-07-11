@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.aimage.domain.image.MemoryImageRepositoryTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-07-11T16:27:53" hostname="Davids-MacBook-Pro.local" time="0.063">
+  <properties/>
+  <testcase name="findAll()" classname="com.aimage.domain.image.MemoryImageRepositoryTest" time="0.056"/>
+  <testcase name="findById()" classname="com.aimage.domain.image.MemoryImageRepositoryTest" time="0.0"/>
+  <testcase name="findAllBySize()" classname="com.aimage.domain.image.MemoryImageRepositoryTest" time="0.002"/>
+  <testcase name="save()" classname="com.aimage.domain.image.MemoryImageRepositoryTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

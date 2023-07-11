@@ -40,4 +40,8 @@ public class MemoryImageRepository implements ImageRepository {
 
         return new ArrayList<>(result);
     }
+
+    public void clearAll() {
+        repo.clear();
+    }
 }

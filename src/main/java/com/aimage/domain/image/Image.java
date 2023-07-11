@@ -10,5 +10,13 @@ public class Image {
     private Long id;
     private String prompt;
     private String size;
+    private String url;
 
+    public Image() {
+    }
+
+    public Image(String prompt, String size) {
+        this.prompt = prompt;
+        this.size = size;
+    }
 }
