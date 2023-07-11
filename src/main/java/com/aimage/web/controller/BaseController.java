@@ -8,6 +8,7 @@ import com.theokanning.openai.service.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ import java.util.List;
 public class BaseController {
 
     private final ImageRepository imageRepository;
+
+    @Value("${openai-key}")
+    private String OPENAI_KEY;
 
     @GetMapping("/generate")
     public String generateForm(Model model) {
@@ -46,8 +50,8 @@ public class BaseController {
      *
      * Library used: openai-java by Theo Kanning
      */
-    private static String openAiImageUrl(Image imageToRequest) {
-        OpenAiService service = new OpenAiService("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");
+    private String openAiImageUrl(Image imageToRequest) {
+        OpenAiService service = new OpenAiService(OPENAI_KEY);
         CreateImageRequest createImageRequest = CreateImageRequest.builder()
                 .prompt(imageToRequest.getPrompt())
                 .n(1)
