@@ -33,11 +33,11 @@ public class BaseController {
 
     @PostMapping("/result")
     public String generate(@ModelAttribute Image image, Model model) {
-        log.info("Image generated: {}", image);
-
         String imageUrl = openAiImageUrl(image);
         image.setUrl(imageUrl);
         imageRepository.save(image);
+
+        log.info("Image generated: {}", image);
 
         model.addAttribute("imageUrl", imageUrl);
         return "features/result";
