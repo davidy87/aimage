@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Image {
 
     private Long id;
-    private String description;
+    private String prompt;
     private String size;
 
 }

@@ -1,5 +1,3 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:insert="~{fragment/head/head :: copy}">
@@ -11,17 +9,16 @@
   </header>
   
   <div class="img-container center">
-    {% if img %}
-      <h2 class="prompt center">{{ prompt }}</h2>
-      <img class="img-result rounded center" src="{{ img }}">
-    {% else %}
-      <p>No image</p>
-    {% endif %}
+    <h2 class="prompt center" th:text="${image.prompt}">Image Prompt</h2>
+
+    <img class="img-result rounded center" src="{{ img }}">
+
     <div class="py-5">
       <a href="{{ img }}" download="image.png" class="center">
         <button class="btn btn-primary center"><i class="fa fa-download"></i>Download</button>
       </a>
     </div>
   </div>
+
 </body>
 </html>
