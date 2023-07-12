@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +34,11 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signupModal(@ModelAttribute User user) {
+    public String signupModal(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "login/signup-screen";
+        }
+
         log.info("Sign up user = {}", user);
         userRepository.save(user);
         log.info("User list = {}", userRepository.findAll());
@@ -46,7 +51,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginForm loginForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "login/login-screen";
+        }
+
         User loginUser = loginService.login(loginForm.getEmail(), loginForm.getPassword());
 
         if (loginUser == null) {
