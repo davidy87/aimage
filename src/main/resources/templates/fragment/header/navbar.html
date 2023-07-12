@@ -21,7 +21,26 @@
         </li>
       </ul>
 
-      <div class="d-flex">
+      <div class="d-flex dropdown" th:if="${user != null}">
+        <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" th:text="${user.username}" data-bs-toggle="dropdown" aria-expanded="false">
+          USERNAME
+        </button>
+
+        <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item">Your Profile</a></li>
+          <li><a class="dropdown-item" href="#">Saved Images</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <form action="/" th:action method="POST">
+              <button type="submit" class="dropdown-item btn btn-secondary btn-lg">
+                <span>Sign out</span>
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+
+      <div class="d-flex" th:if="${user == null}">
 <!--        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">-->
 <!--          <span>Log in</span>-->
 <!--        </button>-->

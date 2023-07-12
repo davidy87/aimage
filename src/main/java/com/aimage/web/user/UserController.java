@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -22,9 +23,7 @@ public class UserController {
     private final LoginService loginService;
 
     @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("loginForm", new LoginForm());
+    public String home() {
         return "home";
     }
 
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginForm loginForm, BindingResult bindingResult) {
+    public String login(@ModelAttribute LoginForm loginForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         User loginUser = loginService.login(loginForm.getEmail(), loginForm.getPassword());
 
         if (loginUser == null) {
@@ -56,6 +55,7 @@ public class UserController {
             return "login/login-screen";
         }
 
+        redirectAttributes.addFlashAttribute("user", loginUser);
         log.info("Login user = {}", loginUser);
         return "redirect:/";
     }
