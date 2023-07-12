@@ -68,3 +68,8 @@ h2 {
 .card {
   height: 100%;
 }
+
+.field-error {
+  border-color: #dc3545;
+  color: #dc3545;
+}

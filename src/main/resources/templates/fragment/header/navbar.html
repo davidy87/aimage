@@ -22,10 +22,19 @@
       </ul>
 
       <div class="d-flex">
-        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">
+<!--        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">-->
+<!--          <span>Log in</span>-->
+<!--        </button>-->
+
+<!--        <button class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#signupModal">-->
+<!--          <span>Sign up</span>-->
+<!--        </button>-->
+
+        <button class="btn btn-secondary" th:onclick="|location.href='@{/login}'|">
           <span>Log in</span>
         </button>
-        <button class="btn btn-primary ms-3">
+
+        <button class="btn btn-primary ms-3" th:onclick="|location.href='@{/signup}'|">
           <span>Sign up</span>
         </button>
       </div>

@@ -32,6 +32,13 @@ public class MemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return repo.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findAny();
+    }
+
+    @Override
     public List<User> findAll() {
         return new ArrayList<>(repo.values());
     }

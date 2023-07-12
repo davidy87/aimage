@@ -1,4 +1,4 @@
-package com.aimage.web.controller;
+package com.aimage.web;
 
 import com.aimage.domain.image.Image;
 import com.aimage.domain.image.ImageRepository;
