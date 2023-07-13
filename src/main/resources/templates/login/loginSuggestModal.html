@@ -1,0 +1,41 @@
+<!-- Login Suggestion modal -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade" id="loginModal" role="dialog" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" th:fragment="copy">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-center w-100" id="loginModalLabel">Login Required</h2>
+      </div>
+      <div class="modal-body m-5">
+        <div class="text-center">
+          <h5>To proceed, you need to login first.</h5>
+          <h5>Would you like to login now?</h5>
+        </div>
+        <div class="row mb-3 pt-5">
+          <div class="col">
+            <button type="button" class="btn btn-primary btn-md blue-gradient btn-block waves-effect" th:onclick="|location.href='@{/login}'|" data-bs-dismiss="modal">Login</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-secondary btn-md blue-gradient btn-block waves-effect" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+
+<!--        <form action="/" th:action="@{/login}" th:object="${loginForm}" method="post">-->
+<!--          <div class="md-form mb-4">-->
+<!--            <input type="email" class="form-control form-control-lg" th:field="*{email}" placeholder="Email address" required>-->
+<!--          </div>-->
+<!--          <div class="md-form mb-4">-->
+<!--            <input type="password" class="form-control form-control-lg" th:field="*{password}" placeholder="Password" required>-->
+<!--            <p class="font-small blue-text d-flex justify-content-end"><a href="#" class="blue-text ml-1">Forgot password?</a></p>-->
+<!--          </div>-->
+<!--          <div class="text-center mb-3 py-3">-->
+<!--            <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect">Sign in</button>-->
+<!--          </div>-->
+<!--        </form>-->
+
+      </div>
+
+    </div>
+  </div>
+</div>
