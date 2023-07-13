@@ -5,6 +5,7 @@ import com.aimage.domain.user.UserRepository;
 import com.aimage.domain.user.login.LoginService;
 import com.aimage.web.user.login.LoginForm;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,11 +24,6 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final LoginService loginService;
-
-    @GetMapping("/")
-    public String home() {
-        return "home";
-    }
 
     @GetMapping("/signup")
     public String signupForm(@ModelAttribute User user) {
@@ -61,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+    public String login(@Validated @ModelAttribute LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return "login/login-screen";
         }
@@ -74,7 +70,9 @@ public class UserController {
             return "login/login-screen";
         }
 
-        redirectAttributes.addFlashAttribute("user", loginUser);
+        HttpSession session = request.getSession();
+        session.setAttribute("loginUser", loginUser);
+
         log.info("Login user = {}", loginUser);
         return "redirect:/";
     }
