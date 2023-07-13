@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head/head :: copy}">
+  <title>미쳤습니까, 휴먼? - AImage</title>
+</head>
+<body>
+  <div class="container">
+    <div class="text-center mt-5">
+      <h2>미쳤습니까, 휴먼?</h2>
+      <h2>어서 <a th:href="@{/}" class="blue-text ml-1">이곳</a>으로 돌아가십시오.</h2>
+    </div>
+    <div class="text-center mt-5">
+      <img th:src="@{/images/robot.png}" alt="Image" class="img-fluid">
+    </div>
+  </div>
+</body>
+</html>
