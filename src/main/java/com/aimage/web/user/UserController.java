@@ -31,7 +31,10 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signupModal(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request) {
+    public String signupModal(@Validated @ModelAttribute User user,
+                              BindingResult bindingResult,
+                              HttpServletRequest request) {
+
         if (bindingResult.hasErrors()) {
             return "login/signup-screen";
         }
@@ -76,4 +79,17 @@ public class UserController {
         log.info("Login user = {}", loginUser);
         return "redirect:/";
     }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        if (session != null) {
+            log.info("User signed out = {}", session.getAttribute("loginUser"));
+            session.invalidate();
+        }
+
+        return "redirect:/";
+    }
+
 }
