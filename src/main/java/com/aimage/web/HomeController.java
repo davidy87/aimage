@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@SessionAttribute(name = "loginUser", required = false) User loginUser,
-                       Model model) {
+    public String home(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
         if (loginUser != null) {
             model.addAttribute("user", loginUser);
         }
