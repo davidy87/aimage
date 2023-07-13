@@ -13,6 +13,10 @@
 
     <div class="container">
       <form action="/" th:action="@{/signup}" th:object="${user}" method="post">
+        <div th:if="${#fields.hasGlobalErrors()}">
+          <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+        </div>
+
         <div class="md-form mb-4">
           <input type="text" class="form-control form-control-lg" th:field="*{username}" th:errorclass="field-error" placeholder="Username">
           <div class="field-error" th:errors="*{username}"></div>
@@ -26,7 +30,7 @@
           <div class="field-error" th:errors="*{password}"></div>
         </div>
         <div class="md-form mb-4">
-          <input type="password" class="form-control form-control-lg" name="password2" placeholder="Confirm password">
+          <input type="password" class="form-control form-control-lg" name="confirmPassword" placeholder="Confirm password">
         </div>
         <div class="text-center mb-3 py-3">
           <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect">Sign Up</button>

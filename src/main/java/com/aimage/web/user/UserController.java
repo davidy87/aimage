@@ -4,6 +4,7 @@ import com.aimage.domain.user.User;
 import com.aimage.domain.user.UserRepository;
 import com.aimage.domain.user.login.LoginService;
 import com.aimage.web.user.login.LoginForm;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,14 +35,23 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signupModal(@Validated @ModelAttribute User user, BindingResult bindingResult) {
+    public String signupModal(@Validated @ModelAttribute User user, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
+            return "login/signup-screen";
+        }
+
+        String confirmPwd = request.getParameter("confirmPassword");
+
+        if (!confirmPwd.equals(user.getPassword())) {
+            log.info("Sign up failed: {}", user);
+            bindingResult.reject("signupFail", "Your confirmation password did not match.");
             return "login/signup-screen";
         }
 
         log.info("Sign up user = {}", user);
         userRepository.save(user);
         log.info("User list = {}", userRepository.findAll());
+
         return "redirect:/";
     }
 
