@@ -14,10 +14,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/" th:text="#{navbar.menu.home}"></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="#" th:text="#{navbar.menu.about}"></a>
         </li>
       </ul>
 
@@ -27,14 +27,12 @@
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item">Your Profile</a></li>
-          <li><a class="dropdown-item" href="#">Saved Images</a></li>
+          <li><a class="dropdown-item" th:text="#{label.user.profile}">Your Profile</a></li>
+          <li><a class="dropdown-item" href="#" th:text="#{label.user.images}">Saved Images</a></li>
           <li><hr class="dropdown-divider"></li>
           <li>
             <form action="/" th:action="@{/logout}" method="post">
-              <button type="submit" class="dropdown-item btn btn-secondary btn-lg">
-                <span>Sign out</span>
-              </button>
+              <button type="submit" class="dropdown-item btn btn-secondary btn-lg" th:text="#{button.signout}"></button>
             </form>
           </li>
         </ul>
@@ -49,13 +47,8 @@
 <!--          <span>Sign up</span>-->
 <!--        </button>-->
 
-        <button class="btn btn-secondary" th:onclick="|location.href='@{/login}'|">
-          <span>Log in</span>
-        </button>
-
-        <button class="btn btn-primary ms-3" th:onclick="|location.href='@{/signup}'|">
-          <span>Sign up</span>
-        </button>
+        <button class="btn btn-secondary" th:onclick="|location.href='@{/login}'|" th:text="#{login.header}"></button>
+        <button class="btn btn-primary ms-3" th:onclick="|location.href='@{/signup}'|" th:text="#{signup.header}"></button>
       </div>
     </div>
   </div>

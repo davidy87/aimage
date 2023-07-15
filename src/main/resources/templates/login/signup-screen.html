@@ -8,36 +8,36 @@
   <div class="container" style="padding-top: 5%; max-width: 450px">
 
     <div class="my-5">
-      <h2 class="text-center w-100">Sign Up</h2>
+      <h2 class="text-center w-100" th:text="#{signup.header}"></h2>
     </div>
 
     <div class="container">
       <form action="/" th:action="@{/signup}" th:object="${user}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
-          <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+          <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
         </div>
 
         <div class="md-form mb-4">
-          <input type="text" class="form-control form-control-lg" th:field="*{username}" th:errorclass="field-error" placeholder="Username">
+          <input type="text" class="form-control form-control-lg" th:field="*{username}" th:errorclass="field-error" th:placeholder="#{placeholder.username}">
           <div class="field-error" th:errors="*{username}"></div>
         </div>
         <div class="md-form mb-4">
-          <input type="email" class="form-control form-control-lg" th:field="*{email}" th:errorclass="field-error" placeholder="Email address">
+          <input type="email" class="form-control form-control-lg" th:field="*{email}" th:errorclass="field-error" th:placeholder="#{placeholder.email}">
           <div class="field-error" th:errors="*{email}"></div>
         </div>
         <div class="md-form mb-4">
-          <input type="password" class="form-control form-control-lg" th:field="*{password}" th:errorclass="field-error" placeholder="Password">
+          <input type="password" class="form-control form-control-lg" th:field="*{password}" th:errorclass="field-error" th:placeholder="#{placeholder.password}">
           <div class="field-error" th:errors="*{password}"></div>
         </div>
         <div class="md-form mb-4">
-          <input type="password" class="form-control form-control-lg" name="confirmPassword" placeholder="Confirm password">
+          <input type="password" class="form-control form-control-lg" name="confirmPassword" th:placeholder="#{placeholder.confirmPassword}">
         </div>
         <div class="text-center mb-3 py-3">
-          <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect">Sign Up</button>
+          <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{signup.header}">Sign Up</button>
         </div>
       </form>
-      <form action="{% provider_login_url 'google' %}" method="GET">
-        <p class="font-small dark-grey-text text-center my-4">or continue with:</p>
+      <form action="#" method="GET">
+        <p class="font-small dark-grey-text text-center my-4" th:text="#{signup.info.continueWith}"></p>
         <div class="row justify-content-center">
           <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-facebook-f"></i></button>
           <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-twitter"></i></button>
@@ -46,9 +46,9 @@
       </form>
     </div>
 
-    <div class="mx-5 pt-5">
-      <p class="font-small grey-text text-center">Already have an account?
-        <a th:href="@{/login}" class="blue-text ml-1">Login</a>
+    <div class="mx-5 py-5">
+      <p class="font-small grey-text text-center">[[#{signup.info.alreadyUser}]]
+        <a th:href="@{/login}" class="blue-text ml-1" th:text="#{login.header}">Login</a>
       </p>
     </div>
 

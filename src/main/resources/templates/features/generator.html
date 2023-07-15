@@ -11,19 +11,19 @@
   <section>
     <div class="container p-5">
       <div class="container pt-5">
-        <h1>What Image Would You Like to Get?</h1>
+        <h1 th:text="#{generator.header}">What Image Would You Like to Get?</h1>
       </div>
   
       <div class="container">
         <form action="result.html" th:action="@{/result}" th:object="${image}" method="post">
           <div class="form-group py-3">
-            <label class="form-label">Description</label>
-            <input class="form-control form-control-lg" name="imagePrompt" th:field="*{prompt}" placeholder="Descirbe here"></input>
+            <label class="form-label" th:text="#{label.description}"></label>
+            <input class="form-control form-control-lg" name="imagePrompt" th:field="*{prompt}" th:placeholder="#{placeholder.imageDescription}"></input>
           </div>
           
           <div class="dropdown" style="padding-right: 88%;">
             <select class="form-select form-select-lg" name="imageSize" th:field="*{size}">
-              <option value="" selected>Select a size</option>
+              <option value="" th:text="#{generator.info.select}" selected>Select a size</option>
               <option value="256x256">256x256</option>
               <option value="512x512">512x512</option>
               <option value="1024x1024">1024x1024</option>
@@ -31,7 +31,7 @@
           </div>
   
           <div class="py-5" style="text-align: center">
-            <input class="btn btn-primary" type="submit" value="Generate">
+            <button class="btn btn-primary" type="submit" th:text="#{button.generate}"></button>
           </div>
         </form>
       </div>

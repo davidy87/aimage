@@ -15,17 +15,17 @@
     <div class="container p-5">
       <div class="row py-5">
         <div class="col-lg-6 py-5">
-          <h1>Online AI Image Generator</h1>
+          <h1 th:text="#{home.header}">Header</h1>
           <h5 class="py-3">
-            <p class="text-muted">Watch your words and phrases transform into beautiful images with Text to Image.</p>
+            <p class="text-muted" th:text="#{home.summary}">Summary</p>
           </h5>
 
           <div th:if="${user == null}">
-            <a class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#loginModal" th:href="@{/}">Generate AI Images »</a>
+            <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal" th:href="@{/}" th:text="#{home.generateButton}">Generate</a>
             <div th:insert="~{login/loginSuggestModal :: copy}"></div>
           </div>
 
-          <a class="btn btn-primary" th:href="@{/generate}" th:if="${user != null}" >Generate AI Images »</a>
+          <a class="btn btn-primary" th:href="@{/generate}" th:if="${user != null}" th:utext="#{home.generateButton}"></a>
         </div>
         <div class="col-lg-6 py-5">
           <img th:src="@{/images/ai_image.jpeg}" alt="Image" class="img-fluid">
@@ -36,32 +36,30 @@
 
   <section class="how-to">
     <div class="container p-5">
-      <h2>How to Generate an AI Image</h2>
+      <h2 th:text="#{home.howto.header}"></h2>
       <div class="row py-4">
         <div class="col-lg-4">
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title"><b>1. Enter your text prompt</b></h3>
+              <h3 class="card-title" th:utext="#{home.howto.first}"></h3>
               <br>
-              <p class="card-text">The more detailed the description, the more likely you are to get the result you want.</p>
+              <p class="card-text" th:text="#{home.howto.first.detail}"></p>
             </div>
           </div>
         </div>
         <div class="col-lg-4">
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title"><b>2. Select a size</b></h3>
-              <br>
-              <p class="card-text">Generated images can have a size of <u>256x256</u>, <u>512x512</u>, or <u>1024x1024</u> pixels. <b>Smaller sizes are faster to generate</b>.</p>
+              <h3 class="card-title" th:utext="#{home.howto.second}"></h3><br>
+              <p class="card-text" th:utext="#{home.howto.second.detail}"></p>
             </div>
           </div>
         </div>
         <div class="col-lg-4">
           <div class="card">
             <div class="card-body">
-              <h3 class="card-title"><b>3. Generate image</b></h3>
-              <br>
-              <p class="card-text">Click <b>Generate</b> button to begin the AI image creation process.</p>
+              <h3 class="card-title" th:utext="#{home.howto.third}"></h3><br>
+              <p class="card-text" th:utext="#{home.howto.third.detail}"></p>
             </div>
           </div>
         </div>
@@ -76,12 +74,6 @@
       </a>
       <span class="text-muted">&copy; 2023 AImage. All rights reserved.</span>
     </div>
-
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
-      <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
-      <li class="ms-3"><a class="text-muted" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
-    </ul>
   </footer>
 
 </body>
