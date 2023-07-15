@@ -47,13 +47,19 @@ public class BaseController {
             model.addAttribute("user", loginUser);
         }
 
-        String imageUrl = openAiImageUrl(image);
-        image.setUrl(imageUrl);
-        imageRepository.save(image);
+        try {
+            String imageUrl = openAiImageUrl(image);
+            image.setUrl(imageUrl);
+            imageRepository.save(image);
 
-        log.info("Image generated: {}", image);
+            log.info("Image generated: {}", image);
 
-        model.addAttribute("imageUrl", imageUrl);
+            model.addAttribute("imageUrl", imageUrl);
+        } catch (Exception e) {
+            log.info("Error = {}", e.toString());
+            return "redirect:/";
+        }
+
         return "features/result";
     }
 
