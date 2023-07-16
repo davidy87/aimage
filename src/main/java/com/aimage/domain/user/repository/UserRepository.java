@@ -1,4 +1,6 @@
-package com.aimage.domain.user;
+package com.aimage.domain.user.repository;
+
+import com.aimage.domain.user.User;
 
 import java.util.List;
 import java.util.Optional;

@@ -1,6 +1,6 @@
-package com.aimage.web.user.login;
+package com.aimage.web.interceptor;
 
-import com.aimage.web.user.SessionConstant;
+import com.aimage.web.SessionConstant;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

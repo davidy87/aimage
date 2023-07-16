@@ -1,21 +1,19 @@
-package com.aimage.web.user;
+package com.aimage.controller;
 
 import com.aimage.domain.user.User;
-import com.aimage.domain.user.UserRepository;
-import com.aimage.domain.user.login.LoginService;
-import com.aimage.web.user.login.LoginForm;
+import com.aimage.domain.user.repository.UserRepository;
+import com.aimage.domain.login.service.LoginServiceImpl;
+import com.aimage.domain.login.LoginForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -23,7 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class UserController {
 
     private final UserRepository userRepository;
-    private final LoginService loginService;
+    private final LoginServiceImpl loginService;
 
     @GetMapping("/signup")
     public String signupForm(@ModelAttribute User user) {

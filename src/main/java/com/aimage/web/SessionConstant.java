@@ -1,4 +1,4 @@
-package com.aimage.web.user;
+package com.aimage.web;
 
 public interface SessionConstant {
 

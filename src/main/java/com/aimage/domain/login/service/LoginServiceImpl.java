@@ -1,13 +1,13 @@
-package com.aimage.domain.user.login;
+package com.aimage.domain.login.service;
 
 import com.aimage.domain.user.User;
-import com.aimage.domain.user.UserRepository;
+import com.aimage.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService {
+public class LoginServiceImpl implements LoginService {
 
     private final UserRepository userRepository;
 

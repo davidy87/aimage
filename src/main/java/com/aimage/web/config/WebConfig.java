@@ -1,6 +1,6 @@
-package com.aimage;
+package com.aimage.web.config;
 
-import com.aimage.web.user.login.LoginCheckInterceptor;
+import com.aimage.web.interceptor.LoginCheckInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

@@ -1,7 +1,7 @@
 package com.aimage;
 
 import com.aimage.domain.user.User;
-import com.aimage.domain.user.UserRepository;
+import com.aimage.domain.user.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

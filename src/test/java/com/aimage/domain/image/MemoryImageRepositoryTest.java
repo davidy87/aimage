@@ -1,10 +1,10 @@
 package com.aimage.domain.image;
 
+import com.aimage.domain.image.repository.MemoryImageRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MemoryImageRepositoryTest {
     private MemoryImageRepository imageRepository = new MemoryImageRepository();
