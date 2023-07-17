@@ -7,6 +7,15 @@
   <header>
     <div class="pb-5" id="nav-placeholder" th:insert="~{fragment/header/navbar :: copy}"></div>
   </header>
+  <div>
+    <script th:if="${openAiError == true}">
+      window.onload = () => {
+        const myModal = new bootstrap.Modal('#openAiErrorModal');
+        myModal.show();
+      }
+    </script>
+    <div th:insert="~{fragment/warningModal :: copy}"></div>
+  </div>
 
   <section>
     <div class="container p-5">

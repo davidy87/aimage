@@ -1,8 +1,9 @@
-package com.aimage.controller;
+package com.aimage.domain.image.controller;
 
 import com.aimage.domain.image.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.User;
+import com.aimage.web.exception.OpenAiException;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.*;
 
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class BaseController {
+public class ImageController {
 
     private final ImageRepository imageRepository;
 
@@ -54,7 +55,7 @@ public class BaseController {
             model.addAttribute("imageUrl", imageUrl);
         } catch (Exception e) {
             log.info("Error = {}", e.toString());
-            return "redirect:/";
+            throw new OpenAiException();
         }
 
         return "features/result";

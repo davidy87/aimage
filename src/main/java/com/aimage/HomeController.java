@@ -1,4 +1,4 @@
-package com.aimage.controller;
+package com.aimage;
 
 import com.aimage.domain.user.User;
 import lombok.RequiredArgsConstructor;
