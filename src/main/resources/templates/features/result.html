@@ -11,10 +11,10 @@
   <div class="img-container center">
     <h2 class="prompt center" th:text="${image.prompt}">Image Prompt</h2>
 
-    <img class="img-result rounded center" th:src="${imageUrl}">
+    <img class="img-result rounded center" th:src="${imageURL}">
 
     <div class="py-5">
-      <a th:href="${imageUrl}" download="image.png" class="center">
+      <a th:href="${imageURL}" download="image.png" class="center">
         <button class="btn btn-primary center"><i class="fa fa-download"></i>Download</button>
       </a>
     </div>

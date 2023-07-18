@@ -24,20 +24,22 @@
       </div>
   
       <div class="container">
-        <form action="result.html" th:action th:object="${image}" method="post">
+        <form action="result.html" th:action th:object="${imageDTO}" method="post">
           <div class="form-group py-3">
             <label class="form-label" th:text="#{label.description}"></label>
-            <input class="form-control form-control-lg" name="imagePrompt" th:field="*{prompt}" th:placeholder="#{placeholder.imageDescription}"></input>
+            <input class="form-control form-control-lg" name="imagePrompt" th:field="*{prompt}" th:errorclass="field-error" th:placeholder="#{placeholder.imageDescription}"></input>
+            <div class="field-error" th:errors="*{prompt}"></div>
           </div>
           
           <div class="dropdown" style="padding-right: 88%;">
-            <select class="form-select form-select-lg" name="imageSize" th:field="*{size}">
+            <select class="form-select form-select-lg" name="imageSize" th:field="*{size}" th:errorclass="field-error">
               <option value="" th:text="#{generator.info.select}" selected>Select a size</option>
               <option value="256x256">256x256</option>
               <option value="512x512">512x512</option>
               <option value="1024x1024">1024x1024</option>
             </select>
           </div>
+          <div class="field-error" th:errors="*{size}"></div>
   
           <div class="py-5" style="text-align: center">
             <button class="btn btn-primary" type="submit" th:text="#{button.generate}"></button>

@@ -1,10 +1,12 @@
 package com.aimage.domain.image.entity;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-@Data
+@Getter
+@Builder
 public class Image {
 
     private Long id;
@@ -12,11 +14,7 @@ public class Image {
     private String size;
     private String url;
 
-    public Image() {
-    }
-
-    public Image(String prompt, String size) {
-        this.prompt = prompt;
-        this.size = size;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -1,5 +1,6 @@
 package com.aimage.web.exception;
 
+import com.aimage.domain.image.dto.ImageDTO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.dto.SignupDTO;
 import com.theokanning.openai.OpenAiHttpException;
@@ -19,14 +20,13 @@ public class HttpExceptionControllerAdvice {
 
     /**
      * OpenAI API 요청 시 생기는 예외 처리
-     * @param e OpenAiException: com.theokanning.openai.OpenAiHttpException 을 catch 했을 때 던지는 커스텀 예외
+     * @param e com.theokanning.openai.OpenAiHttpException
      * @param model
      * @return 이미지 생성 페이지로 리다이렉트 (/generate)
      */
     @ExceptionHandler
     public String openAiHttpExceptionHandler(OpenAiHttpException e, Model model, RedirectAttributes redirectAttributes) {
         log.error("[openAiHttpExceptionHandler] {}", e.toString());
-        model.addAttribute("image", new Image());
         redirectAttributes.addFlashAttribute("openAiError", true);
         return "redirect:/generate";
     }
