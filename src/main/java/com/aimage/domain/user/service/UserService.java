@@ -1,11 +1,11 @@
 package com.aimage.domain.user.service;
 
-import com.aimage.domain.image.Image;
-import com.aimage.domain.user.User;
-import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.validation.BindingResult;
+import com.aimage.domain.user.dto.SignupDTO;
+import com.aimage.domain.user.entity.User;
 
 public interface UserService {
 
-    void join(User user);
+    User join(SignupDTO signupDTO);
+    User login(String loginIn, String password);
+    String findPassword(String email);
 }

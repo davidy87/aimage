@@ -1,6 +1,6 @@
 package com.aimage.domain.image.repository;
 
-import com.aimage.domain.image.Image;
+import com.aimage.domain.image.entity.Image;
 
 import java.util.List;
 import java.util.Optional;

@@ -9,7 +9,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
       </div>
       <div class="modal-body m-5">
-        <form action="/" th:action="@{/login}" th:object="${loginForm}" method="post">
+        <form action="/" th:action="@{/login}" th:object="${loginDTO}" method="post">
           <div class="md-form mb-4">
             <input type="email" class="form-control form-control-lg" th:field="*{email}" placeholder="Email address" required>
           </div>

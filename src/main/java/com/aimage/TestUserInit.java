@@ -1,6 +1,6 @@
 package com.aimage;
 
-import com.aimage.domain.user.User;
+import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,12 @@ public class TestUserInit {
 
     @PostConstruct
     public void init() {
-        User user = new User("tester", "test@gmail.com", "test!");
+        User user = User.builder()
+                .username("tester")
+                .email("test@gmail.com")
+                .password("test!")
+                .build();
+
         userRepository.save(user);
     }
 

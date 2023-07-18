@@ -1,8 +1,8 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.Image;
+import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
-import com.aimage.domain.user.User;
+import com.aimage.domain.user.entity.User;
 import com.aimage.web.exception.OpenAiException;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.*;
@@ -25,38 +25,24 @@ public class ImageController {
     private String OPENAI_KEY;
 
     @GetMapping("/generate")
-    public String generateForm(@SessionAttribute(name = "loginUser", required = false) User loginUser,
+    public String generateForm(@SessionAttribute(required = false) User loginUser,
                                @ModelAttribute Image image,
                                Model model) {
-
-        if (loginUser != null) {
-            model.addAttribute("user", loginUser);
-        }
 
         return "features/generator";
     }
 
-    @PostMapping("/result")
-    public String generate(@SessionAttribute(name = "loginUser", required = false) User loginUser,
+    @PostMapping("/generate")
+    public String generate(@SessionAttribute(required = false) User loginUser,
                            @ModelAttribute Image image,
                            Model model) {
 
-        if (loginUser != null) {
-            model.addAttribute("user", loginUser);
-        }
+        String imageUrl = openAiImageUrl(image);
+        image.setUrl(imageUrl);
+        imageRepository.save(image);
+        model.addAttribute("imageUrl", imageUrl);
 
-        try {
-            String imageUrl = openAiImageUrl(image);
-            image.setUrl(imageUrl);
-            imageRepository.save(image);
-
-            log.info("Image generated: {}", image);
-
-            model.addAttribute("imageUrl", imageUrl);
-        } catch (Exception e) {
-            log.info("Error = {}", e.toString());
-            throw new OpenAiException();
-        }
+        log.info("Image generated: {}", image);
 
         return "features/result";
     }

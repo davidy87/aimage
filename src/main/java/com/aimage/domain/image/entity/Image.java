@@ -1,4 +1,4 @@
-package com.aimage.domain.image;
+package com.aimage.domain.image.entity;
 
 import lombok.Data;
 

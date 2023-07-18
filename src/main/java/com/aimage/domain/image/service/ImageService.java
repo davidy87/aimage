@@ -1,6 +1,6 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.Image;
+import com.aimage.domain.image.entity.Image;
 import org.springframework.stereotype.Service;
 
 @Service

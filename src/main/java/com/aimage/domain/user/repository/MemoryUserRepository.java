@@ -1,6 +1,6 @@
 package com.aimage.domain.user.repository;
 
-import com.aimage.domain.user.User;
+import com.aimage.domain.user.entity.User;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;

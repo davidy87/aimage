@@ -11,7 +11,7 @@
     </div>
 
     <div class="container">
-      <form action="/" th:action th:object="${loginForm}" method="post">
+      <form action="/" th:action th:object="${loginDTO}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
           <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
         </div>

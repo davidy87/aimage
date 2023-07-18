@@ -1,6 +1,6 @@
 package com.aimage;
 
-import com.aimage.domain.user.User;
+import com.aimage.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

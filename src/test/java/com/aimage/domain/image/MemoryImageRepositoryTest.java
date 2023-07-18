@@ -1,5 +1,6 @@
 package com.aimage.domain.image;
 
+import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.MemoryImageRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
