@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:insert="~{fragment/head/head :: copy}">
+<head th:insert="~{fragment/head :: head}">
 </head>
 
 <body>
   <header>
-    <div class="pb-5" id="nav-placeholder" th:insert="~{fragment/header/navbar :: copy}"></div>
+    <div class="pb-5" id="nav-placeholder" th:insert="~{fragment/navbar :: navbar}"></div>
   </header>
   <div>
     <script th:if="${openAiError == true}">
@@ -14,7 +14,7 @@
         myModal.show();
       }
     </script>
-    <div th:insert="~{fragment/warningModal :: copy}"></div>
+    <div th:insert="~{fragment/warningModal :: openAiErrorModal}"></div>
   </div>
 
   <section>

@@ -4,6 +4,8 @@ import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -12,7 +14,7 @@ public class TestUserInit {
 
     private final UserRepository userRepository;
 
-    @PostConstruct
+    @EventListener(ApplicationReadyEvent.class)
     public void init() {
         User user = User.builder()
                 .username("tester")

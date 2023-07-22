@@ -7,5 +7,7 @@ import org.springframework.stereotype.Service;
 public interface ImageService {
 
     void save(ImageDTO imageDTO, String imageURL);
-    Image findImage(Long imageId);
+
+    String requestImageToOpenAI(ImageDTO imageDTO);
+
 }

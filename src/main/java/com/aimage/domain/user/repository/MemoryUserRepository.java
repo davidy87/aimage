@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class MemoryUserRepository implements UserRepository {
 
-    Map<Long, User> repo = new ConcurrentHashMap<>();
-    AtomicLong seq = new AtomicLong(0);
+    private static Map<Long, User> repo = new ConcurrentHashMap<>();
+    private static AtomicLong seq = new AtomicLong(0);
 
     @Override
     public User save(User user) {
