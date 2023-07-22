@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aimage.domain.image.repository.ImageMapper">
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into image (owner_id, prompt, image_size, url)
+        values (#{ownerId}, #{prompt}, #{size}, #{url})
+    </insert>
+
+    <select id="findById" resultType="Image">
+        select id, owner_id, prompt, image_size, url
+        from image
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="Image">
+        select id, owner_id, prompt, image_size, url
+        from image
+    </select>
+
+    <select id="findAllBySize" resultType="Image">
+        select id, owner_id, prompt, image_size, url
+        from image
+        where image_size = #{size}
+    </select>
+</mapper>

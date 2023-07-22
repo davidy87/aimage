@@ -43,3 +43,6 @@ build
 
 # Ignore the macOS folder attribute file
 **/.DS_Store
+
+# sql schema
+*.sql

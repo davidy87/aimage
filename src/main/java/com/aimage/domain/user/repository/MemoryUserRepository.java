@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+//@Repository
 public class MemoryUserRepository implements UserRepository {
 
     private static Map<Long, User> repo = new ConcurrentHashMap<>();
@@ -15,7 +15,7 @@ public class MemoryUserRepository implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setId(seq.incrementAndGet());
+//        user.setId(seq.incrementAndGet());
         repo.put(user.getId(), user);
         return user;
     }

@@ -7,12 +7,12 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
+@Mapper
+public interface UserMapper {
 
-    User save(User user);
+    void save(User user);
     Optional<User> findById(Long id);
-    Optional<User> findByName(String username);
-    Optional<User> findByEmail(String email);
+    Optional<User> findByName(@Param("username") String username);
+    Optional<User> findByEmail(@Param("email") String email);
     List<User> findAll();
-
 }

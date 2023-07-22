@@ -29,6 +29,15 @@ dependencies {
 	// openai-java by Theo Kanning
 	implementation 'com.theokanning.openai-gpt3-java:service:+'
 
+	// JdbcTemplate 추가
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	// MyBatis 추가
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:+'
+	// H2 데이터베이스 추가
+	runtimeOnly 'com.h2database:h2'
+	// MySQL 추가
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

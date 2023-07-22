@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Repository
+//@Repository
 public class MemoryImageRepository implements ImageRepository {
 
     private Map<Long, Image> repo = new ConcurrentHashMap<>();
