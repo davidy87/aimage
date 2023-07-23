@@ -1,17 +1,11 @@
 package com.aimage.domain.image.controller;
 
 import com.aimage.domain.image.dto.ImageDTO;
-import com.aimage.domain.image.entity.Image;
-import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.image.service.ImageServiceImpl;
 import com.aimage.domain.user.entity.User;
-import com.aimage.web.exception.OpenAiException;
-import com.theokanning.openai.image.CreateImageRequest;
-import com.theokanning.openai.service.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,7 +37,7 @@ public class ImageController {
         }
 
         String imageURL = imageService.requestImageToOpenAI(imageDTO);
-        imageService.save(imageDTO, imageURL);
+        imageService.save(loginUser.getId(), imageDTO, imageURL);
         model.addAttribute("imageURL", imageURL);
 
         log.info("Image generated: {}", imageDTO);
