@@ -1,6 +1,6 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDTO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.ImageSizeConst;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ class OpenAiWebClientServiceTest {
 
     @Test
     void get() {
-        ImageDTO imageDTO = new ImageDTO("Spring Framework", ImageSizeConst.SMALL);
+        ImageDto imageDTO = new ImageDto("Spring Framework", ImageSizeConst.SMALL);
         webClientService.requestImage(imageDTO);
     }
 }

@@ -24,7 +24,7 @@
       </div>
   
       <div class="container">
-        <form action="result.html" th:action th:object="${imageDTO}" method="post">
+        <form action="result.html" th:action th:object="${imageDto}" method="post">
           <div class="form-group py-3">
             <label class="form-label" th:text="#{label.description}"></label>
             <input class="form-control form-control-lg" name="imagePrompt" th:field="*{prompt}" th:errorclass="field-error" th:placeholder="#{placeholder.imageDescription}"></input>

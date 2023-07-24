@@ -1,11 +1,10 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDTO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.theokanning.openai.OpenAiHttpException;
 import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 //@Service
 public class OpenAiExternalService implements OpenAiClientService {
@@ -21,7 +20,7 @@ public class OpenAiExternalService implements OpenAiClientService {
      * @throws OpenAiHttpException (RuntimeException) if there is any problem with API request
      */
     @Override
-    public String requestImage(ImageDTO imageForm) throws OpenAiHttpException {
+    public String requestImage(ImageDto imageForm) throws OpenAiHttpException {
         OpenAiService service = new OpenAiService(OPENAI_KEY);
         CreateImageRequest createImageRequest = CreateImageRequest.builder()
                 .prompt(imageForm.getPrompt())

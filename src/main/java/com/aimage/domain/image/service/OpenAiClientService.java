@@ -1,11 +1,10 @@
 package com.aimage.domain.image.service;
 
 
-import com.aimage.domain.image.dto.ImageDTO;
-import org.springframework.beans.factory.annotation.Value;
+import com.aimage.domain.image.dto.ImageDto;
 
 
 public interface OpenAiClientService {
 
-    public String requestImage(ImageDTO imageRequestForm);
+    public String requestImage(ImageDto imageRequestForm);
 }

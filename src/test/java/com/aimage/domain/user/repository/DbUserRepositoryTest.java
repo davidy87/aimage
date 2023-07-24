@@ -36,6 +36,21 @@ class DbUserRepositoryTest {
         assertThat(userRepository.findAll()).contains(savedUser);
     }
 
+    @Test
+    void updatePassword() {
+        User user = User.builder()
+                .username("user1")
+                .email("user1@gmail.com")
+                .password("user1")
+                .build();
+
+        User savedUser = userRepository.save(user);
+        userRepository.updatePassword(savedUser.getId(), "newpass1234");
+        User userWithNewPw = userRepository.findById(user.getId()).get();
+
+        assertThat(userWithNewPw.getPassword()).isEqualTo("newpass1234");
+    }
+
     private void findUserBy(User savedUser, User... users) {
         for (User user : users) {
             assertThat(user).isEqualTo(savedUser);

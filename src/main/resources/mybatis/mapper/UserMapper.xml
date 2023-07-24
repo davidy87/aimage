@@ -29,4 +29,10 @@
         select id, username, email, password
         from member
     </select>
+
+    <update id="update">
+        update member
+        set password = #{newPassword}
+        where id = #{id}
+    </update>
 </mapper>

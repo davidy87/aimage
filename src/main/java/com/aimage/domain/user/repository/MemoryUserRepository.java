@@ -43,4 +43,9 @@ public class MemoryUserRepository implements UserRepository {
     public List<User> findAll() {
         return new ArrayList<>(repo.values());
     }
+
+    @Override
+    public void updatePassword(Long id, String newPassword) {
+    }
+
 }

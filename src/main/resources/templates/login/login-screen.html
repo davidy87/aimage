@@ -11,7 +11,7 @@
     </div>
 
     <div class="container">
-      <form action="/" th:action th:object="${loginDTO}" method="post">
+      <form action="/" th:action th:object="${login}" method="post">
         <div th:if="${#fields.hasGlobalErrors()}">
           <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
         </div>
@@ -24,11 +24,16 @@
           <input type="password" class="form-control form-control-lg" th:field="*{password}" th:errorclass="field-error" th:placeholder="#{placeholder.password}">
           <div class="field-error" th:errors="*{password}"></div>
           <p class="font-small blue-text d-flex justify-content-end">
-            <a href="#" class="blue-text ml-1" th:text="#{login.info.forgot}"></a>
+            <a th:href="@{/pwInquiry}" class="blue-text ml-1" th:text="#{login.info.forgot}"></a>
           </p>
         </div>
-        <div class="text-center mb-3 py-3">
-          <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{login.header}">Login</button>
+        <div class="row">
+          <div class="col text-center mb-3 py-3">
+            <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{button.cancel}">Cancel</button>
+          </div>
+          <div class="col text-center mb-3 py-3">
+            <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{login.header}">Login</button>
+          </div>
         </div>
       </form>
 

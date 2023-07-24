@@ -1,11 +1,8 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDTO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
-import com.theokanning.openai.OpenAiHttpException;
-import com.theokanning.openai.image.CreateImageRequest;
-import com.theokanning.openai.service.OpenAiService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,7 @@ public class ImageServiceImpl implements ImageService {
     private final OpenAiClientService openAiClientService;
 
     @Override
-    public void save(Long userId, ImageDTO imageRequestForm, String imageURL) {
+    public void save(Long userId, ImageDto imageRequestForm, String imageURL) {
         Image image = Image.builder()
                 .ownerId(userId)
                 .prompt(imageRequestForm.getPrompt())
@@ -34,7 +31,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String requestImageToOpenAI(ImageDTO imageRequestForm) {
+    public String requestImageToOpenAI(ImageDto imageRequestForm) {
         return openAiClientService.requestImage(imageRequestForm);
     }
 

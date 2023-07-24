@@ -1,6 +1,6 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageDTO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageServiceImpl;
 import com.aimage.domain.user.entity.User;
 
@@ -21,14 +21,14 @@ public class ImageController {
 
     @GetMapping("/generate")
     public String generateForm(@SessionAttribute(required = false) User loginUser,
-                               @ModelAttribute ImageDTO imageDTO) {
+                               @ModelAttribute ImageDto imageDTO) {
 
         return "features/generator";
     }
 
     @PostMapping("/generate")
     public String generate(@SessionAttribute(required = false) User loginUser,
-                           @Validated @ModelAttribute ImageDTO imageDTO,
+                           @Validated @ModelAttribute ImageDto imageDTO,
                            BindingResult bindingResult,
                            Model model) {
 

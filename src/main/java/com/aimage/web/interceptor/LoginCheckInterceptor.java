@@ -1,6 +1,6 @@
 package com.aimage.web.interceptor;
 
-import com.aimage.web.SessionConstant;
+import com.aimage.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -15,7 +15,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         HttpSession session = request.getSession();
 
-        if (session == null || session.getAttribute(SessionConstant.LOGIN_USER) == null) {
+        if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null) {
             log.info("Unauthorized user request = {}", session);
             response.sendRedirect("/?redirectURL=" + requestURI);
             return false;

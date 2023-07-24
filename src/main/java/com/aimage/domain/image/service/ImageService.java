@@ -1,12 +1,12 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDTO;
+import com.aimage.domain.image.dto.ImageDto;
 
 
 public interface ImageService {
 
-    void save(Long userId, ImageDTO imageDTO, String imageURL);
+    void save(Long userId, ImageDto imageDTO, String imageURL);
 
-    String requestImageToOpenAI(ImageDTO imageDTO);
+    String requestImageToOpenAI(ImageDto imageDTO);
 
 }

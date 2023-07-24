@@ -41,4 +41,9 @@ public class DbUserRepository implements UserRepository {
     public List<User> findAll() {
         return userMapper.findAll();
     }
+
+    @Override
+    public void updatePassword(Long id, String newPassword) {
+        userMapper.update(id, newPassword);
+    }
 }
