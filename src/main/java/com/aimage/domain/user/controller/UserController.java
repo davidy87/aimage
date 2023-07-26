@@ -27,7 +27,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String signupForm(@ModelAttribute UserDto.Signup signupDto) {
-        return "login/signup-screen";
+        return "user/signup-screen";
     }
 
     @PostMapping("/signup")
@@ -35,7 +35,7 @@ public class UserController {
                          BindingResult bindingResult) {
 
         if (invalidSignup(signupDto, bindingResult)) {
-            return "login/signup-screen";
+            return "user/signup-screen";
         }
 
         return "redirect:/";
@@ -63,7 +63,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute UserDto.Login loginDto) {
-        return "login/login-screen";
+        return "user/login-screen";
     }
 
     @PostMapping("/login")
@@ -74,7 +74,7 @@ public class UserController {
         User loginUser = userService.login(loginDto.getEmail(), loginDto.getPassword());
 
         if (invalidLogin(loginUser, bindingResult)) {
-            return "login/login-screen";
+            return "user/login-screen";
         }
 
         HttpSession session = request.getSession();
@@ -112,7 +112,7 @@ public class UserController {
 
     @GetMapping("/pwInquiry")
     public String findPasswordForm(@ModelAttribute UserDto.PwInquiry pwInquiry) {
-        return "login/pwInquiry";
+        return "user/pwInquiry";
     }
 
     @PostMapping("/pwInquiry")
@@ -124,7 +124,7 @@ public class UserController {
 
         if (userFound == null) {
             bindingResult.reject("login.pwInquiry.failed");
-            return "login/pwInquiry";
+            return "user/pwInquiry";
         }
 
         HttpSession session = request.getSession();
@@ -135,7 +135,7 @@ public class UserController {
 
     @GetMapping("/pwInquiry/updatePw")
     public String updatePwForm(@ModelAttribute UserDto.UpdatePassword updatePassword) {
-        return "login/updatePw";
+        return "user/updatePw";
     }
 
     @RequestMapping("/pwInquiry/updatePw")
@@ -152,13 +152,18 @@ public class UserController {
 
             if (!updateOk) {
                 bindingResult.reject("signup.confirmPassword");
-                return "login/updatePw";
+                return "user/updatePw";
             }
 
             session.invalidate();
         }
 
         return "redirect:/login";
+    }
+
+    @GetMapping("/userInfo")
+    public String userInfo() {
+        return "user/userInfo";
     }
 
 }

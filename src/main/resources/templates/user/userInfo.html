@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head :: head}">
+  <title>User Information | AImage</title>
+</head>
+
+<body style="background-color: #eee;">
+  <header>
+    <div th:insert="~{fragment/navbar :: navbar}"></div>
+  </header>
+
+  <section style="padding-top: 12%; padding-left: 20%; padding-right: 20%;">
+    <div class="container px-5">
+      <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+        <div class="profile-tab-nav border-right">
+          <div class="nav flex-column nav-pills nav-fill" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="account-tab" data-bs-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+              Info
+            </a>
+            <a class="nav-link" id="password-tab" data-bs-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+              Password
+            </a>
+            <a class="nav-link" id="delete-tab" data-bs-toggle="pill" href="#delete" role="tab" aria-controls="password" aria-selected="false">
+              More
+            </a>
+          </div>
+        </div>
+
+        <div class="tab-content p-4 p-md-5" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <h3 class="mb-5">Account Settings</h3>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>First Name</label>
+                  <input type="text" class="form-control" id="nameInput" value="David" disabled>
+                </div>
+              </div>
+            </div>
+
+            <div class="row py-4">
+              <div class="col">
+                <label>Email</label>
+                <input type="text" class="form-control" id="emailInput" value="david@gmail.com" disabled>
+              </div>
+            </div>
+
+            <div class="py-4" id="editDiv">
+              <button class="btn btn-primary" id="editBtn">Edit</button>
+            </div>
+
+            <div class="py-4" id="updateDiv" style="display: none;">
+              <button class="btn btn-primary" id="updateBtn">Update</button>
+              <button class="btn btn-light" id="cancelBtn">Cancel</button>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+            <h3 class="mb-5">Update Password</h3>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label>Current password</label>
+                  <input type="password" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row py-4">
+              <div class="col">
+                <div class="form-group">
+                  <label>New password</label>
+                  <input type="password" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="row pb-4">
+              <div class="col">
+                <div class="form-group">
+                  <label>Confirm password</label>
+                  <input type="password" class="form-control">
+                </div>
+              </div>
+            </div>
+
+            <div class="py-4">
+              <button class="btn btn-primary">Update</button>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+            <h3 class="text-danger mb-5">Delete Account</h3>
+            <div>
+              <p class="text-sm text-muted">
+                Once you delete your account, there is no going back. Please be certain.
+              </p>
+            </div>
+            <div class="ms-auto">
+              <button type="button" class="btn btn-sm btn-danger">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script th:src="@{/js/accountSettings.js}"></script>
+</body>
+</html>
