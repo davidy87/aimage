@@ -43,7 +43,17 @@ public class DbUserRepository implements UserRepository {
     }
 
     @Override
+    public void updateUsername(Long id, String newUsername) {
+        userMapper.updateUsername(id, newUsername);
+    }
+
+    @Override
     public void updatePassword(Long id, String newPassword) {
-        userMapper.update(id, newPassword);
+        userMapper.updatePassword(id, newPassword);
+    }
+
+    @Override
+    public void delete(Long id) {
+        userMapper.delete(id);
     }
 }

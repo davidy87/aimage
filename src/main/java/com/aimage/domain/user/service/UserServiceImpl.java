@@ -3,12 +3,15 @@ package com.aimage.domain.user.service;
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
+import com.aimage.web.exception.AimageUserException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -45,16 +48,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean updatePassword(User userToResetPw, UserDto.UpdatePassword updatePassword) {
+    public boolean updateUsername(User userToUpdate, UserDto.UpdateUsername updateUsername) {
+        String oldUsername = userToUpdate.getUsername();
+        String newUsername = updateUsername.getUsername();
+
+        if (oldUsername.equals(newUsername)) {
+            throw new AimageUserException("닉네임이 이전과 같습니다.");
+        }
+
+        userRepository.updateUsername(userToUpdate.getId(), newUsername);
+
+        return true;
+    }
+
+    @Override
+    public boolean updatePassword(User userToUpdate, UserDto.UpdatePassword updatePassword) {
         String password = updatePassword.getPassword();
         String confirmPassword = updatePassword.getConfirmPassword();
 
         if (password.equals(confirmPassword)) {
-            userRepository.updatePassword(userToResetPw.getId(), password);
+            userRepository.updatePassword(userToUpdate.getId(), password);
             return true;
         }
 
         return false;
+    }
+
+    public void deleteAccount(User user) {
+        if (user == null || userRepository.findById(user.getId()).orElse(null) == null) {
+            throw new AimageUserException("이미 존재하지 않는 사용자 입니다.");
+        }
+
+        userRepository.delete(user.getId());
     }
 
 }

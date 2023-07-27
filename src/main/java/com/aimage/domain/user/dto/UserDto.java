@@ -54,6 +54,18 @@ public class UserDto {
     @Getter
     @ToString
     @AllArgsConstructor
+    public static class UpdateUsername {
+
+        @NotBlank(message = "{notEmpty}")
+        private String username;
+
+        public UpdateUsername() {
+        }
+    }
+
+    @Getter
+    @ToString
+    @AllArgsConstructor
     public static class UpdatePassword {
 
         @NotBlank(message = "{notEmpty}")
@@ -63,5 +75,7 @@ public class UserDto {
         @NotBlank(message = "{notEmpty}")
         private String confirmPassword;
     }
+
+
 
 }

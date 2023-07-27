@@ -11,5 +11,7 @@ public interface UserService {
 
     User findUserToResetPw(String email);
 
-    boolean updatePassword(User userToResetPw, UserDto.UpdatePassword updatePassword);
+    boolean updateUsername(User userToUpdate, UserDto.UpdateUsername updateUsername);
+
+    boolean updatePassword(User userToUpdate, UserDto.UpdatePassword updatePassword);
 }

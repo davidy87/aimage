@@ -30,9 +30,21 @@
         from member
     </select>
 
-    <update id="update">
+    <update id="updateUsername">
+        update member
+        set username = #{newUsername}
+        where id = #{id}
+    </update>
+
+    <update id="updatePassword">
         update member
         set password = #{newPassword}
         where id = #{id}
     </update>
+
+    <delete id="delete">
+        delete
+        from member
+        where id = #{id}
+    </delete>
 </mapper>

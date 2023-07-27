@@ -16,5 +16,8 @@ public interface UserRepository {
     Optional<User> findByEmail(String email);
     List<User> findAll();
 
+    void updateUsername(Long id, String newUsername);
     void updatePassword(Long id, String newPassword);
+
+    void delete(Long id);
 }

@@ -4,19 +4,18 @@ import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserServiceImpl;
 import com.aimage.web.SessionConst;
+import com.aimage.web.exception.AimageUserException;
+import com.aimage.web.exception.ErrorResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -162,8 +161,55 @@ public class UserController {
     }
 
     @GetMapping("/userInfo")
-    public String userInfo() {
+    public String userInfo(@SessionAttribute(required = false) User loginUser) {
         return "user/userInfo";
+    }
+
+    @ResponseBody
+    @PostMapping("/userInfo/editUser")
+    public ResponseEntity<ErrorResult> updateUsername(@SessionAttribute(required = false) User loginUser,
+                                                      @Validated @RequestBody UserDto.UpdateUsername updateUsername,
+                                                      HttpServletRequest request) {
+
+        log.info("updateUsername = {}", updateUsername.getUsername());
+        boolean updateSucceeded = userService.updateUsername(loginUser, updateUsername);
+
+        HttpSession session = request.getSession(false);
+
+        if (session != null)
+            session.setAttribute(SessionConst.LOGIN_USER, userService.login(loginUser.getEmail(), loginUser.getPassword()));
+
+        return new ResponseEntity<>(new ErrorResult(updateUsername.getUsername(), "닉네임 변경이 완료되었습니다."), HttpStatus.OK);
+    }
+
+
+    @ResponseBody
+    @PostMapping("/userInfo/editPw")
+    public ResponseEntity<ErrorResult> updatePassword(@SessionAttribute(required = false) User loginUser,
+                                                      @Validated @RequestBody UserDto.UpdatePassword updatePassword,
+                                                      BindingResult bindingResult) {
+
+        boolean updateSucceeded = userService.updatePassword(loginUser, updatePassword);
+
+        if (!updateSucceeded) {
+            log.info("Field errors = {}", bindingResult.getFieldError("password").getDefaultMessage());
+            throw new AimageUserException("비밀번호 변경 실패");
+        }
+
+        return new ResponseEntity<>(new ErrorResult("ok", "비밀번호 변경이 완료되었습니다."), HttpStatus.OK);
+    }
+
+    @PostMapping("/userInfo/delete")
+    public String deleteAccount(@SessionAttribute(required = false) User loginUser,
+                                HttpServletRequest request) {
+
+        userService.deleteAccount(loginUser);
+        HttpSession session = request.getSession(false);
+
+        if (session != null)
+            session.invalidate();
+
+        return "redirect:/";
     }
 
 }

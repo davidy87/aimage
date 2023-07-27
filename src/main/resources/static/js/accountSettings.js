@@ -6,10 +6,7 @@ var updateBtn = document.getElementById("updateBtn");
 var cancelBtn = document.getElementById("cancelBtn");
 
 var nameInput = document.getElementById("nameInput");
-var emailInput = document.getElementById("emailInput");
-
 var nameInputValue = nameInput.value;
-var emailInputValue = emailInput.value;
 
 editBtn.onclick = function () {
     if (updateDiv.style.display == "none") {
@@ -21,7 +18,6 @@ editBtn.onclick = function () {
     }
 
     nameInput.disabled = false;
-    emailInput.disabled = false;
 };
 
 updateBtn.onclick = function () {
@@ -33,11 +29,33 @@ updateBtn.onclick = function () {
         editDiv.style.display = "block";
     }
 
-    nameInputValue = nameInput.value;
-    emailInputValue = emailInput.value;
-
+//    nameInputValue = document.getElementById("nameInput").value;
     nameInput.disabled = true;
-    emailInput.disabled = true;
+
+    var username = document.getElementById("nameInput").value;
+
+    var reqJson = new Object();
+    reqJson.username = username;
+
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200 || xhr.status === 302) {
+                var result = xhr.response;
+                alert(result.message);
+                document.getElementById("dropdownMenuButton").innerText = result.code;
+            } else {
+                var result = xhr.response;
+                document.getElementById("nameUpdateError").innerText = result.message;
+            }
+        }
+    };
+
+    xhr.open('POST', '/userInfo/editUser', true);
+    xhr.responseType = "json";
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(reqJson));
 };
 
 cancelBtn.onclick = function () {
@@ -50,8 +68,39 @@ cancelBtn.onclick = function () {
     }
 
     nameInput.value = nameInputValue;
-    emailInput.value = emailInputValue;
-
     nameInput.disabled = true;
-    emailInput.disabled = true;
 };
+
+window.onload = function() {
+	document.getElementById("pwUpdateBtn").addEventListener('click', () => {
+		var password = document.getElementById("passwordInput").value;
+		var confirmPassword = document.getElementById("confirmPasswordInput").value;
+
+		var reqJson = new Object();
+		reqJson.password = password;
+		reqJson.confirmPassword = confirmPassword;
+
+		var xhr = new XMLHttpRequest();
+
+	    xhr.onreadystatechange = () => {
+		    if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200 || xhr.status === 302) {
+                    var result = xhr.response;
+                    alert(result.message);
+                } else {
+                    var result = xhr.response;
+                    alert(JSON.stringify(result));
+                    document.getElementById("pwUpdateError").innerText = "비밀번호 변경 오류 테스트";
+                }
+
+                document.getElementById("passwordInput").value = null;
+                document.getElementById("confirmPasswordInput").value = null;
+			}
+        };
+
+        xhr.open('POST', '/userInfo/editPw', true);
+        xhr.responseType = "json";
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify(reqJson));
+	});
+}
