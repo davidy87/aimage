@@ -5,8 +5,8 @@ import com.aimage.domain.image.dto.ImageDto;
 
 public interface ImageService {
 
-    void save(Long userId, ImageDto imageDTO, String imageURL);
+    void save(Long userId, ImageDto.ImageRequest imageDTO, String imageURL);
 
-    String requestImageToOpenAI(ImageDto imageDTO);
+    String requestImageToOpenAI(ImageDto.ImageRequest imageRequest);
 
 }

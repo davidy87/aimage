@@ -14,7 +14,7 @@ class OpenAiWebClientServiceTest {
 
     @Test
     void get() {
-        ImageDto imageDTO = new ImageDto("Spring Framework", ImageSizeConst.SMALL);
+        ImageDto.ImageRequest imageDTO = new ImageDto.ImageRequest("Spring Framework", ImageSizeConst.SMALL);
         webClientService.requestImage(imageDTO);
     }
 }

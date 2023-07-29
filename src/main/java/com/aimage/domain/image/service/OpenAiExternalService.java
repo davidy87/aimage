@@ -20,7 +20,7 @@ public class OpenAiExternalService implements OpenAiClientService {
      * @throws OpenAiHttpException (RuntimeException) if there is any problem with API request
      */
     @Override
-    public String requestImage(ImageDto imageForm) throws OpenAiHttpException {
+    public String requestImage(ImageDto.ImageRequest imageForm) throws OpenAiHttpException {
         OpenAiService service = new OpenAiService(OPENAI_KEY);
         CreateImageRequest createImageRequest = CreateImageRequest.builder()
                 .prompt(imageForm.getPrompt())

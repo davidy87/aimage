@@ -19,11 +19,11 @@ public class ImageServiceImpl implements ImageService {
     private final OpenAiClientService openAiClientService;
 
     @Override
-    public void save(Long userId, ImageDto imageRequestForm, String imageURL) {
+    public void save(Long userId, ImageDto.ImageRequest imageRequest, String imageURL) {
         Image image = Image.builder()
                 .ownerId(userId)
-                .prompt(imageRequestForm.getPrompt())
-                .size(imageRequestForm.getSize())
+                .prompt(imageRequest.getPrompt())
+                .size(imageRequest.getSize())
                 .url(imageURL)
                 .build();
 
@@ -31,8 +31,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public String requestImageToOpenAI(ImageDto imageRequestForm) {
-        return openAiClientService.requestImage(imageRequestForm);
+    public String requestImageToOpenAI(ImageDto.ImageRequest imageRequest) {
+        return openAiClientService.requestImage(imageRequest);
     }
 
 }

@@ -23,7 +23,4 @@ public class Image {
 
     private String url;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

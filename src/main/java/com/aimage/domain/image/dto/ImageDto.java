@@ -4,19 +4,35 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.ToString;
 
-@Getter
-@ToString
+import java.util.List;
+
+
 public class ImageDto {
 
-    @NotBlank(message = "{notEmpty}")
-    private String prompt;
+    @Getter
+    @ToString
+    public static class ImageRequest {
 
-    @NotBlank(message = "{image.size.notEmpty}")
-    private String size;
+        @NotBlank(message = "{notEmpty}")
+        private String prompt;
 
-    public ImageDto(String prompt, String size) {
-        this.prompt = prompt;
-        this.size = size;
+        @NotBlank(message = "{image.size.notEmpty}")
+        private String size;
+
+        // 테스트용
+        public ImageRequest(String prompt, String size) {
+            this.prompt = prompt;
+            this.size = size;
+        }
+    }
+
+    @Getter
+    @ToString
+    public static class ImageResponse {
+
+        private List<ImageResponse> data;
+        private String url;
+
     }
 
 }

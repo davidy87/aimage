@@ -21,14 +21,14 @@ public class ImageController {
 
     @GetMapping("/generate")
     public String generateForm(@SessionAttribute(required = false) User loginUser,
-                               @ModelAttribute ImageDto imageDTO) {
+                               @ModelAttribute ImageDto.ImageRequest imageRequest) {
 
         return "features/generator";
     }
 
     @PostMapping("/generate")
     public String generate(@SessionAttribute(required = false) User loginUser,
-                           @Validated @ModelAttribute ImageDto imageDTO,
+                           @Validated @ModelAttribute ImageDto.ImageRequest imageRequest,
                            BindingResult bindingResult,
                            Model model) {
 
@@ -36,11 +36,11 @@ public class ImageController {
             return "features/generator";
         }
 
-        String imageURL = imageService.requestImageToOpenAI(imageDTO);
-        imageService.save(loginUser.getId(), imageDTO, imageURL);
+        String imageURL = imageService.requestImageToOpenAI(imageRequest);
+        imageService.save(loginUser.getId(), imageRequest, imageURL);
         model.addAttribute("imageURL", imageURL);
 
-        log.info("Image generated: {}", imageDTO);
+        log.info("Image generated: {}", imageRequest);
 
         return "features/result";
     }

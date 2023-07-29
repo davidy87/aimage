@@ -76,6 +76,4 @@ public class UserDto {
         private String confirmPassword;
     }
 
-
-
 }

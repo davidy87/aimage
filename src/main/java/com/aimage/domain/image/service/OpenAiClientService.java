@@ -6,5 +6,5 @@ import com.aimage.domain.image.dto.ImageDto;
 
 public interface OpenAiClientService {
 
-    public String requestImage(ImageDto imageRequestForm);
+    public String requestImage(ImageDto.ImageRequest imageRequestForm);
 }
