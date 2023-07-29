@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head :: head}">
+  <title>Online AI Image Generator - AImage</title>
+</head>
+<body>
+
+  <header>
+    <div th:insert="~{fragment/navbar :: navbar}"></div>
+  </header>
+
+  <!-- Carousel wrapper -->
+  <div
+          id="carouselMultiItemExample"
+          class="carousel slide carousel-dark text-center"
+          data-mdb-ride="carousel"
+          style="padding: 10%;"
+  >
+    <div class="text-center pb-5">
+      <h1 th:text="#{myGallery.header}">My Gallery</h1>
+    </div>
+
+    <!-- Inner -->
+    <div class="carousel-inner py-4">
+      <!-- Single item -->
+      <div class="carousel-item active">
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <div class="card">
+                <img
+                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/181.webp"
+                        class="card-img-top"
+                        alt="Waterfall"
+                />
+                <div class="card-body">
+                  <p class="card-text">
+                    이미지 설명
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card">
+                <img
+                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/182.webp"
+                        class="card-img-top"
+                        alt="Sunset Over the Sea"
+                />
+                <div class="card-body">
+                  <p class="card-text">
+                    이미지 설명
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card">
+                <img
+                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/183.webp"
+                        class="card-img-top"
+                        alt="Sunset over the Sea"
+                />
+                <div class="card-body">
+                  <p class="card-text">
+                    이미지 설명
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col">
+              <div class="card">
+                <img
+                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/182.webp"
+                        class="card-img-top"
+                        alt="Sunset Over the Sea"
+                />
+                <div class="card-body">
+                  <p class="card-text">
+                    이미지 설명
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Inner -->
+
+  </div>
+  <!-- Carousel wrapper -->
+</body>
+</html>

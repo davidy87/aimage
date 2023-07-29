@@ -36,4 +36,9 @@ public class DbImageRepository implements ImageRepository {
     public List<Image> findAllBySize(String size) {
         return imageMapper.findAllBySize(size);
     }
+
+    @Override
+    public List<Image> findAllByUserId(Long userId) {
+        return imageMapper.findAllByUserId(userId);
+    }
 }

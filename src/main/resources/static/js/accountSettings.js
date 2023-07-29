@@ -87,10 +87,14 @@ window.onload = function() {
                 if (xhr.status === 200 || xhr.status === 302) {
                     var result = xhr.response;
                     alert(result.message);
+                    document.getElementById("pwError").style.display = "none";
+                    document.getElementById("confirmPwError").style.display = "none";
                 } else {
                     var result = xhr.response;
-                    alert(JSON.stringify(result));
-                    document.getElementById("pwUpdateError").innerText = "비밀번호 변경 오류 테스트";
+//                    alert(JSON.stringify(result));
+                    document.getElementById(result.code).style.display = "block";
+                    document.getElementById(result.code).innerText = result.message;
+//                    document.getElementById("pwUpdateError").innerText = result.message;
                 }
 
                 document.getElementById("passwordInput").value = null;

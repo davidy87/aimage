@@ -1,5 +1,6 @@
 package com.aimage.domain.user.controller;
 
+import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserServiceImpl;
@@ -8,14 +9,18 @@ import com.aimage.web.exception.AimageUserException;
 import com.aimage.web.exception.ErrorResult;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -186,15 +191,14 @@ public class UserController {
     @ResponseBody
     @PostMapping("/userInfo/editPw")
     public ResponseEntity<ErrorResult> updatePassword(@SessionAttribute(required = false) User loginUser,
-                                                      @Validated @RequestBody UserDto.UpdatePassword updatePassword,
-                                                      BindingResult bindingResult) {
+                                                      @Valid @RequestBody UserDto.UpdatePassword updatePassword) {
 
         boolean updateSucceeded = userService.updatePassword(loginUser, updatePassword);
 
-        if (!updateSucceeded) {
-            log.info("Field errors = {}", bindingResult.getFieldError("password").getDefaultMessage());
-            throw new AimageUserException("비밀번호 변경 실패");
-        }
+//        if (!updateSucceeded) {
+//            log.info("Field errors = {}", bindingResult.getFieldError("password").getDefaultMessage());
+//            throw new AimageUserException("비밀번호 변경 실패");
+//        }
 
         return new ResponseEntity<>(new ErrorResult("ok", "비밀번호 변경이 완료되었습니다."), HttpStatus.OK);
     }
@@ -212,4 +216,12 @@ public class UserController {
         return "redirect:/";
     }
 
+
+    @GetMapping("/myGallery")
+    public String myGallery(@SessionAttribute(required = false) User loginUser, Model model) {
+        List<Image> savedImages = userService.findSavedImages(loginUser.getId());
+        model.addAttribute("savedImages", savedImages);
+
+        return "user/myGallery";
+    }
 }

@@ -29,23 +29,23 @@
 
         <div class="tab-content p-5 p-md-5 w-100" id="v-pills-tabContent">
           <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
-            <h3 class="mb-5">Account Information</h3>
+            <h3 class="mb-5" th:text="#{header.accountInfo}">Account Information</h3>
 
             <p class="field-error" id="nameUpdateError"></p>
             <div class="row">
               <div class="col">
-                <label>Username</label>
+                <label th:text="#{label.username}">Username</label>
                 <input type="text" class="form-control" id="nameInput" th:value="${session.loginUser.username}" disabled>
               </div>
 
               <div class="col-6">
                 <div class="py-4" id="editDiv">
-                  <button class="btn btn-primary" id="editBtn">Edit</button>
+                  <button class="btn btn-primary" id="editBtn" th:text="#{button.edit}">Edit</button>
                 </div>
 
                 <div class="py-4" id="updateDiv" style="display: none;">
-                  <button class="btn btn-primary" id="updateBtn">Update</button>
-                  <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                  <button class="btn btn-primary" id="updateBtn" th:text="#{button.update}">Update</button>
+                  <button class="btn btn-secondary" id="cancelBtn" th:text="#{button.cancel}">Cancel</button>
                 </div>
               </div>
 
@@ -53,14 +53,14 @@
 
             <div class="row py-4">
               <div class="col-6">
-                <label>Email</label>
+                <label th:text="#{label.email}">Email</label>
                 <input type="text" class="form-control" id="emailInput" th:value="${session.loginUser.email}" disabled>
               </div>
             </div>
           </div>
 
           <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-            <h3 class="mb-5">Update Password</h3>
+            <h3 class="mb-5" th:text="#{header.updatePw}">Update Password</h3>
 <!--            <div class="row">-->
 <!--              <div class="col">-->
 <!--                <div class="form-group">-->
@@ -77,26 +77,28 @@
               <p class="field-error" id="pwUpdateError"></p>
               <div class="row">
                 <div class="col-6">
-                  <label>New password</label>
+                  <label th:text="#{placeholder.newPassword}">New password</label>
                   <input type="password" class="form-control" id="passwordInput" th:placeholder="#{placeholder.password}">
+                  <p class="field-error" id="pwError" style="display: none;"></p>
                 </div>
               </div>
               <div class="row py-4">
                 <div class="col-6">
-                  <label>Confirm password</label>
+                  <label th:text="#{placeholder.confirmPassword}">Confirm password</label>
                   <input type="password" class="form-control" id="confirmPasswordInput" th:placeholder="#{placeholder.confirmPassword}">
+                  <p class="field-error" id="confirmPwError" style="display: none;"></p>
                 </div>
               </div>
               <div class="py-4">
-                <button type="button" class="btn btn-primary" id="pwUpdateBtn">Update</button>
+                <button type="button" class="btn btn-primary" id="pwUpdateBtn" th:text="#{button.update}">Update</button>
               </div>
 <!--            </form>-->
           </div>
 
           <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
-            <h3 class="text-danger mb-5">Delete Account</h3>
+            <h3 class="text-danger mb-5" th:text="#{header.deleteAccount}">Delete Account</h3>
             <div>
-              <p class="text-sm text-muted">
+              <p class="text-sm text-muted" th:text="#{warning.deleteAccount1}">
                 Once you delete your account, there is no going back. Please be certain.
               </p>
             </div>
@@ -104,7 +106,7 @@
             <form th:action="@{/userInfo/delete}" method="post">
 <!--              <input type="hidden" name="_method" value="delete"/>-->
               <div class="ms-auto">
-                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete</button>
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</button>
               </div>
 
               <!-- Modal -->
@@ -112,15 +114,15 @@
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Warning</h1>
+                      <h1 class="modal-title fs-5" id="deleteModalLabel" th:text="#{warning}">Warning</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" th:text="#{warning.deleteAccount2}">
                       Are you sure you want to delete your account? Again, there is no going back once you delete it.
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-danger">Delete</button>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Cancel</button>
+                      <button type="submit" class="btn btn-danger" th:text="#{button.delete}">Delete</button>
                     </div>
                   </div>
                 </div>

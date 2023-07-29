@@ -14,4 +14,5 @@ public interface ImageMapper {
     Optional<Image> findById(Long id);
     List<Image> findAll();
     List<Image> findAllBySize(String size);
+    List<Image> findAllByUserId(Long userId);
 }

@@ -1,5 +1,7 @@
 package com.aimage.domain.user.service;
 
+import com.aimage.domain.image.entity.Image;
+import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
@@ -9,13 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ImageRepository imageRepository;
 
     @Override
     public User join(UserDto.Signup signupDto) {
@@ -80,6 +85,10 @@ public class UserServiceImpl implements UserService {
         }
 
         userRepository.delete(user.getId());
+    }
+
+    public List<Image> findSavedImages(Long userId) {
+        return imageRepository.findAllByUserId(userId);
     }
 
 }

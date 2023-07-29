@@ -23,4 +23,10 @@
         from image
         where image_size = #{size}
     </select>
+
+    <select id="findAllByUserId" resultType="Image">
+        select id, owner_id, prompt, image_size, url
+        from image
+        where owner_id = #{userId}
+    </select>
 </mapper>

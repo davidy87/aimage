@@ -121,4 +121,47 @@ class DbImageRepositoryTest {
         assertThat(imagesFound.size()).isEqualTo(2);
         assertThat(imagesFound).contains(image1, image3);
     }
+
+    @Test
+    void findAllByUserId() {
+        // Given
+        User anotherOwner = User.builder()
+                .username("anotherOwner")
+                .email("imageOwner@gmail.con")
+                .password("testpass!")
+                .build();
+
+        userRepository.save(this.imageOwner);
+
+        Image image1 = Image.builder()
+                .ownerId(this.imageOwner.getId())
+                .prompt("Test image 1")
+                .size(SMALL)
+                .url("Image1.png")
+                .build();
+
+        Image image2 = Image.builder()
+                .ownerId(this.imageOwner.getId())
+                .prompt("Test image 2")
+                .size(LARGE)
+                .url("Image2.png")
+                .build();
+
+        Image image3 = Image.builder()
+                .ownerId(anotherOwner.getId())
+                .prompt("Test image 3")
+                .size(SMALL)
+                .url("Image3.png")
+                .build();
+
+        // When
+        imageRepository.save(image1);
+        imageRepository.save(image2);
+        imageRepository.save(image3);
+
+        // Then
+        List<Image> imagesFound = imageRepository.findAllByUserId(this.imageOwner.getId());
+        assertThat(imagesFound.size()).isEqualTo(2);
+        assertThat(imagesFound).contains(image1, image2);
+    }
 }
