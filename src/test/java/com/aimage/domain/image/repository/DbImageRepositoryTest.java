@@ -164,4 +164,23 @@ class DbImageRepositoryTest {
         assertThat(imagesFound.size()).isEqualTo(2);
         assertThat(imagesFound).contains(image1, image2);
     }
+
+    @Test
+    void delete() {
+        // Given
+        Image image = Image.builder()
+                .ownerId(this.imageOwner.getId())
+                .prompt("Test image")
+                .size(SMALL)
+                .url("Image.png")
+                .build();
+
+        Image savedImage = imageRepository.save(image);
+
+        // When
+        imageRepository.delete(savedImage.getId());
+
+        // Then
+        assertThat(imageRepository.findById(savedImage.getId())).isEmpty();
+    }
 }

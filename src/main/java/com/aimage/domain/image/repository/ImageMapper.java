@@ -10,9 +10,15 @@ import java.util.Optional;
 @Mapper
 public interface ImageMapper {
 
+    // Create
     void save(Image image);
+
+    // Read
     Optional<Image> findById(Long id);
     List<Image> findAll();
     List<Image> findAllBySize(String size);
     List<Image> findAllByUserId(Long userId);
+
+    // Delete
+    void delete(Long id);
 }

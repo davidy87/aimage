@@ -41,4 +41,9 @@ public class DbImageRepository implements ImageRepository {
     public List<Image> findAllByUserId(Long userId) {
         return imageMapper.findAllByUserId(userId);
     }
+
+    @Override
+    public void delete(Long id) {
+        imageMapper.delete(id);
+    }
 }

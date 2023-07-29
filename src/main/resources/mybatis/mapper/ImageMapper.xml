@@ -29,4 +29,10 @@
         from image
         where owner_id = #{userId}
     </select>
+
+    <select id="delete">
+        delete
+        from image
+        where id = #{id}
+    </select>
 </mapper>

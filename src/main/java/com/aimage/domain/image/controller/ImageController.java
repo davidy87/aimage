@@ -44,4 +44,5 @@ public class ImageController {
 
         return "features/result";
     }
+
 }

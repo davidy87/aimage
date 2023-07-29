@@ -6,9 +6,13 @@ import com.aimage.domain.image.repository.ImageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
@@ -16,7 +20,7 @@ public class ImageServiceImpl implements ImageService {
     private final OpenAiClientService openAiClientService;
 
     @Override
-    public void save(Long userId, ImageDto.ImageRequest imageRequest, String imageURL) {
+    public Image save(Long userId, ImageDto.ImageRequest imageRequest, String imageURL) {
         Image image = Image.builder()
                 .ownerId(userId)
                 .prompt(imageRequest.getPrompt())
@@ -24,7 +28,7 @@ public class ImageServiceImpl implements ImageService {
                 .url(imageURL)
                 .build();
 
-        imageRepository.save(image);
+        return imageRepository.save(image);
     }
 
     @Override
@@ -32,4 +36,13 @@ public class ImageServiceImpl implements ImageService {
         return openAiClientService.requestImage(imageRequest);
     }
 
+    @Override
+    public void delete(Long imageId) {
+        imageRepository.delete(imageId);
+    }
+
+    // 테스트용
+    public Optional<Image> findImageById(Long id) {
+        return imageRepository.findById(id);
+    }
 }
