@@ -11,9 +11,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
 
-    @Value("${openai-key}")
-    private String OPENAI_KEY;
-
     private final ImageRepository imageRepository;
 
     private final OpenAiClientService openAiClientService;
