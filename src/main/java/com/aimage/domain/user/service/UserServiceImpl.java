@@ -91,4 +91,8 @@ public class UserServiceImpl implements UserService {
         return imageRepository.findAllByUserId(userId);
     }
 
+    public void deleteImage(Long imageId) {
+        imageRepository.delete(imageId);
+    }
+
 }
