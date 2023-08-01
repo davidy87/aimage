@@ -5,7 +5,6 @@ import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,10 +34,10 @@ class ImageServiceImplTest {
                 "test@email.com",
                 "testpass",
                 "testpass");
-        User user = userService.join(signup);
+        Long userId = userService.join(signup);
 
         ImageDto.ImageRequest imageRequest = new ImageDto.ImageRequest("Spring", "256x256");
-        Image savedImage = imageService.save(user.getId(), imageRequest, "image.png");
+        Image savedImage = imageService.save(userId, imageRequest, "image.png");
 
         // When
         imageService.delete(savedImage.getId());
