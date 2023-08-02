@@ -38,38 +38,6 @@ public class UserController {
         return "user/login-screen";
     }
 
-    @PostMapping("/login")
-    public String login(@Validated @ModelAttribute UserDto.Login loginDto,
-                        BindingResult bindingResult,
-                        HttpServletRequest request) {
-
-        User loginUser = userService.login(loginDto.getEmail(), loginDto.getPassword());
-
-        if (invalidLogin(loginUser, bindingResult)) {
-            return "user/login-screen";
-        }
-
-        HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-
-        log.info("Login user = {}", loginUser);
-        return "redirect:/";
-    }
-
-    /**
-     * 로그인 실패 여부 확인
-     */
-    private boolean invalidLogin(User loginUser, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return true;
-        } else if (loginUser == null) {
-            bindingResult.reject("login.fail");
-            return true;
-        }
-
-        return false;
-    }
-
     @PostMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);

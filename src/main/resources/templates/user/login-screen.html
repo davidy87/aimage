@@ -11,18 +11,14 @@
     </div>
 
     <div class="container">
-      <form action="/" th:action th:object="${login}" method="post">
-        <div th:if="${#fields.hasGlobalErrors()}">
-          <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
-        </div>
+      <form>
+        <div class="field-error pb-3" id="login.fail" style="display: none;"></div>
 
         <div class="md-form mb-4">
-          <input type="email" class="form-control form-control-lg" th:field="*{email}" th:errorclass="field-error" th:placeholder="#{placeholder.email}">
-          <div class="field-error" th:errors="*{email}"></div>
+          <input type="email" class="form-control form-control-lg" id="email" th:placeholder="#{placeholder.email}">
         </div>
         <div class="md-form mb-4">
-          <input type="password" class="form-control form-control-lg" th:field="*{password}" th:errorclass="field-error" th:placeholder="#{placeholder.password}">
-          <div class="field-error" th:errors="*{password}"></div>
+          <input type="password" class="form-control form-control-lg" id="password" th:placeholder="#{placeholder.password}">
           <p class="font-small blue-text d-flex justify-content-end">
             <a th:href="@{/pwInquiry}" class="blue-text ml-1" th:text="#{login.info.forgot}"></a>
           </p>
@@ -32,7 +28,7 @@
             <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{button.cancel}">Cancel</button>
           </div>
           <div class="col text-center mb-3 py-3">
-            <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{login.header}">Login</button>
+            <button type="button" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" onclick="onLogin()" th:text="#{login.header}">Login</button>
           </div>
         </div>
       </form>
@@ -52,7 +48,7 @@
         <a th:href="@{/signup}" class="blue-text ml-1" th:text="#{signup.header}">Sign Up</a>
       </p>
     </div>
-
   </div>
+  <script th:src="@{/js/login.js}"></script>
 </body>
 </html>

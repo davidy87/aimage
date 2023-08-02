@@ -36,6 +36,8 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler
     public ResponseEntity aimageUserExceptionHandler(AimageUserException e) {
+        log.info("In aimageUserExceptionHandler");
+
         List<ErrorResponse> errorResponseList = new ArrayList<>();
         errorResponseList.add(new ErrorResponse(e.getField(), e.getMessage()));
 

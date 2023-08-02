@@ -34,11 +34,11 @@ public class UserDto {
     @AllArgsConstructor
     public static class Login {
 
-        @NotBlank(message = "{notEmpty}")
-        @Email
+//        @NotBlank(message = "{notEmpty}")
+//        @Email
         private String email;
 
-        @NotBlank(message = "{notEmpty}")
+//        @NotBlank(message = "{notEmpty}")
         private String password;
     }
 

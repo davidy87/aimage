@@ -42,7 +42,9 @@ public class UserService {
     public User login(String email, String password) {
         return userRepository.findByEmail(email)
                 .filter(m -> m.getPassword().equals(password))
-                .orElse(null);
+                .orElseThrow(() ->
+                        new AimageUserException("login.fail", "이메일 또는 비밀번호를 잘못 입력했습니다.")
+                );
     }
 
     public User findUserToResetPw(String email) {
