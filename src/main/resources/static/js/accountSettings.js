@@ -44,7 +44,7 @@ updateBtn.onclick = function () {
             if (xhr.status === 200 || xhr.status === 302) {
                 var result = xhr.response;
                 alert(result.message);
-                document.getElementById("dropdownMenuButton").innerText = result.code;
+                document.getElementById("dropdownMenuButton").innerText = result.field;
             } else {
                 var result = xhr.response;
                 document.getElementById("nameUpdateError").innerText = result.message;

@@ -5,6 +5,7 @@ import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
+import com.aimage.domain.user.vo.UserVO;
 import com.aimage.web.exception.AimageUserException;
 import com.aimage.web.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
-    public Long join(UserDto.Signup signupDto) {
+    public UserVO join(UserDto.Signup signupDto) {
         // 비밀번호 재입력 일치 확인
         if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
             throw new AimageUserException("confirmPassword", "비밀번호를 다시 확인해주세요.");
@@ -36,24 +37,37 @@ public class UserService {
                 .build();
 
         userRepository.save(user);
-        return user.getId();
+
+        return new UserVO(user.getId(), user.getUsername(), user.getEmail());
     }
 
-    public User login(String email, String password) {
-        return userRepository.findByEmail(email)
+    public UserVO login(String email, String password) {
+        User loginUser = userRepository.findByEmail(email)
                 .filter(m -> m.getPassword().equals(password))
                 .orElseThrow(() ->
-                        new AimageUserException("login.fail", "이메일 또는 비밀번호를 잘못 입력했습니다.")
+                        new AimageUserException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다.")
                 );
+
+        return new UserVO(loginUser.getId(), loginUser.getUsername(), loginUser.getEmail());
     }
 
-    public User findUserToResetPw(String email) {
-        User userFound = userRepository.findByEmail(email).orElse(null);
+    public UserVO findUserToResetPw(String email) {
+        User userFound = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                    new AimageUserException("pwInquiry", "계정을 찾을 수 없습니다.")
+                );
+
         log.info("User found = {}", userFound);
-        return userFound;
+        return new UserVO(userFound.getId(), userFound.getUsername(), userFound.getEmail());
     }
 
-    public boolean updateUsername(User userToUpdate, UserDto.UpdateUsername updateUsername) {
+    /**
+     *
+     * @param userToUpdate 닉네임을 변경할 사용자 VO (id, oldUsername)
+     * @param updateUsername 새로운 닉네임
+     * @return 변경된 닉네임
+     */
+    public String updateUsername(UserVO userToUpdate, UserDto.UpdateUsername updateUsername) {
         String oldUsername = userToUpdate.getUsername();
         String newUsername = updateUsername.getUsername();
 
@@ -63,22 +77,29 @@ public class UserService {
 
         userRepository.updateUsername(userToUpdate.getId(), newUsername);
 
-        return true;
+        return newUsername;
     }
 
-    public boolean updatePassword(User userToUpdate, UserDto.UpdatePassword updatePassword) {
+    public UserVO updatePassword(Long userId, UserDto.UpdatePassword updatePassword) {
         String password = updatePassword.getPassword();
         String confirmPassword = updatePassword.getConfirmPassword();
 
-        if (password.equals(confirmPassword)) {
-            userRepository.updatePassword(userToUpdate.getId(), password);
-            return true;
+        User userToResetPw = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new AimageUserException("pwInquiry", "계정을 찾을 수 없습니다.")
+                );
+
+
+        if (!password.equals(confirmPassword)) {
+            throw new AimageUserException("confirmPassword", "비밀번호를 다시 확인해주세요.");
         }
 
-        return false;
+        userRepository.updatePassword(userId, password);
+
+        return new UserVO(userId, userToResetPw.getUsername(), userToResetPw.getEmail());
     }
 
-    public void deleteAccount(User user) {
+    public void deleteAccount(UserVO user) {
         if (user == null || userRepository.findById(user.getId()).orElse(null) == null) {
             throw new AimageUserException("이미 존재하지 않는 사용자 입니다.");
         }

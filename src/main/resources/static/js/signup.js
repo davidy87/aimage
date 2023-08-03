@@ -27,7 +27,7 @@ function onSignup() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('POST', '/api/user/signup', true);
+    xhr.open('POST', '/api/users/signup', true);
     xhr.responseType = "json";
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(reqJson));

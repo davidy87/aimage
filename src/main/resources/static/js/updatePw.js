@@ -1,11 +1,13 @@
-function onLogin() {
+var userId = document.getElementById("id").innerText;
+
+function onUpdatePw() {
     var reqJson = new Object();
-    reqJson.email = document.getElementById("email").value;
     reqJson.password = document.getElementById("password").value;
+    reqJson.confirmPassword = document.getElementById("confirmPassword").value;
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('POST', '/api/users/login', true);
+    xhr.open('PUT', "/api/users/" + userId + "/newPw", true);
     xhr.responseType = "json";
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(reqJson));
@@ -14,14 +16,15 @@ function onLogin() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var result = xhr.response;
-                alert("로그인이 완료되었습니다.");
-                location.assign("/");
+                alert("비밀번호 변경이 완료되었습니다.");
+                location.replace("/");
             } else {
                 var errors = xhr.response;
 
                 errors.forEach((error, i) => {
-                    document.getElementById(error.field).style.display = "block";
-                    document.getElementById(error.field).innerHTML = error.message;
+                    var fieldError = error.field + "Error"
+                    document.getElementById(fieldError).style.display = "block";
+                    document.getElementById(fieldError).innerHTML = error.message;
                 });
             }
         }

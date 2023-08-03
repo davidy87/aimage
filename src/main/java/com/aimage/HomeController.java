@@ -1,6 +1,7 @@
 package com.aimage;
 
 import com.aimage.domain.user.entity.User;
+import com.aimage.domain.user.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class HomeController {
 
     @GetMapping("/")
-    public String home(@SessionAttribute(name = "loginUser", required = false) User loginUser, Model model) {
+    public String home(@SessionAttribute(name = "loginUser", required = false) UserVO loginUser, Model model) {
         if (loginUser != null) {
             model.addAttribute("user", loginUser);
         }
