@@ -43,7 +43,7 @@ public class UserService {
 
     public UserVO login(String email, String password) {
         User loginUser = userRepository.findByEmail(email)
-                .filter(m -> m.getPassword().equals(password))
+                .filter(user -> user.getPassword().equals(password))
                 .orElseThrow(() ->
                         new AimageUserException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다.")
                 );
@@ -63,21 +63,22 @@ public class UserService {
 
     /**
      *
-     * @param userToUpdate 닉네임을 변경할 사용자 VO (id, oldUsername)
+     * @param id 닉네임을 변경할 사용자 VO (id, oldUsername)
      * @param updateUsername 새로운 닉네임
      * @return 변경된 닉네임
      */
-    public String updateUsername(UserVO userToUpdate, UserDto.UpdateUsername updateUsername) {
-        String oldUsername = userToUpdate.getUsername();
+    public UserVO updateUsername(Long id, UserDto.UpdateUsername updateUsername) {
         String newUsername = updateUsername.getUsername();
 
-        if (oldUsername.equals(newUsername)) {
-            throw new AimageUserException("닉네임이 이전과 같습니다.");
-        }
+        User userToUpdate = userRepository.findById(id)
+                .filter(user -> !user.getUsername().equals(newUsername))
+                .orElseThrow(() ->
+                        new AimageUserException("usernameUpdate", "닉네임이 이전과 같습니다.")
+                );
 
-        userRepository.updateUsername(userToUpdate.getId(), newUsername);
+        userRepository.updateUsername(id, newUsername);
 
-        return newUsername;
+        return new UserVO(id, newUsername, userToUpdate.getEmail());
     }
 
     public UserVO updatePassword(Long userId, UserDto.UpdatePassword updatePassword) {
@@ -99,12 +100,13 @@ public class UserService {
         return new UserVO(userId, userToResetPw.getUsername(), userToResetPw.getEmail());
     }
 
-    public void deleteAccount(UserVO user) {
-        if (user == null || userRepository.findById(user.getId()).orElse(null) == null) {
-            throw new AimageUserException("이미 존재하지 않는 사용자 입니다.");
-        }
+    public void deleteAccount(Long userId) {
+        userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new AimageUserException("이미 존재하지 않는 사용자 입니다.")
+                );
 
-        userRepository.delete(user.getId());
+        userRepository.delete(userId);
     }
 
     public List<Image> findSavedImages(Long userId) {

@@ -23,7 +23,7 @@ function onPwInquiry() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('POST', "/api/users/pwInquiry", true);
+    xhr.open('GET', "/api/users/pw-inquiry", true);
     xhr.responseType = "json";
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(reqJson));

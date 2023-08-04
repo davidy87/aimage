@@ -7,7 +7,7 @@ function onUpdatePw() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('PUT', "/api/users/" + userId + "/newPw", true);
+    xhr.open('PUT', "/api/users/" + userId + "/new-pw", true);
     xhr.responseType = "json";
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(reqJson));

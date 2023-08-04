@@ -34,7 +34,7 @@ class ImageServiceImplTest {
                 "test@email.com",
                 "testpass",
                 "testpass");
-        Long userId = userService.join(signup);
+        Long userId = userService.join(signup).getId();
 
         ImageDto.ImageRequest imageRequest = new ImageDto.ImageRequest("Spring", "256x256");
         Image savedImage = imageService.save(userId, imageRequest, "image.png");

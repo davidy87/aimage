@@ -11,6 +11,9 @@
   </header>
 
   <section style="padding-top: 12%; padding-left: 20%; padding-right: 20%;">
+
+    <div id="loginUserId" th:text="${session.loginUser.id}" style="display: none;"></div>
+
     <div class="container px-5">
       <div class="bg-white shadow rounded-lg d-block d-sm-flex">
         <div class="profile-tab-nav border-right">
@@ -31,7 +34,7 @@
           <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
             <h3 class="mb-5" th:text="#{header.accountInfo}">Account Information</h3>
 
-            <p class="field-error" id="nameUpdateError"></p>
+            <p class="field-error" id="usernameUpdateError" style="display: none;"></p>
             <div class="row">
               <div class="col">
                 <label th:text="#{label.username}">Username</label>
@@ -79,14 +82,14 @@
                 <div class="col-6">
                   <label th:text="#{placeholder.newPassword}">New password</label>
                   <input type="password" class="form-control" id="passwordInput" th:placeholder="#{placeholder.password}">
-                  <p class="field-error" id="pwError" style="display: none;"></p>
+                  <p class="field-error" id="passwordError" style="display: none;"></p>
                 </div>
               </div>
               <div class="row py-4">
                 <div class="col-6">
                   <label th:text="#{placeholder.confirmPassword}">Confirm password</label>
                   <input type="password" class="form-control" id="confirmPasswordInput" th:placeholder="#{placeholder.confirmPassword}">
-                  <p class="field-error" id="confirmPwError" style="display: none;"></p>
+                  <p class="field-error" id="confirmPasswordError" style="display: none;"></p>
                 </div>
               </div>
               <div class="py-4">
@@ -103,7 +106,7 @@
               </p>
             </div>
 
-            <form th:action="@{/userInfo/delete}" method="post">
+            <form>
 <!--              <input type="hidden" name="_method" value="delete"/>-->
               <div class="ms-auto">
                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</button>
@@ -122,19 +125,19 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Cancel</button>
-                      <button type="submit" class="btn btn-danger" th:text="#{button.delete}">Delete</button>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="onDeleteAccount()" th:text="#{button.delete}">Delete</button>
                     </div>
                   </div>
                 </div>
               </div>
-
-
             </form>
+
           </div>
         </div>
       </div>
     </div>
   </section>
   <script th:src="@{/js/accountSettings.js}"></script>
+  <script th:src="@{/js/deleteAccount.js}"></script>
 </body>
 </html>
