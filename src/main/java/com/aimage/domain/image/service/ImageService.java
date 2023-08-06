@@ -1,6 +1,5 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;

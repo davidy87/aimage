@@ -64,7 +64,6 @@ public class UserController {
     public String myGallery(@SessionAttribute(required = false) UserVO loginUser, Model model) {
         List<Image> savedImages = userService.findSavedImages(loginUser.getId());
         model.addAttribute("savedImages", savedImages);
-
         return "user/myGallery";
     }
 }

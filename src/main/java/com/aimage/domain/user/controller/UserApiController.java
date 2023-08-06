@@ -1,5 +1,6 @@
 package com.aimage.domain.user.controller;
 
+import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
@@ -21,6 +24,7 @@ import static com.aimage.domain.user.dto.UserDto.*;
 public class UserApiController {
 
     private final UserService userService;
+
 
     @PostMapping("")
     public ResponseEntity<UserVO> signup(@Validated @RequestBody Signup signupForm) {
@@ -91,5 +95,14 @@ public class UserApiController {
             session.invalidate();
 
         return ResponseEntity.status(HttpStatus.OK).body("success");
+    }
+
+    /**
+     * 사용자가 저장한 이미지 리스트
+     */
+    @GetMapping("/{id}/images")
+    public ResponseEntity getUserSavedImages(@PathVariable Long id) {
+        List<Image> savedImages = userService.findSavedImages(id);
+        return ResponseEntity.status(HttpStatus.OK).body(savedImages);
     }
 }

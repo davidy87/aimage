@@ -6,6 +6,16 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static com.aimage.domain.image.dto.ImageDto.*;
 
 @Slf4j
@@ -37,6 +47,7 @@ public class OpenAiWebClientService implements OpenAiClientService {
                 .get(0);
 
         log.info("Image url = {}", response.getUrl());
+
         return response.getUrl();
     }
 }

@@ -1,6 +1,5 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.service.ImageService;
 import com.aimage.domain.user.dto.UserVO;
@@ -27,6 +26,12 @@ public class ImageApiController {
 
         ImageVO savedImage = imageService.save(loginUser.getId(), imageResult);
         return ResponseEntity.status(HttpStatus.OK).body(savedImage);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteImage(@PathVariable Long id) {
+        imageService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 
 }

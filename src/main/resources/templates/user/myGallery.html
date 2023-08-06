@@ -20,72 +20,26 @@
       <h1 th:text="#{myGallery.header}">My Gallery</h1>
     </div>
 
+    <p id="loginUserId" th:text="${session.loginUser.id}" style="display: none;"></p>
+
     <!-- Inner -->
     <div class="carousel-inner py-4">
       <!-- Single item -->
       <div class="carousel-item active">
         <div class="container">
           <div class="row">
-            <div class="col">
-              <div class="card">
-                <img
-                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/181.webp"
-                        class="card-img-top"
-                        alt="Waterfall"
-                />
+            <div class="col" th:each="image : ${savedImages}">
+              <div class="card" id="imageCard">
+                <div id="imageId" th:text="${image.id}" style="display: none;"></div>
+                <a>
+                  <img th:src="${image.url}" class="card-img-top" />
+                </a>
                 <div class="card-body">
-                  <p class="card-text">
-                    이미지 설명
-                  </p>
+                  <p class="card-text" th:text="${image.prompt}"></p>
+                  <button type="button" class="btn btn-danger" onclick="onDeleteImage()" th:text="#{button.delete}"></button>
                 </div>
               </div>
             </div>
-
-            <div class="col">
-              <div class="card">
-                <img
-                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/182.webp"
-                        class="card-img-top"
-                        alt="Sunset Over the Sea"
-                />
-                <div class="card-body">
-                  <p class="card-text">
-                    이미지 설명
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card">
-                <img
-                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/183.webp"
-                        class="card-img-top"
-                        alt="Sunset over the Sea"
-                />
-                <div class="card-body">
-                  <p class="card-text">
-                    이미지 설명
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card">
-                <img
-                        src="https://mdbcdn.b-cdn.net/img/new/standard/nature/182.webp"
-                        class="card-img-top"
-                        alt="Sunset Over the Sea"
-                />
-                <div class="card-body">
-                  <p class="card-text">
-                    이미지 설명
-                  </p>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -93,6 +47,6 @@
     <!-- Inner -->
 
   </div>
-  <!-- Carousel wrapper -->
+<script th:src="@{/js/users/myGallery.js}"></script>
 </body>
 </html>
