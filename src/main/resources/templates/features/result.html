@@ -9,16 +9,17 @@
   </header>
   
   <div class="img-container center">
-    <h2 class="prompt center" th:text="${imageRequest.prompt}">Image Prompt</h2>
+    <h2 class="prompt center" id="prompt" th:text="${imageResult.prompt}">Image Prompt</h2>
 
-    <img class="img-result rounded center" th:src="${imageURL}">
+    <div id="size" th:text="${imageResult.size}" style="display: none;"></div>
+
+    <img class="img-result rounded center" id="url" th:src="${imageResult.url}">
 
     <div class="py-5">
-      <a th:href="${imageURL}" download="image.png" class="center">
-        <button class="btn btn-primary center" th:text="#{button.image.save}"><i class="fa fa-save"></i> 내 갤러리에 저장</button>
-      </a>
+      <button class="btn btn-primary center" onclick="onSaveImage()" th:text="#{button.image.save}"><i class="fa fa-save"></i>갤러리에 저장</button>
     </div>
   </div>
 
+<script th:src="@{/js/features/result.js}"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -17,7 +16,7 @@ public class OpenAiWebClientService implements OpenAiClientService {
     private String OPENAI_KEY;
 
     // https://platform.openai.com/docs/api-reference/images/create
-    public String requestImage(ImageDto.ImageRequest imageRequestForm) {
+    public String requestImage(ImageRequest imageRequestForm) {
         String url = "https://api.openai.com";
         String apiKey = OPENAI_KEY;
 
@@ -27,13 +26,13 @@ public class OpenAiWebClientService implements OpenAiClientService {
                 .build();
 
         // Expected: List<ImageDto.ImageResponse>
-        ImageDto.ImageResponse response = webClient.post()
+        OpenAiResponse response = webClient.post()
                 .uri("/v1/images/generations")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(imageRequestForm)
                 .retrieve()
-                .bodyToMono(ImageDto.ImageResponse.class)
-                .map(ImageDto.ImageResponse::getData)
+                .bodyToMono(OpenAiResponse.class)
+                .map(OpenAiResponse::getData)
                 .block()
                 .get(0);
 

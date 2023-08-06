@@ -2,18 +2,18 @@ package com.aimage.domain.user.service;
 
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
-import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.domain.user.vo.UserVO;
+import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.exception.AimageUserException;
-import com.aimage.web.exception.ErrorResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
 @Service
@@ -24,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
 
-    public UserVO join(UserDto.Signup signupDto) {
+    public UserVO join(Signup signupDto) {
         // 비밀번호 재입력 일치 확인
         if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
             throw new AimageUserException("confirmPassword", "비밀번호를 다시 확인해주세요.");
@@ -61,13 +61,7 @@ public class UserService {
         return new UserVO(userFound.getId(), userFound.getUsername(), userFound.getEmail());
     }
 
-    /**
-     *
-     * @param id 닉네임을 변경할 사용자 VO (id, oldUsername)
-     * @param updateUsername 새로운 닉네임
-     * @return 변경된 닉네임
-     */
-    public UserVO updateUsername(Long id, UserDto.UpdateUsername updateUsername) {
+    public UserVO updateUsername(Long id, UpdateUsername updateUsername) {
         String newUsername = updateUsername.getUsername();
 
         User userToUpdate = userRepository.findById(id)
@@ -81,7 +75,7 @@ public class UserService {
         return new UserVO(id, newUsername, userToUpdate.getEmail());
     }
 
-    public UserVO updatePassword(Long userId, UserDto.UpdatePassword updatePassword) {
+    public UserVO updatePassword(Long userId, UpdatePassword updatePassword) {
         String password = updatePassword.getPassword();
         String confirmPassword = updatePassword.getConfirmPassword();
 

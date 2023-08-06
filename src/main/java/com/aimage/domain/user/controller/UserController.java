@@ -1,9 +1,8 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.image.entity.Image;
-import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.service.UserService;
-import com.aimage.domain.user.vo.UserVO;
+import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;

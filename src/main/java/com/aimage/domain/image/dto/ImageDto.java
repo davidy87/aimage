@@ -2,6 +2,7 @@ package com.aimage.domain.image.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 import java.util.List;
@@ -28,11 +29,22 @@ public class ImageDto {
 
     @Getter
     @ToString
-    public static class ImageResponse {
+    public static class OpenAiResponse {
 
-        private List<ImageResponse> data;
+        private List<OpenAiResponse> data;
+
         private String url;
+    }
 
+    @Getter
+    @RequiredArgsConstructor
+    public static class ImageResult {
+
+        private final String prompt;
+
+        private final String size;
+
+        private final String url;
     }
 
 }

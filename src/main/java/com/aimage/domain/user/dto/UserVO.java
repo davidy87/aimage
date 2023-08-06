@@ -1,4 +1,4 @@
-package com.aimage.domain.user.vo;
+package com.aimage.domain.user.dto;
 
 import lombok.Getter;
 

@@ -23,7 +23,7 @@
             <div th:insert="~{user/loginSuggestModal :: copy}"></div>
           </div>
 
-          <a class="btn btn-primary" th:href="@{/generate}" th:if="${user != null}" th:utext="#{home.generateButton}"></a>
+          <a class="btn btn-primary" th:href="@{/generator}" th:if="${user != null}" th:utext="#{home.generateButton}"></a>
         </div>
         <div class="col-lg-6 py-5">
           <img th:src="@{/images/ai_image.jpeg}" alt="Image" class="img-fluid">

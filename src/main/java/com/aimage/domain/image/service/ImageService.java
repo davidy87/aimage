@@ -1,16 +1,50 @@
 package com.aimage.domain.image.service;
 
 import com.aimage.domain.image.dto.ImageDto;
+import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
+import com.aimage.domain.image.repository.ImageRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 
-public interface ImageService {
+import static com.aimage.domain.image.dto.ImageDto.*;
 
-    Image save(Long userId, ImageDto.ImageRequest imageRequest, String imageURL);
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class ImageService {
 
-    String requestImageToOpenAI(ImageDto.ImageRequest imageRequest);
+    private final ImageRepository imageRepository;
 
-    void delete(Long imageId);
+    private final OpenAiClientService openAiClientService;
 
+    public ImageVO save(Long userId, ImageResult imageResult) {
+        Image image = Image.builder()
+                .ownerId(userId)
+                .prompt(imageResult.getPrompt())
+                .size(imageResult.getSize())
+                .url(imageResult.getUrl())
+                .build();
 
+        imageRepository.save(image);
+
+        return new ImageVO(image.getId(), imageResult.getPrompt(), imageResult.getUrl());
+    }
+
+    public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
+        String imageUrl = openAiClientService.requestImage(imageRequest);
+        return new ImageResult(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
+    }
+
+    public void delete(Long imageId) {
+        imageRepository.delete(imageId);
+    }
+
+    // 테스트용
+    public Optional<Image> findImageById(Long id) {
+        return imageRepository.findById(id);
+    }
 }

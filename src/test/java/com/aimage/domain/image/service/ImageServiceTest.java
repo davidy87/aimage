@@ -1,9 +1,9 @@
 package com.aimage.domain.image.service;
 
 import com.aimage.domain.image.dto.ImageDto;
+import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.dto.UserDto;
-import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class ImageServiceImplTest {
+class ImageServiceTest {
 
     @Autowired
     ImageService imageService;
@@ -36,14 +36,15 @@ class ImageServiceImplTest {
                 "testpass");
         Long userId = userService.join(signup).getId();
 
-        ImageDto.ImageRequest imageRequest = new ImageDto.ImageRequest("Spring", "256x256");
-        Image savedImage = imageService.save(userId, imageRequest, "image.png");
+//        ImageDto.ImageRequest imageRequest = new ImageDto.ImageRequest("Spring", "256x256");
+        ImageDto.ImageResult imageResult = new ImageDto.ImageResult("Spring", "256x256", "image.png");
+        ImageVO savedImage = imageService.save(userId, imageResult);
 
         // When
-        imageService.delete(savedImage.getId());
+        imageService.delete(savedImage.id());
 
         // Then
-        Optional<Image> foundImage = ((ImageServiceImpl) imageService).findImageById(savedImage.getId());
+        Optional<Image> foundImage = imageService.findImageById(savedImage.id());
         assertThat(foundImage).isEmpty();
     }
 }
