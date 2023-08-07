@@ -30,6 +30,8 @@ dependencies {
 	implementation 'com.theokanning.openai-gpt3-java:service:+'
 	// WebFlux
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	// Springdoc (for Swagger)
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
 	// JdbcTemplate 추가
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'

@@ -4,6 +4,10 @@ import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +21,7 @@ import java.util.List;
 
 import static com.aimage.domain.user.dto.UserDto.*;
 
+@Tag(name = "User API", description = "회원 기능 API")
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +30,12 @@ public class UserApiController {
 
     private final UserService userService;
 
-
+    @Operation(summary = "회원가입", description = "사용자 회원가입")
+    @Parameters({
+            @Parameter(name = "id", description = "사용자 id"),
+            @Parameter(name = "username", description = "사용자 닉네임"),
+            @Parameter(name = "email", description = "사용자 email")
+    })
     @PostMapping("")
     public ResponseEntity<UserVO> signup(@Validated @RequestBody Signup signupForm) {
         UserVO signupUser = userService.join(signupForm);
