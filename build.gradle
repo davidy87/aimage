@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.asciidoctor.convert' version '1.5.8'
 }
 
 group = 'com'
@@ -21,6 +22,16 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('snippetsDir', file("build/generated-snippets"))
+}
+
+asciidoctor {
+	sourceDir 'src/doc/asciidoc'
+	attributes \
+      'snippets': file('build/snippets')
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,6 +43,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	// Springdoc (for Swagger)
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
+
+	// Spring REST Doc
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 
 	// JdbcTemplate 추가
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
@@ -50,4 +64,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	inputs.dir snippetsDir
+	dependsOn test
 }

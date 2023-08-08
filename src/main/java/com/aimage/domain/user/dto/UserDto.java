@@ -1,9 +1,7 @@
 package com.aimage.domain.user.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,21 +15,17 @@ public class UserDto {
     public static class Signup {
 
         @NotBlank(message = "{notEmpty}")
-        @Schema(example = "tester")
         private String username;
 
         @NotBlank(message = "{notEmpty}")
         @Email
-        @Schema(example = "test@gmail.com")
         private String email;
 
         @NotBlank(message = "{notEmpty}")
         @Size(min = 8, max = 16, message = "{signup.password.size}")
-        @Schema(example = "testpass!")
         private String password;
 
         @NotBlank(message = "{notEmpty}")
-        @Schema(example = "testpass!")
         private String confirmPassword;
     }
 
