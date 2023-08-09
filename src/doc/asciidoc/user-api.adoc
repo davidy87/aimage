@@ -1,4 +1,4 @@
-= User API 문서
+= User API
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -12,3 +12,43 @@ include::{snippets}/users/signup/http-request.adoc[]
 
 .Response
 include::{snippets}/users/signup/http-response.adoc[]
+
+== 로그인
+
+.Request
+include::{snippets}/users/login/http-request.adoc[]
+
+.Response
+include::{snippets}/users/login/http-response.adoc[]
+
+== 비밀번호 변경 전 사용자 확인
+
+.Request
+include::{snippets}/users/pw-inquiry/http-request.adoc[]
+
+.Response
+include::{snippets}/users/pw-inquiry/http-response.adoc[]
+
+== 닉네임 변경
+
+.Request
+include::{snippets}/users/new-username/http-request.adoc[]
+
+.Response
+include::{snippets}/users/new-username/http-response.adoc[]
+
+== 비밀번호 변경
+
+.Request
+include::{snippets}/users/new-pw/http-request.adoc[]
+
+.Response
+include::{snippets}/users/new-pw/http-response.adoc[]
+
+== 계정 삭제
+
+.Request
+include::{snippets}/users/delete-account/http-request.adoc[]
+
+.Response
+include::{snippets}/users/delete-account/http-response.adoc[]

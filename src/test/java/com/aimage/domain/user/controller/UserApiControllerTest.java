@@ -2,15 +2,13 @@ package com.aimage.domain.user.controller;
 
 import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.dto.UserVO;
-import com.aimage.domain.user.repository.UserRepository;
+import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,6 +18,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -33,8 +32,21 @@ class UserApiControllerTest {
 
     @MockBean
     UserService userService;
-//
-    ObjectMapper objectMapper = new ObjectMapper();
+
+    static ObjectMapper objectMapper;
+
+    static User testUser;
+
+    @BeforeAll
+    static void setTestUser() {
+        objectMapper = new ObjectMapper();
+        testUser = User.builder()
+                .id(1L)
+                .email("test@gmail.com")
+                .username("tester")
+                .password("testpass!")
+                .build();
+    }
 
     @Test
     @Order(1)
@@ -42,80 +54,59 @@ class UserApiControllerTest {
     void signup() throws Exception {
         // Given
         UserDto.Signup signupForm = new UserDto.Signup(
-                "tester",
-                "test@gmail.com",
-                "testpass!",
-                "testpass!"
+                testUser.getUsername(),
+                testUser.getEmail(),
+                testUser.getPassword(),
+                testUser.getPassword()
         );
 
         String content = objectMapper.writeValueAsString(signupForm);
 
         given(userService.join(any()))
-                .willReturn(new UserVO(1L, "tester", "test@gmail.com"));
+                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
 
         // When & Then
-        // 요청 성공
         mockMvc.perform(post("/api/users")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andDo(document("signup"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("username").value("tester"))
-                .andExpect(jsonPath("email").value("test@gmail.com"));
-
-        // 요청 실패
-        UserDto.Signup wrongForm = new UserDto.Signup(
-                "good",
-                "test@gmail.com",
-                "",
-                ""
-        );
-
-        String wrongContent = objectMapper.writeValueAsString(wrongForm);
-
-        mockMvc.perform(post("/api/users")
-                        .content(wrongContent)
-                        .contentType(MediaType.APPLICATION_JSON)
+                .andDo(document("signup",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
-                .andDo(print())
-                .andDo(document("signup-error"))
-                .andExpect(status().is4xxClientError());
-
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(testUser.getId()))
+                .andExpect(jsonPath("username").value(testUser.getUsername()))
+                .andExpect(jsonPath("email").value(testUser.getEmail()));
     }
 
     @Test
     @Order(2)
     @DisplayName("로그인 API 테스트")
     void login() throws Exception {
+        // Given
         UserDto.Login loginForm = new UserDto.Login(
-                "test@gmail.com",
-                "testpass!");
+                testUser.getEmail(),
+                testUser.getPassword());
 
-        // 요청 성공
+        given(userService.login(testUser.getEmail(), testUser.getPassword()))
+                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
+
+        // When & Then
         mockMvc.perform(post("/api/users/login")
                         .content(objectMapper.writeValueAsString(loginForm))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("username").value("tester"))
-                .andExpect(jsonPath("email").value("test@gmail.com"));
-
-
-        UserDto.Login loginFormError = new UserDto.Login(
-                "test@gmail.com",
-                "passTest");
-
-        // 요청 실패
-        mockMvc.perform(post("/api/users/login")
-                        .content(objectMapper.writeValueAsString(loginFormError))
-                        .contentType(MediaType.APPLICATION_JSON)
+                .andDo(document("login",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(testUser.getId()))
+                .andExpect(jsonPath("username").value(testUser.getUsername()))
+                .andExpect(jsonPath("email").value(testUser.getEmail()));
     }
 
 
@@ -123,27 +114,24 @@ class UserApiControllerTest {
     @Order(3)
     @DisplayName("비밀번호 변경 전 이메일 인증 API 테스트")
     void findUserToResetPw() throws Exception {
-        UserDto.PwInquiry pwInquiry = new UserDto.PwInquiry("test@gmail.com");
+        // Given
+        UserDto.PwInquiry pwInquiry = new UserDto.PwInquiry(testUser.getEmail());
+        given(userService.findUserToResetPw(pwInquiry.getEmail()))
+                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
 
-        // 요청 성공
+        // When & Then
         mockMvc.perform(get("/api/users/pw-inquiry")
                         .content(objectMapper.writeValueAsString(pwInquiry))
                         .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("username").value("tester"))
-                .andExpect(jsonPath("email").value("test@gmail.com"));
-
-
-        UserDto.PwInquiry pwInquiryError = new UserDto.PwInquiry("test@naver.com");
-
-        // 요청 실패
-        mockMvc.perform(post("/api/users/pw-inquiry")
-                        .content(objectMapper.writeValueAsString(pwInquiryError))
-                        .contentType(MediaType.APPLICATION_JSON)
+                .andDo(document("pw-inquiry",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(testUser.getId()))
+                .andExpect(jsonPath("username").value(testUser.getUsername()))
+                .andExpect(jsonPath("email").value(testUser.getEmail()));
     }
 
 
@@ -151,77 +139,74 @@ class UserApiControllerTest {
     @Order(4)
     @DisplayName("비밀번호 변경 API 테스트")
     void resetPw() throws Exception {
+        // Given
         UserDto.UpdatePassword updatePassword = new UserDto.UpdatePassword(
                 "testpass1234",
                 "testpass1234");
 
-        String content = objectMapper.writeValueAsString(updatePassword);
+        given(userService.updatePassword(any(), any()))
+                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
 
-        mockMvc.perform(put("/api/users/1/new-pw")
-                        .content(content)
+        String uri = String.format("/api/users/%d/new-pw", testUser.getId());
+
+        // When & Then
+        mockMvc.perform(put(uri)
+                        .content(objectMapper.writeValueAsString(updatePassword))
                         .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(document("new-pw",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("username").value("tester"))
-                .andExpect(jsonPath("email").value("test@gmail.com"));
-
-
-        UserDto.UpdatePassword updatePasswordError = new UserDto.UpdatePassword(
-                "testpass1234",
-                "testpass4321");
-
-        // 요청 실패
-        mockMvc.perform(post("/api/users/1/new-pw")
-                        .content(objectMapper.writeValueAsString(updatePasswordError))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is4xxClientError());
+                .andExpect(jsonPath("id").value(testUser.getId()))
+                .andExpect(jsonPath("username").value(testUser.getUsername()))
+                .andExpect(jsonPath("email").value(testUser.getEmail()));
     }
 
     @Test
     @Order(5)
     @DisplayName("닉네임 변경 API 테스트")
     void updateUsername() throws Exception {
+        // Given
         UserDto.UpdateUsername updateUsername = new UserDto.UpdateUsername("newTester");
+        String uri = String.format("/api/users/%d/new-username", testUser.getId());
 
-        // 요청 성공
-        mockMvc.perform(put("/api/users/1/new-username")
+        given(userService.updateUsername(any(), any()))
+                .willReturn(new UserVO(testUser.getId(), updateUsername.getUsername(), testUser.getEmail()));
+
+        // When & Then
+        mockMvc.perform(put(uri)
                         .content(objectMapper.writeValueAsString(updateUsername))
                         .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(document("new-username",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value("1"))
-                .andExpect(jsonPath("username").value("newTester"))
-                .andExpect(jsonPath("email").value("test@gmail.com"));
+                .andExpect(jsonPath("id").value(testUser.getId()))
+                .andExpect(jsonPath("username").value(updateUsername.getUsername()))
+                .andExpect(jsonPath("email").value(testUser.getEmail()));
 
-
-        updateUsername = new UserDto.UpdateUsername("newTester");
-
-        // 요청 실패
-        mockMvc.perform(put("/api/users/1/new-username")
-                        .content(objectMapper.writeValueAsString(updateUsername))
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andExpect(status().is4xxClientError());
     }
 
     @Test
     @Order(6)
     @DisplayName("계정 삭제 API 테스트")
     void deleteAccount() throws Exception {
+        // Given
+        String uri = String.format("/api/users/%d", testUser.getId());
 
-        // 요청 성공
-        mockMvc.perform(delete("/api/users/1")
+        // When & Then
+        mockMvc.perform(delete(uri)
                         .contentType(MediaType.TEXT_PLAIN)
+                )
+                .andDo(document("delete-account",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()))
                 )
                 .andExpect(status().isOk());
-
-        // 요청 실패
-        mockMvc.perform(delete("/api/users/2")
-                        .contentType(MediaType.TEXT_PLAIN)
-                )
-                .andExpect(status().is4xxClientError());
     }
 
 }

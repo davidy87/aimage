@@ -15,7 +15,7 @@ function onDeleteImage() {
                     document.getElementById("imageCard").remove();
                     alert("이미지가 삭제되었습니다.");
                 } else {
-                    var errors = xhr.response;
+                    var errors = xhr.response.errors;
 
                     errors.forEach((error, i) => {
                         var fieldError = error.field + "Error"

@@ -19,7 +19,7 @@ function onSaveImage() {
                     alert("이미지를 저장했습니다. 갤러리를 확인해 주세요.");
                     location.replace("/generator");
                 } else {
-                    var errors = xhr.response;
+                    var errors = xhr.response.errors;
 
                     errors.forEach((error, i) => {
                         var fieldError = error.field + "Error"
