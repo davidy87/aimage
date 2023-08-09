@@ -34,7 +34,7 @@ function onPwInquiry() {
                 var result = xhr.response;
                 location.replace("/pwInquiry/" + result.id + "/newPw");
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     var fieldError = error.field + "Error"

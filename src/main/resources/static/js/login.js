@@ -17,7 +17,7 @@ function onLogin() {
                 alert("로그인이 완료되었습니다.");
                 location.assign("/");
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     document.getElementById(error.field).style.display = "block";

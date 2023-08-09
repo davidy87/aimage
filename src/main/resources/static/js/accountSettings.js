@@ -57,7 +57,7 @@ updateBtn.onclick = function () {
                 alert("닉네임 변경이 완료되었습니다.");
                 document.getElementById("dropdownMenuButton").innerText = result.username;
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     var fieldError = error.field + "Error"
@@ -106,7 +106,7 @@ window.onload = function() {
                     document.getElementById("passwordError").style.display = "none";
                     document.getElementById("confirmPasswordError").style.display = "none";
                 } else {
-                    var errors = xhr.response;
+                    var errors = xhr.response.errors;
 
                     errors.forEach((error, i) => {
                         var fieldError = error.field + "Error"

@@ -13,7 +13,7 @@ function onDeleteAccount() {
                 alert("계정 삭제가 완료되었습니다.");
                 location.assign("/");
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     alert(error.message);

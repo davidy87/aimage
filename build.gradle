@@ -24,13 +24,20 @@ repositories {
 }
 
 ext {
-	set('snippetsDir', file("build/snippets"))
+	set('snippetsDir', file("build/generated-snippets"))
 }
 
 asciidoctor {
 	sourceDir 'src/doc/asciidoc'
 	attributes \
-      'snippets': file('build/snippets')
+      'snippets': file('build/generated-snippets')
+}
+
+bootJar {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
 }
 
 dependencies {

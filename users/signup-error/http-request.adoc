@@ -1,0 +1,9 @@
+[source,http,options="nowrap"]
+----
+POST /api/users HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Content-Length: 79
+Host: localhost:8080
+
+{"username":"good","email":"test@gmail.com","password":"","confirmPassword":""}
+----

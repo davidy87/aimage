@@ -39,7 +39,7 @@ function onSignup() {
                 alert("회원가입이 완료되었습니다.");
                 window.location.replace('/');
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     var fieldError = error.field + "Error";

@@ -4,6 +4,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,7 +14,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @ControllerAdvice
@@ -24,9 +28,10 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity methodValidException(MethodArgumentNotValidException e, HttpServletRequest request){
-        List<ErrorResponse> errorResponseList = makeErrorResult(e.getBindingResult());
+        Map<String, List<ErrorResponse>> errorResponse = new HashMap<>();
+        errorResponse.put("errors", makeErrorResult(e.getBindingResult()));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseList);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     /**
@@ -41,7 +46,10 @@ public class ExceptionController {
         List<ErrorResponse> errorResponseList = new ArrayList<>();
         errorResponseList.add(new ErrorResponse(e.getField(), e.getMessage()));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponseList);
+        Map<String, List<ErrorResponse>> response = new HashMap<>();
+        response.put("errors", errorResponseList);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 

@@ -19,7 +19,7 @@ function onUpdatePw() {
                 alert("비밀번호 변경이 완료되었습니다.");
                 location.replace("/");
             } else {
-                var errors = xhr.response;
+                var errors = xhr.response.errors;
 
                 errors.forEach((error, i) => {
                     var fieldError = error.field + "Error"
