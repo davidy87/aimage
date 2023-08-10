@@ -10,8 +10,9 @@
 == Overview
 
 === 공통 에러 응답
+
 ----
-HTTP/1.1 200 OK
+HTTP/1.1 400 Bad Request
 Content-Type: text/plain;charset=UTF-8
 Content-Length:
 
@@ -25,71 +26,38 @@ Content-Length:
 }
 ----
 
+
 == User APIs
 
 === 회원가입
+operation::users/signup[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/users/signup/http-request.adoc[]
-
-.Response
-include::{snippets}/users/signup/http-response.adoc[]
 
 === 로그인
+operation::users/login[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/users/login/http-request.adoc[]
-
-.Response
-include::{snippets}/users/login/http-response.adoc[]
 
 === 비밀번호 변경 전 사용자 확인
+operation::users/pw-inquiry[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/users/pw-inquiry/http-request.adoc[]
-
-.Response
-include::{snippets}/users/pw-inquiry/http-response.adoc[]
 
 === 닉네임 변경
+operation::users/new-username[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/users/new-username/http-request.adoc[]
-
-.Response
-include::{snippets}/users/new-username/http-response.adoc[]
 
 === 비밀번호 변경
+operation::users/new-pw[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/users/new-pw/http-request.adoc[]
-
-.Response
-include::{snippets}/users/new-pw/http-response.adoc[]
 
 === 계정 삭제
-
-.Request
-include::{snippets}/users/delete-account/http-request.adoc[]
-
-.Response
-include::{snippets}/users/delete-account/http-response.adoc[]
+operation::users/delete-account[snippets='http-request,http-response']
 
 
 == Image APIs
 
 === 이미지 저장
+operation::images/new-image[snippets='request-fields,http-request,response-fields,http-response']
 
-.Request
-include::{snippets}/images/new-image/http-request.adoc[]
-
-.Response
-include::{snippets}/images/new-image/http-response.adoc[]
 
 === 단일 이미지 삭제
-
-.Request
-include::{snippets}/images/delete-image/http-request.adoc[]
-
-.Response
-include::{snippets}/images/delete-image/http-response.adoc[]
+operation::images/delete-image[snippets='http-request,http-response']

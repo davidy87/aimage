@@ -11,12 +11,15 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -33,13 +36,13 @@ class UserApiControllerTest {
     @MockBean
     UserService userService;
 
-    static ObjectMapper objectMapper;
+    @Autowired
+    ObjectMapper objectMapper;
 
     static User testUser;
 
     @BeforeAll
     static void setTestUser() {
-        objectMapper = new ObjectMapper();
         testUser = User.builder()
                 .id(1L)
                 .email("test@gmail.com")
@@ -73,12 +76,24 @@ class UserApiControllerTest {
                 .andDo(print())
                 .andDo(document("signup",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()))
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                                fieldWithPath("confirmPassword").type(JsonFieldType.STRING).description("비밀번호 확인")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
                 .andExpect(jsonPath("username").value(testUser.getUsername()))
                 .andExpect(jsonPath("email").value(testUser.getEmail()));
+
     }
 
     @Test
@@ -101,7 +116,16 @@ class UserApiControllerTest {
                 .andDo(print())
                 .andDo(document("login",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()))
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
@@ -126,7 +150,15 @@ class UserApiControllerTest {
                 )
                 .andDo(document("pw-inquiry",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()))
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
@@ -156,7 +188,16 @@ class UserApiControllerTest {
                 )
                 .andDo(document("new-pw",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()))
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                                fieldWithPath("confirmPassword").type(JsonFieldType.STRING).description("비밀번호 확인")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
@@ -182,7 +223,15 @@ class UserApiControllerTest {
                 )
                 .andDo(document("new-username",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()))
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("새로운 닉네임")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 id"),
+                                fieldWithPath("username").type(JsonFieldType.STRING).description("새로운 닉네임"),
+                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+                        ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
