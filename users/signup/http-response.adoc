@@ -1,8 +1,0 @@
-[source,http,options="nowrap"]
-----
-HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 53
-
-{"id":1,"username":"tester","email":"test@gmail.com"}
-----

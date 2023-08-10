@@ -1,4 +1,0 @@
-[source,json,options="nowrap"]
-----
-{"username":"good","email":"test@gmail.com","password":"","confirmPassword":""}
-----
