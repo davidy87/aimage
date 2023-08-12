@@ -58,10 +58,11 @@ dependencies {
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
-	// JdbcTemplate 추가
-	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	// MyBatis 추가
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:+'
+	// JPA, Spring JPA 추가
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
 	// H2 데이터베이스 추가
 	runtimeOnly 'com.h2database:h2'
 	// MySQL 추가

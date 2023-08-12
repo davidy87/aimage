@@ -39,7 +39,7 @@ public class ImageService {
     }
 
     public void delete(Long imageId) {
-        imageRepository.delete(imageId);
+        imageRepository.deleteById(imageId);
     }
 
     // 테스트용

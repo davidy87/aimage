@@ -22,6 +22,7 @@ import static com.aimage.domain.user.dto.UserDto.*;
 public class UserService {
 
     private final UserRepository userRepository;
+
     private final ImageRepository imageRepository;
 
     public UserVO join(Signup signupDto) {
@@ -63,7 +64,6 @@ public class UserService {
 
     public UserVO updateUsername(Long id, UpdateUsername updateUsername) {
         String newUsername = updateUsername.getUsername();
-
         User userToUpdate = userRepository.findById(id)
                 .filter(user -> !user.getUsername().equals(newUsername))
                 .orElseThrow(() ->
@@ -84,7 +84,6 @@ public class UserService {
                         new AimageUserException("pwInquiry", "계정을 찾을 수 없습니다.")
                 );
 
-
         if (!password.equals(confirmPassword)) {
             throw new AimageUserException("confirmPassword", "비밀번호를 다시 확인해주세요.");
         }
@@ -100,15 +99,15 @@ public class UserService {
                         new AimageUserException("이미 존재하지 않는 사용자 입니다.")
                 );
 
-        userRepository.delete(userId);
+        userRepository.deleteById(userId);
     }
 
     public List<Image> findSavedImages(Long userId) {
-        return imageRepository.findAllByUserId(userId);
+        return imageRepository.findAllByOwnerId(userId);
     }
 
     public void deleteImage(Long imageId) {
-        imageRepository.delete(imageId);
+        imageRepository.deleteById(imageId);
     }
 
 }

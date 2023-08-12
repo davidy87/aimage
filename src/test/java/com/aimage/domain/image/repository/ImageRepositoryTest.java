@@ -1,26 +1,22 @@
 package com.aimage.domain.image.repository;
 
 import com.aimage.domain.image.entity.Image;
-import com.aimage.domain.image.entity.ImageSizeConst;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.aimage.domain.image.entity.ImageSizeConst.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class DbImageRepositoryTest {
+class ImageRepositoryTest {
 
     @Autowired
     ImageRepository imageRepository;
@@ -160,7 +156,7 @@ class DbImageRepositoryTest {
         imageRepository.save(image3);
 
         // Then
-        List<Image> imagesFound = imageRepository.findAllByUserId(this.imageOwner.getId());
+        List<Image> imagesFound = imageRepository.findAllByOwnerId(this.imageOwner.getId());
         assertThat(imagesFound.size()).isEqualTo(2);
         assertThat(imagesFound).contains(image1, image2);
     }
@@ -178,7 +174,7 @@ class DbImageRepositoryTest {
         Image savedImage = imageRepository.save(image);
 
         // When
-        imageRepository.delete(savedImage.getId());
+        imageRepository.deleteById(savedImage.getId());
 
         // Then
         assertThat(imageRepository.findById(savedImage.getId())).isEmpty();

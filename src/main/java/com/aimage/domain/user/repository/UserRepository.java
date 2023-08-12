@@ -1,25 +1,27 @@
 package com.aimage.domain.user.repository;
 
 import com.aimage.domain.user.entity.User;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
 import java.util.Optional;
 
-public interface UserRepository {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    User save(User user);
+    Optional<User> findByUsername(String username);
 
-    Optional<User> findById(Long id);
-    Optional<User> findByName(String username);
     Optional<User> findByEmail(String email);
-    List<User> findAll();
 
-
-
+    @Modifying(clearAutomatically = true)
+    @Query("update Member m set m.username = :newUsername where m.id = :id")
     void updateUsername(Long id, String newUsername);
+
+    @Modifying(clearAutomatically = true)
+    @Query("update Member m set m.password = :newPassword where m.id = :id")
     void updatePassword(Long id, String newPassword);
 
-    void delete(Long id);
 }

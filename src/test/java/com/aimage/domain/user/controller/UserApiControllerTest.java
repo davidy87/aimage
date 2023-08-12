@@ -65,7 +65,7 @@ class UserApiControllerTest {
 
         String content = objectMapper.writeValueAsString(signupForm);
 
-        given(userService.join(any()))
+        given(userService.join(any(UserDto.Signup.class)))
                 .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
 
         // When & Then
