@@ -2,20 +2,15 @@ package com.aimage.domain.user.entity;
 
 import com.aimage.domain.image.entity.Image;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Getter
-@ToString
-@EqualsAndHashCode
 @Entity(name = "Member")
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -28,7 +23,7 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images = new ArrayList<>();
 
     @Builder
@@ -37,5 +32,18 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public void saveImage(Image image) {
+        images.add(image);
+        image.setOwner(this);
+    }
+
+    public void updateUsername(String newUsername) {
+        username = newUsername;
+    }
+
+    public void updatePassword(String newPassword) {
+        password = newPassword;
     }
 }

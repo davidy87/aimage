@@ -56,7 +56,7 @@ class ImageApiControllerTest {
     @Order(1)
     void saveImage() throws Exception {
         // Given
-        Long userId = ((UserVO) session.getAttribute("loginUser")).getId();
+        Long userId = ((UserVO) session.getAttribute("loginUser")).id();
         ImageResult imageResult = new ImageResult("This is a test image", "256X256", "image.png");
         ImageVO imageResponse = new ImageVO(1L, imageResult.getPrompt(), imageResult.getUrl());
 

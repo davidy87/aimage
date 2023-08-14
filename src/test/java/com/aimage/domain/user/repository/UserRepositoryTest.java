@@ -1,6 +1,7 @@
 package com.aimage.domain.user.repository;
 
 import com.aimage.domain.user.entity.User;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,41 +16,65 @@ class UserRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+    User user;
+
+    @BeforeEach
+    void buildUser() {
+        user = User.builder()
+                .username("tester")
+                .email("user1@gmail.com")
+                .password("testpass!")
+                .build();
+    }
+
     @Test
     void findUser() {
-        User user = User.builder()
-                .username("user1")
-                .email("user1@gmail.com")
-                .password("user1")
-                .build();
-
+        // Given
         User savedUser = userRepository.save(user);
+
+        // When
         User byId = userRepository.findById(user.getId()).get();
         User byName = userRepository.findByUsername(user.getUsername()).get();
         User byEmail = userRepository.findByEmail(user.getEmail()).get();
 
-        findUserBy(savedUser, byId, byName, byEmail);
+        // Then
+        checkUsersFound(savedUser, byId, byName, byEmail);
         assertThat(userRepository.findAll()).contains(savedUser);
     }
 
     @Test
-    void updatePassword() {
-        User user = User.builder()
-                .username("user1")
-                .email("user1@gmail.com")
-                .password("user1")
-                .build();
-
+    void updateUsername() {
+        // Given
         User savedUser = userRepository.save(user);
-        userRepository.updatePassword(savedUser.getId(), "newpass1234");
-        User userWithNewPw = userRepository.findById(user.getId()).get();
 
-        assertThat(userWithNewPw.getUsername()).isEqualTo("user1");
-        assertThat(userWithNewPw.getEmail()).isEqualTo("user1@gmail.com");
-        assertThat(userWithNewPw.getPassword()).isEqualTo("newpass1234");
+        // When
+        String newUsername = "newTester";
+        savedUser.updateUsername(newUsername);
+
+        // Then
+        User updatedUser = userRepository.findById(savedUser.getId()).get();
+        assertThat(updatedUser.getUsername()).isEqualTo(newUsername);
+        assertThat(updatedUser.getEmail()).isEqualTo(savedUser.getEmail());
+        assertThat(updatedUser.getPassword()).isEqualTo(savedUser.getPassword());
     }
 
-    private void findUserBy(User savedUser, User... users) {
+    @Test
+    void updatePassword() {
+        // Given
+        User savedUser = userRepository.save(user);
+
+        // When
+        String newPassword = "newpass1234";
+        savedUser.updatePassword(newPassword);
+
+        // Then
+        User updatedUser = userRepository.findById(user.getId()).get();
+        assertThat(updatedUser.getUsername()).isEqualTo(savedUser.getUsername());
+        assertThat(updatedUser.getEmail()).isEqualTo(savedUser.getEmail());
+        assertThat(updatedUser.getPassword()).isEqualTo(newPassword);
+    }
+
+    private void checkUsersFound(User savedUser, User... users) {
         for (User user : users) {
             assertThat(user).isEqualTo(savedUser);
         }

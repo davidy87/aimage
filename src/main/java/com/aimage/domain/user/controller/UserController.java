@@ -56,13 +56,13 @@ public class UserController {
 
     @GetMapping("/userInfo")
     public String userInfo(@SessionAttribute(required = false) UserVO loginUser, Model model) {
-        model.addAttribute("userId", loginUser.getId());
+        model.addAttribute("userId", loginUser.id());
         return "user/userInfo";
     }
 
     @GetMapping("/myGallery")
     public String myGallery(@SessionAttribute(required = false) UserVO loginUser, Model model) {
-        List<Image> savedImages = userService.findSavedImages(loginUser.getId());
+        List<Image> savedImages = userService.findSavedImages(loginUser.id());
         model.addAttribute("savedImages", savedImages);
         return "user/myGallery";
     }

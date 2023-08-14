@@ -24,13 +24,15 @@ public class ImageApiController {
     public ResponseEntity<ImageVO> saveImage(@SessionAttribute UserVO loginUser,
                                              @RequestBody ImageResult imageResult) {
 
-        ImageVO savedImage = imageService.save(loginUser.getId(), imageResult);
+        ImageVO savedImage = imageService.save(loginUser.id(), imageResult);
         return ResponseEntity.status(HttpStatus.OK).body(savedImage);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteImage(@PathVariable Long id) {
-        imageService.delete(id);
+    public ResponseEntity deleteImage(@SessionAttribute UserVO loginUser,
+                                      @PathVariable Long id) {
+
+        imageService.delete(loginUser.id(), id);
         return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 

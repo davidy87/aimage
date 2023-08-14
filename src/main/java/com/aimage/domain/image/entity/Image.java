@@ -3,37 +3,36 @@ package com.aimage.domain.image.entity;
 import com.aimage.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.concurrent.atomic.AtomicLong;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
-@ToString
-@EqualsAndHashCode
 @Entity
+@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long ownerId;
-
     private String prompt;
 
+    @Column(name = "image_size")
     private String size;
 
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private User owner;
 
     @Builder
-    public Image(Long id, Long ownerId, String prompt, String size, String url) {
+    public Image(Long id, String prompt, String size, String url) {
         this.id = id;
-        this.ownerId = ownerId;
         this.prompt = prompt;
         this.size = size;
         this.url = url;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 }

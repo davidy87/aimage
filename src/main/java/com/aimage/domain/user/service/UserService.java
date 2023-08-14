@@ -70,44 +70,46 @@ public class UserService {
                         new AimageUserException("usernameUpdate", "닉네임이 이전과 같습니다.")
                 );
 
-        userRepository.updateUsername(id, newUsername);
+//        userRepository.updateUsername(id, newUsername);
+        userToUpdate.updateUsername(newUsername);
 
-        return new UserVO(id, newUsername, userToUpdate.getEmail());
+        return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
     public UserVO updatePassword(Long userId, UpdatePassword updatePassword) {
-        String password = updatePassword.getPassword();
+        String newPassword = updatePassword.getPassword();
         String confirmPassword = updatePassword.getConfirmPassword();
 
-        User userToResetPw = userRepository.findById(userId)
+        User userToUpdate = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new AimageUserException("pwInquiry", "계정을 찾을 수 없습니다.")
                 );
 
-        if (!password.equals(confirmPassword)) {
+        if (!newPassword.equals(confirmPassword)) {
             throw new AimageUserException("confirmPassword", "비밀번호를 다시 확인해주세요.");
         }
 
-        userRepository.updatePassword(userId, password);
+//        userRepository.updatePassword(userId, password);
+        userToUpdate.updatePassword(newPassword);
 
-        return new UserVO(userId, userToResetPw.getUsername(), userToResetPw.getEmail());
+        return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
     public void deleteAccount(Long userId) {
-        userRepository.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() ->
                         new AimageUserException("이미 존재하지 않는 사용자 입니다.")
                 );
 
-        userRepository.deleteById(userId);
+        userRepository.delete(user);
     }
 
     public List<Image> findSavedImages(Long userId) {
         return imageRepository.findAllByOwnerId(userId);
     }
 
-    public void deleteImage(Long imageId) {
-        imageRepository.deleteById(imageId);
-    }
+//    public void deleteImage(Long imageId) {
+//        imageRepository.deleteById(imageId);
+//    }
 
 }
