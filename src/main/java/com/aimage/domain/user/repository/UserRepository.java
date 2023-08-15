@@ -9,19 +9,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
     Optional<User> findByEmail(String email);
-
-    @Modifying(clearAutomatically = true)
-    @Query("update Member m set m.username = :newUsername where m.id = :id")
-    void updateUsername(Long id, String newUsername);
-
-    @Modifying(clearAutomatically = true)
-    @Query("update Member m set m.password = :newPassword where m.id = :id")
-    void updatePassword(Long id, String newPassword);
-
 }
