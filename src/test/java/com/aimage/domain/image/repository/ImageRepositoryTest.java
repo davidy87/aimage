@@ -6,6 +6,7 @@ import com.aimage.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +17,7 @@ import java.util.List;
 import static com.aimage.domain.image.entity.ImageSizeConst.*;
 import static org.assertj.core.api.Assertions.*;
 
-@Transactional
-@SpringBootTest
+@DataJpaTest
 class ImageRepositoryTest {
 
     @Autowired
@@ -25,12 +25,14 @@ class ImageRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
+    User imageOwner;
+
     /**
      * Create an image owner before each test
      */
     @BeforeEach
     void beforeEach() {
-        User imageOwner = User.builder()
+        imageOwner = User.builder()
                 .username("imageOwner")
                 .email("imageOwner@gmail.con")
                 .password("testpass!")
@@ -48,8 +50,6 @@ class ImageRepositoryTest {
                 .url("Image.png")
                 .build();
 
-        User imageOwner = userRepository.findById(1L).get();
-
         // When
         Image imageSaved = imageRepository.save(image);
         imageOwner.saveImage(imageSaved);
@@ -64,7 +64,6 @@ class ImageRepositoryTest {
     void findAll() {
         // Given
         Image[] images = getImages();
-        User imageOwner = userRepository.findById(1L).get();
 
         for (Image image : images) {
             Image savedImage = imageRepository.save(image);
@@ -84,7 +83,6 @@ class ImageRepositoryTest {
     void findAllBySize() {
         // Given
         Image[] images = getImages();
-        User imageOwner = userRepository.findById(1L).get();
 
         for (Image image: images) {
             imageRepository.save(image);
@@ -110,56 +108,52 @@ class ImageRepositoryTest {
 
         userRepository.save(anotherOwner);
 
-        User owner1 = userRepository.findById(1L).get();
-        User owner2 = userRepository.findById(2L).get();
-
         Image[] images = getImages();
 
         for (int i = 0; i < images.length; i++) {
             Image savedImage = imageRepository.save(images[i]);
 
             if (i < images.length - 1) {
-                owner1.saveImage(savedImage);
+                imageOwner.saveImage(savedImage);
             }
 
             if (i == images.length - 1) {
-                owner2.saveImage(savedImage);
+                anotherOwner.saveImage(savedImage);
             }
         }
 
         // When
-        List<Image> imagesFound1 = imageRepository.findAllByOwnerId(owner1.getId());
-        List<Image> imagesFound2 = imageRepository.findAllByOwnerId(owner2.getId());
+        List<Image> imagesFound1 = imageRepository.findAllByOwnerId(imageOwner.getId());
+        List<Image> imagesFound2 = imageRepository.findAllByOwnerId(anotherOwner.getId());
 
         // Then
         assertThat(imagesFound1.size()).isEqualTo(2);
         assertThat(imagesFound1).contains(images[0], images[1]);
-        assertThat(owner1.getImages()).contains(images[0], images[1]);
+        assertThat(imageOwner.getImages()).contains(images[0], images[1]);
 
         assertThat(imagesFound2.size()).isEqualTo(1);
         assertThat(imagesFound2).contains(images[images.length - 1]);
-        assertThat(owner2.getImages()).contains(images[images.length - 1]);
+        assertThat(anotherOwner.getImages()).contains(images[images.length - 1]);
     }
 
     @Test
     void delete() {
         // Given
         Image[] images = getImages();
-        User owner = userRepository.findById(1L).get();
 
         for (Image image : images) {
-            owner.saveImage(image);
+            imageOwner.saveImage(image);
             imageRepository.save(image);
         }
 
         // When
         Image imageToDelete = imageRepository.findById(1L).get();
-        owner.getImages().remove(imageToDelete);
+        imageOwner.getImages().remove(imageToDelete);
         imageRepository.delete(imageToDelete);
 
         // Then
         assertThat(imageRepository.findById(1L)).isEmpty();
-        assertThat(owner.getImages()).doesNotContain(imageToDelete);
+        assertThat(imageOwner.getImages()).doesNotContain(imageToDelete);
     }
 
     private Image[] getImages() {

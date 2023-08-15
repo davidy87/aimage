@@ -24,8 +24,8 @@ public class ImageApiController {
     public ResponseEntity<ImageVO> saveImage(@SessionAttribute UserVO loginUser,
                                              @RequestBody ImageResult imageResult) {
 
-        ImageVO savedImage = imageService.save(loginUser.id(), imageResult);
-        return ResponseEntity.status(HttpStatus.OK).body(savedImage);
+        ImageVO imageResponse = imageService.save(loginUser.id(), imageResult);
+        return ResponseEntity.status(HttpStatus.OK).body(imageResponse);
     }
 
     @DeleteMapping("/{id}")

@@ -8,10 +8,9 @@ import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.domain.user.service.UserService;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +20,9 @@ import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class ImageServiceTest {
 
-    @Autowired
     ImageService imageService;
 
     @Autowired
@@ -32,31 +31,36 @@ class ImageServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    User owner;
+
+
     @BeforeEach
     void userSignup() {
-        User user = User.builder()
+        imageService = new ImageService(imageRepository, userRepository, null);
+
+        owner = User.builder()
                 .username("tester")
                 .email("test@email.com")
                 .password("testpass!")
                 .build();
 
-        userRepository.save(user);
+        userRepository.save(owner);
     }
 
     @Test
+    @Order(1)
     void save() {
         // Given
-        User owner = userRepository.findById(1L).get();
         ImageDto.ImageResult imageResult = new ImageDto.ImageResult(
                 "Spring",
                 "256x256",
                 "image.png");
 
         // When
-        ImageVO savedImage = imageService.save(owner.getId(), imageResult);
+        imageService.save(owner.getId(), imageResult);
 
         // Then
-        Image imageFound = imageService.findImageById(savedImage.id()).get();
+        Image imageFound = imageRepository.findAllByOwnerId(owner.getId()).get(0);
         assertThat(imageFound.getId()).isEqualTo(1L);
         assertThat(imageFound.getPrompt()).isEqualTo(imageResult.getPrompt());
         assertThat(imageFound.getUrl()).isEqualTo(imageResult.getUrl());
@@ -65,24 +69,24 @@ class ImageServiceTest {
     }
 
     @Test
+    @Order(2)
     void delete() {
         // Given
-        User owner = userRepository.findById(1L).get();
         ImageDto.ImageResult imageResult = new ImageDto.ImageResult(
                 "Spring",
                 "256x256",
                 "image.png");
 
-        ImageVO savedImage = imageService.save(owner.getId(), imageResult);
+        imageService.save(owner.getId(), imageResult);
+        Image savedImage = imageRepository.findAllByOwnerId(owner.getId()).get(0);
 
         // When
-        imageService.delete(owner.getId(), savedImage.id());
+        imageService.delete(owner.getId(), savedImage.getId());
 
         // Then
-        Optional<Image> imageFound = imageService.findImageById(1L);
-        assertThat(imageFound).isEmpty();
         assertThat(owner.getImages()).isEmpty();
         assertThat(userRepository.count()).isEqualTo(1);
         assertThat(imageRepository.count()).isEqualTo(0);
     }
+
 }

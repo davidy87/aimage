@@ -4,8 +4,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,11 +34,11 @@ public class ExceptionController {
 
     /**
      *
-     * @param e AimageUserException 커스텀 예외
+     * @param e AimageException - 커스텀 예외
      */
     @ResponseBody
     @ExceptionHandler
-    public ResponseEntity aimageUserExceptionHandler(AimageUserException e) {
+    public ResponseEntity aimageUserExceptionHandler(AimageException e) {
         log.info("In aimageUserExceptionHandler");
 
         List<ErrorResponse> errorResponseList = new ArrayList<>();

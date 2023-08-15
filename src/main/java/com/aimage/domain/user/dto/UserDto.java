@@ -34,11 +34,8 @@ public class UserDto {
     @AllArgsConstructor
     public static class Login {
 
-//        @NotBlank(message = "{notEmpty}")
-//        @Email
         private String email;
 
-//        @NotBlank(message = "{notEmpty}")
         private String password;
     }
 
@@ -49,8 +46,7 @@ public class UserDto {
         @NotBlank(message = "{notEmpty}")
         private String email;
 
-        public PwInquiry() {
-        }
+        public PwInquiry() {}
     }
 
     @Getter
@@ -61,8 +57,7 @@ public class UserDto {
         @NotBlank(message = "{notEmpty}")
         private String username;
 
-        public UpdateUsername() {
-        }
+        public UpdateUsername() {}
     }
 
     @Getter

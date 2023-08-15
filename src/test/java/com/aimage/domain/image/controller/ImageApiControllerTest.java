@@ -58,7 +58,7 @@ class ImageApiControllerTest {
         // Given
         Long userId = ((UserVO) session.getAttribute("loginUser")).id();
         ImageResult imageResult = new ImageResult("This is a test image", "256X256", "image.png");
-        ImageVO imageResponse = new ImageVO(1L, imageResult.getPrompt(), imageResult.getUrl());
+        ImageVO imageResponse = new ImageVO(imageResult.getPrompt(), imageResult.getUrl());
 
         given(imageService.save(eq(userId), any(ImageResult.class)))
                 .willReturn(imageResponse);
@@ -78,13 +78,11 @@ class ImageApiControllerTest {
                                 fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL")
                         ),
                         responseFields(
-                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("이미지 id"),
                                 fieldWithPath("prompt").type(JsonFieldType.STRING).description("이미지 설명"),
                                 fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL")
                         ))
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("id").value(imageResponse.id()))
                 .andExpect(jsonPath("prompt").value(imageResponse.prompt()))
                 .andExpect(jsonPath("url").value(imageResponse.url()));
     }

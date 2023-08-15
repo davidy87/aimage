@@ -1,4 +1,4 @@
-var imageId =  document.getElementById("imageId").innerText;
+var imageId = document.getElementById("imageId").innerText;
 
 function onDeleteImage() {
     if (confirm("해당 이미지를 삭제하시겠습니까?") == true) {

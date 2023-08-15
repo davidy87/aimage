@@ -52,6 +52,20 @@ public class UserApiController {
     }
 
     /**
+     * 계정 삭제
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable Long id, HttpServletRequest request) {
+        userService.deleteAccount(id);
+        HttpSession session = request.getSession(false);
+
+        if (session != null)
+            session.invalidate();
+
+        return ResponseEntity.status(HttpStatus.OK).body("success");
+    }
+
+    /**
      * 닉네임 변경
      */
     @ResponseBody
@@ -79,21 +93,6 @@ public class UserApiController {
 
         UserVO updatedUser = userService.updatePassword(id, updatePassword);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
-    }
-
-
-    /**
-     * 계정 삭제
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id, HttpServletRequest request) {
-        userService.deleteAccount(id);
-        HttpSession session = request.getSession(false);
-
-        if (session != null)
-            session.invalidate();
-
-        return ResponseEntity.status(HttpStatus.OK).body("success");
     }
 
     /**
