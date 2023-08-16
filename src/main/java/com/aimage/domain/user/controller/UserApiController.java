@@ -1,5 +1,6 @@
 package com.aimage.domain.user.controller;
 
+import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
@@ -8,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -99,8 +102,10 @@ public class UserApiController {
      * 사용자가 저장한 이미지 리스트
      */
     @GetMapping("/{id}/images")
-    public ResponseEntity getUserSavedImages(@PathVariable Long id) {
-        List<Image> savedImages = userService.findSavedImages(id);
+    public ResponseEntity getUserSavedImages(@PathVariable Long id, Pageable pageable) {
+        Page<ImageVO> savedImages = userService.findSavedImages(id, pageable)
+                .map(image -> new ImageVO(image.getPrompt(), image.getUrl()));
+
         return ResponseEntity.status(HttpStatus.OK).body(savedImages);
     }
 }

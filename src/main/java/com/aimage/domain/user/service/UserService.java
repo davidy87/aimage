@@ -8,6 +8,8 @@ import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.exception.AimageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -104,7 +106,7 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public List<Image> findSavedImages(Long userId) {
-        return imageRepository.findAllByOwnerId(userId);
+    public Page<Image> findSavedImages(Long userId, Pageable pageable) {
+        return imageRepository.findAllByOwnerId(userId, pageable);
     }
 }

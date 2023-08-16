@@ -1,5 +1,6 @@
 package com.aimage.domain.user.controller;
 
+import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
@@ -8,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +64,15 @@ public class UserController {
     }
 
     @GetMapping("/myGallery")
-    public String myGallery(@SessionAttribute(required = false) UserVO loginUser, Model model) {
-        List<Image> savedImages = userService.findSavedImages(loginUser.id());
+    public String myGallery(@SessionAttribute(required = false) UserVO loginUser,
+                            Pageable pageable,
+                            Model model) {
+
+        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
+                .map(image -> new ImageVO(image.getPrompt(), image.getUrl()));
+
         model.addAttribute("savedImages", savedImages);
+
         return "user/myGallery";
     }
 }
