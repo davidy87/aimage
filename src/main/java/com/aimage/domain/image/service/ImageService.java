@@ -39,7 +39,7 @@ public class ImageService {
 
         owner.saveImage(image);
 
-        return new ImageVO(image.getPrompt(), image.getUrl());
+        return new ImageVO(image.getId(),image.getPrompt(), image.getUrl());
     }
 
     public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {

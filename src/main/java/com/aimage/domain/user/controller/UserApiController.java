@@ -1,7 +1,6 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.image.dto.ImageVO;
-import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
@@ -102,9 +101,10 @@ public class UserApiController {
      * 사용자가 저장한 이미지 리스트
      */
     @GetMapping("/{id}/images")
-    public ResponseEntity getUserSavedImages(@PathVariable Long id, Pageable pageable) {
+    public ResponseEntity<Page<ImageVO>> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
+
         Page<ImageVO> savedImages = userService.findSavedImages(id, pageable)
-                .map(image -> new ImageVO(image.getPrompt(), image.getUrl()));
+                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
 
         return ResponseEntity.status(HttpStatus.OK).body(savedImages);
     }

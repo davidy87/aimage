@@ -28,11 +28,12 @@
       <div class="carousel-item active">
         <div class="container">
           <div class="row">
-            <div class="col" th:each="image : ${savedImages}">
+
+            <div class="col" th:each="image : ${savedImages.content}">
               <div class="card" id="imageCard">
                 <div id="imageId" th:text="${image.id}" style="display: none;"></div>
                 <a>
-                  <img th:src="${image.url}" class="card-img-top" />
+                  <img th:src="${image.url}" class="card-img-top float-left" />
                 </a>
                 <div class="card-body">
                   <p class="card-text" th:text="${image.prompt}"></p>
@@ -40,11 +41,46 @@
                 </div>
               </div>
             </div>
+
           </div>
         </div>
       </div>
     </div>
     <!-- Inner -->
+
+    <nav style="text-align: center;">
+        <ul class="pagination justify-content-center" th:with="start=${startNumber}, end=(${endNumber})">
+
+          <li class="page-item">
+            <a class="page-link" th:href="@{/myGallery(page=start)}" aria-label="First">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <li class="page-item" th:classappend="${savedImages.first} ? 'disabled'">
+            <a class="page-link" th:href="${savedImages.first} ? '#' : @{/myGallery(page=${savedImages.number})}" aria-label="Previous">
+              <span aria-hidden="true">&lt;</span>
+            </a>
+          </li>
+
+          <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${page == savedImages.number + 1} ? 'active'">
+            <a class="page-link" th:text="${page}" th:href="@{/myGallery(page=${page})}"></a>
+          </li>
+
+          <li class="page-item" th:classappend="${savedImages.last} ? 'disabled'">
+            <a class="page-link" th:href="${savedImages.last} ? '#' : @{/myGallery(page=${savedImages.number + 2})}" aria-label="Next">
+              <span aria-hidden="true">&gt;</span>
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a class="page-link" th:href="@{/myGallery(page=${savedImages.totalPages})}" aria-label="Last">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
 
   </div>
 <script th:src="@{/js/users/myGallery.js}"></script>

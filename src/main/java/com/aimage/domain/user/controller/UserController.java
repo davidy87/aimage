@@ -10,7 +10,10 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -68,9 +71,21 @@ public class UserController {
                             Pageable pageable,
                             Model model) {
 
-        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
-                .map(image -> new ImageVO(image.getPrompt(), image.getUrl()));
+        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
+        pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "id");
 
+        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
+                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
+
+        int number = savedImages.getNumber();
+        int size = savedImages.getSize();
+        int totalPage = savedImages.getTotalPages();
+
+        int start = (int) Math.floor((double) number / size) * size + 1;
+        int end = Math.min(start + size - 1, totalPage);
+
+        model.addAttribute("startNumber", start);
+        model.addAttribute("endNumber", end);
         model.addAttribute("savedImages", savedImages);
 
         return "user/myGallery";

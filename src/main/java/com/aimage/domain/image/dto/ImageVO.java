@@ -2,4 +2,4 @@ package com.aimage.domain.image.dto;
 
 import lombok.Getter;
 
-public record ImageVO(String prompt, String url) {}
+public record ImageVO(Long id, String prompt, String url) {}
