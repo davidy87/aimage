@@ -1,5 +1,6 @@
 package com.aimage.domain.user.controller;
 
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.user.service.UserService;
@@ -19,6 +20,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.aimage.domain.image.dto.ImageDto.*;
 
 @Slf4j
 @Controller
@@ -77,16 +80,7 @@ public class UserController {
         Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
                 .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
 
-        int number = savedImages.getNumber();
-        int size = savedImages.getSize();
-        int totalPage = savedImages.getTotalPages();
-
-        int start = (int) Math.floor((double) number / size) * size + 1;
-        int end = Math.min(start + size - 1, totalPage);
-
-        model.addAttribute("startNumber", start);
-        model.addAttribute("endNumber", end);
-        model.addAttribute("savedImages", savedImages);
+        model.addAttribute("pagedImages", new PagedImages(savedImages));
 
         return "user/myGallery";
     }

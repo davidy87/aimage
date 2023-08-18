@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -45,6 +46,26 @@ public class ImageDto {
         private final String size;
 
         private final String url;
+    }
+
+    @Getter
+    public static class PagedImages {
+
+        private final int pageStart;
+
+        private final int pageEnd;
+
+        private final Page<ImageVO> images;
+
+        public PagedImages(Page<ImageVO> savedImages) {
+            int number = savedImages.getNumber();
+            int size = savedImages.getSize();
+            int totalPage = savedImages.getTotalPages();
+
+            pageStart = (int) Math.floor((double) number / size) * size + 1;
+            pageEnd = Math.min(pageStart + size - 1, totalPage);
+            this.images = savedImages;
+        }
     }
 
 }

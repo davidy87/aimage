@@ -72,7 +72,6 @@ public class UserService {
                         new AimageException("usernameUpdate", "닉네임이 이전과 같습니다.")
                 );
 
-//        userRepository.updateUsername(id, newUsername);
         userToUpdate.updateUsername(newUsername);
 
         return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
@@ -91,7 +90,6 @@ public class UserService {
             throw new AimageException("confirmPassword", "비밀번호를 다시 확인해주세요.");
         }
 
-//        userRepository.updatePassword(userId, password);
         userToUpdate.updatePassword(newPassword);
 
         return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
