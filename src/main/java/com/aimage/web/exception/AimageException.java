@@ -10,7 +10,7 @@ public class AimageException extends RuntimeException {
     private String message;
 
     public AimageException(String message) {
-        super(message);
+        this.message = message;
     }
 
     public AimageException(String field, String message) {

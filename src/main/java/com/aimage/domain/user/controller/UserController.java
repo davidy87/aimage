@@ -93,7 +93,7 @@ public class UserController {
                                  @PathVariable Long imageId,
                                  Model model) {
 
-        ImageVO imageResult = imageService.findById(imageId);
+        ImageVO imageResult = imageService.findByOwnerIdAndId(loginUser.id(), imageId);
         model.addAttribute("image", imageResult);
 
         return "features/image-info";
