@@ -3,6 +3,7 @@ package com.aimage.domain.user.controller;
 import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
+import com.aimage.domain.image.service.ImageService;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
@@ -29,6 +30,8 @@ import static com.aimage.domain.image.dto.ImageDto.*;
 public class UserController {
 
     private final UserService userService;
+
+    private final ImageService imageService;
 
     @GetMapping("/signup")
     public String signupForm() {
@@ -83,5 +86,16 @@ public class UserController {
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
         return "user/myGallery";
+    }
+
+    @GetMapping("/myGallery/{imageId}")
+    public String savedImageInfo(@SessionAttribute(required = false) UserVO loginUser,
+                                 @PathVariable Long imageId,
+                                 Model model) {
+
+        ImageVO imageResult = imageService.findById(imageId);
+        model.addAttribute("image", imageResult);
+
+        return "features/image-info";
     }
 }

@@ -39,12 +39,18 @@ public class ImageService {
 
         owner.saveImage(image);
 
-        return new ImageVO(image.getId(),image.getPrompt(), image.getUrl());
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
     }
 
     public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
         String imageUrl = openAiClientService.requestImage(imageRequest);
         return new ImageResult(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
+    }
+
+    public ImageVO findById(Long imageId) {
+        Image image = imageRepository.findById(imageId).orElseThrow(RuntimeException::new);
+
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
     }
 
     public void delete(Long ownerId, Long imageId) {
