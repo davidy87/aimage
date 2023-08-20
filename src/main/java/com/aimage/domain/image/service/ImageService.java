@@ -52,13 +52,6 @@ public class ImageService {
         return new ImageResult(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
     }
 
-    public ImageVO findByOwnerIdAndId(Long userId, Long imageId) {
-        Image image = imageRepository.findByOwnerIdAndId(userId, imageId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST));
-
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
-    }
-
     public void delete(Long ownerId, Long imageId) {
         User owner = userRepository.findById(ownerId).orElseThrow(() ->
                 new AimageException("이미지를 삭제할 수 없습니다."));

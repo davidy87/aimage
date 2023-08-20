@@ -1,5 +1,6 @@
 package com.aimage.domain.user.service;
 
+import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
@@ -10,8 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -106,5 +109,12 @@ public class UserService {
 
     public Page<Image> findSavedImages(Long userId, Pageable pageable) {
         return imageRepository.findAllByOwnerId(userId, pageable);
+    }
+
+    public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {
+        Image image = imageRepository.findByOwnerIdAndId(userId, imageId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.BAD_REQUEST));
+
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
     }
 }

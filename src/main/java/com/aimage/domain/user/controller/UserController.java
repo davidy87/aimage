@@ -31,7 +31,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private final ImageService imageService;
+    private static final int PAGE_SIZE = 5;
 
     @GetMapping("/signup")
     public String signupForm() {
@@ -68,7 +68,6 @@ public class UserController {
 
     @GetMapping("/userInfo")
     public String userInfo(@SessionAttribute(required = false) UserVO loginUser, Model model) {
-        model.addAttribute("userId", loginUser.id());
         return "user/userInfo";
     }
 
@@ -78,7 +77,7 @@ public class UserController {
                             Model model) {
 
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "id");
+        pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
         Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
                 .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
@@ -93,8 +92,8 @@ public class UserController {
                                  @PathVariable Long imageId,
                                  Model model) {
 
-        ImageVO imageResult = imageService.findByOwnerIdAndId(loginUser.id(), imageId);
-        model.addAttribute("image", imageResult);
+        ImageVO image = userService.findByOwnerIdAndImageId(loginUser.id(), imageId);
+        model.addAttribute("image", image);
 
         return "features/image-info";
     }
