@@ -9,7 +9,6 @@
     <div th:insert="~{fragment/navbar :: navbar}"></div>
   </header>
 
-  <!-- Carousel wrapper -->
   <div class="text-center"
        style="padding: 10%;"
        th:with="images=${pagedImages.images}, start=${pagedImages.pageStart}, end=(${pagedImages.pageEnd})">

@@ -107,8 +107,9 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public Page<Image> findSavedImages(Long userId, Pageable pageable) {
-        return imageRepository.findAllByOwnerId(userId, pageable);
+    public Page<ImageVO> findSavedImages(Long userId, Pageable pageable) {
+        return imageRepository.findAllByOwnerId(userId, pageable)
+                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
     }
 
     public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {

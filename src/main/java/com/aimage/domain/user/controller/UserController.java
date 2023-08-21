@@ -78,9 +78,7 @@ public class UserController {
 
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
-
-        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable)
-                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
+        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable);
 
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
@@ -88,7 +86,7 @@ public class UserController {
     }
 
     @GetMapping("/myGallery/details")
-    public String savedImageInfo(@SessionAttribute(required = false) UserVO loginUser,
+    public String showImageDetails(@SessionAttribute(required = false) UserVO loginUser,
                                  @RequestParam Long imageId,
                                  Model model) {
 

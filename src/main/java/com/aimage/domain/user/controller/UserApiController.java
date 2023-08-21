@@ -102,10 +102,7 @@ public class UserApiController {
      */
     @GetMapping("/{id}/images")
     public ResponseEntity<Page<ImageVO>> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
-
-        Page<ImageVO> savedImages = userService.findSavedImages(id, pageable)
-                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
-
+        Page<ImageVO> savedImages = userService.findSavedImages(id, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(savedImages);
     }
 }

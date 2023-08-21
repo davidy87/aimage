@@ -8,6 +8,8 @@ import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.web.exception.AimageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,6 +52,18 @@ public class ImageService {
     public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
         String imageUrl = openAiClientService.requestImage(imageRequest);
         return new ImageResult(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
+    }
+
+    public ImageVO findImageById(Long imageId) {
+        Image image = imageRepository.findById(imageId)
+                .orElseThrow(() -> new AimageException("이미지를 찾을 수 없습니다."));
+
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
+    }
+
+    public Page<ImageVO> findPagedImages(Pageable pageable) {
+        return imageRepository.findAll(pageable)
+                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
     }
 
     public void delete(Long ownerId, Long imageId) {
