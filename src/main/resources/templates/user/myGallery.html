@@ -30,10 +30,7 @@
             <div class="col" th:each="image : ${images.content}">
               <div class="card" id="imageCard">
                 <div id="imageId" th:text="${image.id}" style="display: none;"></div>
-<!--                <a th:href="@{/myGallery/{imageId}(imageId = ${image.id})}">-->
-<!--                  <img th:src="${image.url}" class="card-img-top float-left" />-->
-<!--                </a>-->
-                <a th:href="@{/myGallery/image-details(imageId=${image.id})}">
+                <a th:href="@{/myGallery/details(imageId=${image.id})}">
                   <img th:src="${image.url}" class="card-img-top float-left" />
                 </a>
                 <div class="card-body">

@@ -87,7 +87,7 @@ public class UserController {
         return "user/myGallery";
     }
 
-    @GetMapping("/myGallery/image-details")
+    @GetMapping("/myGallery/details")
     public String savedImageInfo(@SessionAttribute(required = false) UserVO loginUser,
                                  @RequestParam Long imageId,
                                  Model model) {
