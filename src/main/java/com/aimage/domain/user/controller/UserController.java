@@ -29,9 +29,9 @@ import static com.aimage.domain.image.dto.ImageDto.*;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
-
     private static final int PAGE_SIZE = 5;
+
+    private final UserService userService;
 
     @GetMapping("/signup")
     public String signupForm() {
@@ -87,14 +87,14 @@ public class UserController {
         return "user/myGallery";
     }
 
-    @GetMapping("/myGallery/{imageId}")
+    @GetMapping("/myGallery/image-details")
     public String savedImageInfo(@SessionAttribute(required = false) UserVO loginUser,
-                                 @PathVariable Long imageId,
+                                 @RequestParam Long imageId,
                                  Model model) {
 
         ImageVO image = userService.findByOwnerIdAndImageId(loginUser.id(), imageId);
         model.addAttribute("image", image);
 
-        return "features/image-info";
+        return "features/image-details";
     }
 }

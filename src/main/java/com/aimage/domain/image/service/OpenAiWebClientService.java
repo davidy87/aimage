@@ -35,7 +35,6 @@ public class OpenAiWebClientService implements OpenAiClientService {
                 .defaultHeader("Authorization", String.format("Bearer %s", OPENAI_KEY))
                 .build();
 
-        // Expected: List<ImageDto.ImageResponse>
         OpenAiResponse response = webClient.post()
                 .uri("/v1/images/generations")
                 .contentType(MediaType.APPLICATION_JSON)

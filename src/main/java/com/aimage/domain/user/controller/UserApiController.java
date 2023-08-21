@@ -27,7 +27,7 @@ public class UserApiController {
 
     private final UserService userService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<UserVO> signup(@Validated @RequestBody Signup signupForm) {
         UserVO signupUser = userService.join(signupForm);
         return ResponseEntity.status(HttpStatus.OK).body(signupUser);
