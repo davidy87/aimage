@@ -47,7 +47,10 @@ class ImageApiControllerTest {
     @BeforeAll
     static void createSession() {
         session = new MockHttpSession();
-        User user = User.builder().build();
+        User user = User.builder()
+                .username("tester")
+                .email("test@gmail.com")
+                .build();
 
         session.setAttribute("loginUser", new UserVO(user.getId(), user.getUsername(), user.getEmail()));
     }
@@ -57,8 +60,9 @@ class ImageApiControllerTest {
     void saveImage() throws Exception {
         // Given
         Long userId = ((UserVO) session.getAttribute("loginUser")).id();
+        String username = ((UserVO) session.getAttribute("loginUser")).username();
         ImageResult imageResult = new ImageResult("This is a test image", "256X256", "image.png");
-        ImageVO imageResponse = new ImageVO(imageResult.getPrompt(), imageResult.getUrl());
+        ImageVO imageResponse = new ImageVO(1L, imageResult.getPrompt(), imageResult.getUrl(), username);
 
         given(imageService.save(eq(userId), any(ImageResult.class)))
                 .willReturn(imageResponse);
@@ -78,13 +82,16 @@ class ImageApiControllerTest {
                                 fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL")
                         ),
                         responseFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("이미지 ID"),
                                 fieldWithPath("prompt").type(JsonFieldType.STRING).description("이미지 설명"),
-                                fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL")
+                                fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL"),
+                                fieldWithPath("ownerName").type(JsonFieldType.STRING).description("이미지 소유자 닉네임")
                         ))
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("prompt").value(imageResponse.prompt()))
-                .andExpect(jsonPath("url").value(imageResponse.url()));
+                .andExpect(jsonPath("url").value(imageResponse.url()))
+                .andExpect(jsonPath("ownerName").value(imageResponse.ownerName()));
     }
 
     @Test

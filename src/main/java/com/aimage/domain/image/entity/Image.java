@@ -16,7 +16,7 @@ public class Image {
 
     private String prompt;
 
-    @Column(name = "image_size")
+    @Column(name = "IMAGE_SIZE")
     private String size;
 
     private String url;

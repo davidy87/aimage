@@ -109,13 +109,13 @@ public class UserService {
 
     public Page<ImageVO> findSavedImages(Long userId, Pageable pageable) {
         return imageRepository.findAllByOwnerId(userId, pageable)
-                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl()));
+                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));
     }
 
     public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {
         Image image = imageRepository.findByOwnerIdAndId(userId, imageId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl());
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
     }
 }
