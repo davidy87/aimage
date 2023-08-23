@@ -20,7 +20,8 @@ public class Image {
 
     private String url;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "OWNER_ID")
     private User owner;
 
     @Builder

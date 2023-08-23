@@ -47,7 +47,7 @@ public class ImageService {
         image.setOwner(owner);
         imageRepository.save(image);
 
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
+        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), owner.getUsername());
     }
 
     public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
