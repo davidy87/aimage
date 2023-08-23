@@ -1,21 +1,19 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
-import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.domain.user.service.UserService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
+import static com.aimage.domain.image.dto.ImageDto.*;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
@@ -51,7 +49,7 @@ class ImageServiceTest {
     @Order(1)
     void save() {
         // Given
-        ImageDto.ImageResult imageResult = new ImageDto.ImageResult(
+        ImageResult imageResult = new ImageResult(
                 "Spring",
                 "256x256",
                 "image.png");
@@ -64,15 +62,52 @@ class ImageServiceTest {
         assertThat(imageFound.getId()).isEqualTo(1L);
         assertThat(imageFound.getPrompt()).isEqualTo(imageResult.getPrompt());
         assertThat(imageFound.getUrl()).isEqualTo(imageResult.getUrl());
-        assertThat(owner.getImages()).contains(imageFound);
         assertThat(imageFound.getOwner()).isEqualTo(owner);
     }
 
     @Test
-    @Order(2)
+    void findImageById() {
+        // Given
+        ImageResult imageResult = new ImageResult(
+                "Spring",
+                "256x256",
+                "image.png");
+
+        ImageVO imageSaved = imageService.save(owner.getId(), imageResult);
+
+        // When
+        ImageVO imageFound = imageService.findImageById(imageSaved.id());
+
+        // Then
+        assertThat(imageFound.id()).isEqualTo(imageSaved.id());
+        assertThat(imageFound).isEqualTo(imageSaved);
+    }
+
+    @Test
+    void findPagedImages() {
+        // Given
+        saveMultipleImages();
+        Pageable pageable = PageRequest.of(0, 5);
+
+        // When
+        Page<ImageVO> pagedImages = imageService.findPagedImages(pageable);
+
+        // Then
+        assertThat(pagedImages.getTotalElements()).isEqualTo(100);
+        assertThat(pagedImages.getTotalPages()).isEqualTo(100 / 5);
+    }
+
+    void saveMultipleImages() {
+        for (int i = 0; i < 100; i++) {
+            ImageResult imageGenerated = new ImageResult("Test image", "256x256", "image.png");
+            imageService.save(owner.getId(), imageGenerated);
+        }
+    }
+
+    @Test
     void delete() {
         // Given
-        ImageDto.ImageResult imageResult = new ImageDto.ImageResult(
+        ImageResult imageResult = new ImageResult(
                 "Spring",
                 "256x256",
                 "image.png");
@@ -84,7 +119,6 @@ class ImageServiceTest {
         imageService.delete(owner.getId(), savedImage.getId());
 
         // Then
-        assertThat(owner.getImages()).isEmpty();
         assertThat(userRepository.count()).isEqualTo(1);
         assertThat(imageRepository.count()).isEqualTo(0);
     }

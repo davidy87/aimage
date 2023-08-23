@@ -51,13 +51,14 @@ class ImageRepositoryTest {
                 .build();
 
         // When
-        Image imageSaved = imageRepository.save(image);
-        imageOwner.saveImage(imageSaved);
+        image.setOwner(imageOwner);
+        Image savedImage = imageRepository.save(image);
 
         // Then
         Image imageFound = imageRepository.findById(image.getId()).get();
-        assertThat(imageSaved).isEqualTo(imageFound);
-        assertThat(imageOwner.getImages()).contains(imageFound);
+        assertThat(imageFound.getId()).isEqualTo(image.getId());
+        assertThat(imageFound).isEqualTo(savedImage);
+        assertThat(imageFound.getOwner()).isEqualTo(imageOwner);
     }
 
     @Test
@@ -66,8 +67,8 @@ class ImageRepositoryTest {
         Image[] images = getImages();
 
         for (Image image : images) {
-            Image savedImage = imageRepository.save(image);
-            imageOwner.saveImage(savedImage);
+            image.setOwner(imageOwner);
+            imageRepository.save(image);
         }
 
         // When
@@ -76,7 +77,8 @@ class ImageRepositoryTest {
         // Then
         assertThat(foundImages.size()).isEqualTo(images.length);
         assertThat(foundImages).contains(images);
-        assertThat(imageOwner.getImages()).contains(images);
+        assertThatStream(foundImages.stream()
+                .filter(image -> image.getOwner().equals(imageOwner))).containsAll(foundImages);
     }
 
     @Test
@@ -85,8 +87,8 @@ class ImageRepositoryTest {
         Image[] images = getImages();
 
         for (Image image: images) {
+            image.setOwner(imageOwner);
             imageRepository.save(image);
-            imageOwner.saveImage(image);
         }
 
         // When
@@ -94,7 +96,8 @@ class ImageRepositoryTest {
 
         // Then
         assertThat(imagesFound.size()).isEqualTo(2);
-        assertThat(imageOwner.getImages()).containsAll(imagesFound);
+        assertThatStream(imagesFound.stream()
+                .filter(image -> image.getOwner().equals(imageOwner))).containsAll(imagesFound);
     }
 
     @Test
@@ -111,15 +114,15 @@ class ImageRepositoryTest {
         Image[] images = getImages();
 
         for (int i = 0; i < images.length; i++) {
-            Image savedImage = imageRepository.save(images[i]);
-
             if (i < images.length - 1) {
-                imageOwner.saveImage(savedImage);
+                images[i].setOwner(imageOwner);
             }
 
             if (i == images.length - 1) {
-                anotherOwner.saveImage(savedImage);
+                images[i].setOwner(anotherOwner);
             }
+
+            imageRepository.save(images[i]);
         }
 
         // When
@@ -129,11 +132,13 @@ class ImageRepositoryTest {
         // Then
         assertThat(imagesFound1.size()).isEqualTo(2);
         assertThat(imagesFound1).contains(images[0], images[1]);
-        assertThat(imageOwner.getImages()).contains(images[0], images[1]);
+        assertThatStream(imagesFound1.stream()
+                .filter(image -> image.getOwner().equals(imageOwner))).contains(images[0], images[1]);
 
         assertThat(imagesFound2.size()).isEqualTo(1);
         assertThat(imagesFound2).contains(images[images.length - 1]);
-        assertThat(anotherOwner.getImages()).contains(images[images.length - 1]);
+        assertThatStream(imagesFound2.stream()
+                .filter(image -> image.getOwner().equals(anotherOwner))).contains(images[2]);
     }
 
     @Test
@@ -142,18 +147,18 @@ class ImageRepositoryTest {
         Image[] images = getImages();
 
         for (Image image : images) {
-            imageOwner.saveImage(image);
+            image.setOwner(imageOwner);
             imageRepository.save(image);
         }
 
         // When
         Image imageToDelete = imageRepository.findById(1L).get();
-        imageOwner.getImages().remove(imageToDelete);
+        imageToDelete.setOwner(null);
         imageRepository.delete(imageToDelete);
 
         // Then
         assertThat(imageRepository.findById(1L)).isEmpty();
-        assertThat(imageOwner.getImages()).doesNotContain(imageToDelete);
+        assertThat(imageToDelete.getOwner()).isNull();
     }
 
     private Image[] getImages() {

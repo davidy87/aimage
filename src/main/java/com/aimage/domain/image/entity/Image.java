@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Entity
-@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Image {
 

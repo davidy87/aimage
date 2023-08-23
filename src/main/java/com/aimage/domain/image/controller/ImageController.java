@@ -54,9 +54,7 @@ public class ImageController {
     }
 
     @GetMapping("/public-gallery")
-    public String publicGallery(@SessionAttribute(required = false) UserVO loginUser,
-                                Pageable pageable,
-                                Model model) {
+    public String publicGallery(Pageable pageable, Model model) {
 
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "id");
@@ -68,9 +66,7 @@ public class ImageController {
     }
 
     @GetMapping("/public-gallery/details")
-    public String imageDetails(@SessionAttribute(required = false) UserVO loginUser,
-                               @RequestParam Long imageId,
-                               Model model) {
+    public String imageDetails(@RequestParam Long imageId, Model model) {
 
         ImageVO image = imageService.findImageById(imageId);
         model.addAttribute("image", image);

@@ -11,7 +11,6 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "Member")
-@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -24,20 +23,12 @@ public class User {
 
     private String password;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Image> images = new ArrayList<>();
-
     @Builder
     public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public void saveImage(Image image) {
-        images.add(image);
-        image.setOwner(this);
     }
 
     public void updateUsername(String newUsername) {

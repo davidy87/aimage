@@ -44,7 +44,8 @@ public class ImageService {
                 .url(imageResult.getUrl())
                 .build();
 
-        owner.saveImage(image);
+        image.setOwner(owner);
+        imageRepository.save(image);
 
         return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
     }
@@ -73,6 +74,7 @@ public class ImageService {
         Image imageToDelete = imageRepository.findById(imageId).orElseThrow(() ->
                 new AimageException("이미 존재하지 않는 이미지입니다."));
 
-        owner.getImages().remove(imageToDelete);
+        imageToDelete.setOwner(null);
+        imageRepository.delete(imageToDelete);
     }
 }
