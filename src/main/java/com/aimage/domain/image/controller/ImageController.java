@@ -3,7 +3,6 @@ package com.aimage.domain.image.controller;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.service.ImageService;
 
-import com.aimage.domain.user.dto.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

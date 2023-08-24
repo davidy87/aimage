@@ -1,9 +1,6 @@
 package com.aimage.domain.user.controller;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.dto.ImageVO;
-import com.aimage.domain.image.entity.Image;
-import com.aimage.domain.image.service.ImageService;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.web.SessionConst;
@@ -15,12 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.aimage.domain.image.dto.ImageDto.*;
 

@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
@@ -50,18 +48,14 @@ public class UserService {
     public UserVO login(String email, String password) {
         User loginUser = userRepository.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(() ->
-                        new AimageException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다.")
-                );
+                .orElseThrow(() -> new AimageException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다."));
 
         return new UserVO(loginUser.getId(), loginUser.getUsername(), loginUser.getEmail());
     }
 
     public UserVO findUserToResetPw(String email) {
         User userFound = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                    new AimageException("pwInquiry", "계정을 찾을 수 없습니다.")
-                );
+                .orElseThrow(() -> new AimageException("pwInquiry", "계정을 찾을 수 없습니다."));
 
         log.info("User found = {}", userFound);
         return new UserVO(userFound.getId(), userFound.getUsername(), userFound.getEmail());
@@ -71,9 +65,7 @@ public class UserService {
         String newUsername = updateUsername.getUsername();
         User userToUpdate = userRepository.findById(id)
                 .filter(user -> !user.getUsername().equals(newUsername))
-                .orElseThrow(() ->
-                        new AimageException("usernameUpdate", "닉네임이 이전과 같습니다.")
-                );
+                .orElseThrow(() -> new AimageException("usernameUpdate", "닉네임이 이전과 같습니다."));
 
         userToUpdate.updateUsername(newUsername);
 
@@ -85,9 +77,7 @@ public class UserService {
         String confirmPassword = updatePassword.getConfirmPassword();
 
         User userToUpdate = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new AimageException("pwInquiry", "계정을 찾을 수 없습니다.")
-                );
+                .orElseThrow(() -> new AimageException("pwInquiry", "계정을 찾을 수 없습니다."));
 
         if (!newPassword.equals(confirmPassword)) {
             throw new AimageException("confirmPassword", "비밀번호를 다시 확인해주세요.");
@@ -100,21 +90,20 @@ public class UserService {
 
     public void deleteAccount(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new AimageException("이미 존재하지 않는 사용자 입니다.")
-                );
+                .orElseThrow(() -> new AimageException("이미 존재하지 않는 사용자 입니다."));
 
         userRepository.delete(user);
     }
 
     public Page<ImageVO> findSavedImages(Long userId, Pageable pageable) {
         return imageRepository.findAllByOwnerId(userId, pageable)
-                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));
+                .map(image ->
+                        new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));
     }
 
     public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {
-        Image image = imageRepository.findByOwnerIdAndId(userId, imageId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.BAD_REQUEST));
+        Image image = imageRepository.findByOwnerIdAndId(userId, imageId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
     }

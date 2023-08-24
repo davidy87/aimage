@@ -3,7 +3,6 @@ package com.aimage.domain.image.entity;
 import com.aimage.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.DynamicUpdate;
 
 @Getter
 @Entity
