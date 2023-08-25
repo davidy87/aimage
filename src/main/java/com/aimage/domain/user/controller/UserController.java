@@ -3,15 +3,13 @@ package com.aimage.domain.user.controller;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
-import com.aimage.web.SessionConst;
+import com.aimage.constant.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +20,6 @@ import static com.aimage.domain.image.dto.ImageDto.*;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-
-    private static final int PAGE_SIZE = 5;
 
     private final UserService userService;
 
@@ -70,10 +66,7 @@ public class UserController {
                             Pageable pageable,
                             Model model) {
 
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
         Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable);
-
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
         return "user/myGallery";

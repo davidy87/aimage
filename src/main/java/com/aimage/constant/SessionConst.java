@@ -1,7 +1,6 @@
-package com.aimage.web;
+package com.aimage.constant;
 
 public interface SessionConst {
 
     public final String LOGIN_USER = "loginUser";
-    public final String USER_TO_RESET_PW = "userToResetPw";
 }

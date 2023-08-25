@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.aimage.constant.PageConst.PAGE_SIZE;
 import static com.aimage.domain.image.dto.ImageDto.*;
 
 @Slf4j
@@ -59,7 +60,7 @@ public class ImageService {
 
     public Page<ImageVO> findPagedImages(Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "id");
+        pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
         return imageRepository.findAll(pageable)
                 .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));

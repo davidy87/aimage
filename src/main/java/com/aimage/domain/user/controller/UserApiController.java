@@ -3,7 +3,7 @@ package com.aimage.domain.user.controller;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
-import com.aimage.web.SessionConst;
+import com.aimage.constant.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
