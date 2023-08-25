@@ -4,7 +4,8 @@ AI 이미지 생성 web application
 <br>
 
 ## Summery
-사용자가 prompt를 제공하면 그 설명을 바탕으로 AI가 그림을 생성해 주는 웹사이트입니다. OpenAI에서 제공하는 그림 생성 모델 DALL·E를 기반으로 한 API를 사용하였습니다.<br>
+사용자가 prompt를 제공하면 그 설명을 바탕으로 AI가 그림을 생성해 주고, 자신만의 갤러리를 만들어 공유할 수 있는 서비스를 제공합니다.
+OpenAI에서 제공하는 그림 생성 모델 DALL·E를 기반으로 한 API를 사용하였습니다.
 
 <br>
 
@@ -14,7 +15,6 @@ AI 이미지 생성 web application
 * **Database**: MySQL
 
 <br>
-
 
 ## Details
 자세한 개발 기록은 아래 Notion에서 확인할 수 있습니다. <br>
