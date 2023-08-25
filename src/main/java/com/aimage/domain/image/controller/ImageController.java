@@ -54,11 +54,7 @@ public class ImageController {
 
     @GetMapping("/public-gallery")
     public String publicGallery(Pageable pageable, Model model) {
-
-        int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, 5, Sort.Direction.DESC, "id");
         Page<ImageVO> pagedImages = imageService.findPagedImages(pageable);
-
         model.addAttribute("pagedImages", new PagedImages(pagedImages));
 
         return "features/public-gallery";
@@ -66,7 +62,6 @@ public class ImageController {
 
     @GetMapping("/public-gallery/details")
     public String imageDetails(@RequestParam Long imageId, Model model) {
-
         ImageVO image = imageService.findImageById(imageId);
         model.addAttribute("image", image);
 
