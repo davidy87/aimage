@@ -27,8 +27,8 @@
         </button>
 
         <ul class="dropdown-menu dropdown-menu-end " aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item" th:href="@{/userInfo}" th:text="#{label.user.profile}">Your Profile</a></li>
-          <li><a class="dropdown-item" th:href="@{/myGallery}" th:text="#{label.user.myGallery}">My Gallery</a></li>
+          <li><a class="dropdown-item" th:href="@{/user-info}" th:text="#{label.user.profile}">Your Profile</a></li>
+          <li><a class="dropdown-item" th:href="@{/my-gallery}" th:text="#{label.user.myGallery}">My Gallery</a></li>
           <li><hr class="dropdown-divider"></li>
           <li>
             <form action="/" th:action="@{/logout}" method="post">

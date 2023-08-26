@@ -45,23 +45,23 @@ public class UserController {
         return "redirect:/";
     }
 
-    @GetMapping("/pwInquiry")
+    @GetMapping("/pw-inquiry")
     public String findPasswordForm() {
-        return "user/pwInquiry";
+        return "user/pw-inquiry";
     }
 
-    @GetMapping("/pwInquiry/{id}/newPw")
+    @GetMapping("/pw-inquiry/{id}/new-pw")
     public String updatePwForm(@PathVariable Long id, Model model) {
         model.addAttribute("userId", id);
-        return "user/updatePw";
+        return "user/update-pw";
     }
 
-    @GetMapping("/userInfo")
+    @GetMapping("/user-info")
     public String userInfo(@SessionAttribute(required = false) UserVO loginUser, Model model) {
-        return "user/userInfo";
+        return "user/user-info";
     }
 
-    @GetMapping("/myGallery")
+    @GetMapping("/my-gallery")
     public String myGallery(@SessionAttribute(required = false) UserVO loginUser,
                             Pageable pageable,
                             Model model) {
@@ -69,10 +69,10 @@ public class UserController {
         Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable);
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
-        return "user/myGallery";
+        return "user/my-gallery";
     }
 
-    @GetMapping("/myGallery/details")
+    @GetMapping("/my-gallery/details")
     public String showImageDetails(@SessionAttribute(required = false) UserVO loginUser,
                                  @RequestParam Long imageId,
                                  Model model) {

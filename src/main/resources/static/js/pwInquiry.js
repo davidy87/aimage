@@ -32,7 +32,7 @@ function onPwInquiry() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 var result = xhr.response;
-                location.replace("/pwInquiry/" + result.id + "/newPw");
+                location.replace("/pw-inquiry/" + result.id + "/new-pw");
             } else {
                 var errors = xhr.response.errors;
 
