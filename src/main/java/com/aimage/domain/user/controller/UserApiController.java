@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.aimage.constant.SessionConst.*;
 import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
@@ -25,82 +26,84 @@ public class UserApiController {
 
     private final UserService userService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<UserVO> signup(@Validated @RequestBody Signup signupForm) {
-        UserVO signupUser = userService.join(signupForm);
-        return ResponseEntity.status(HttpStatus.OK).body(signupUser);
+    public UserVO signup(@Validated @RequestBody Signup signupForm) {
+        return userService.join(signupForm);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public ResponseEntity<UserVO> login(@RequestBody Login loginForm, HttpServletRequest request) {
+    public UserVO login(@RequestBody Login loginForm, HttpServletRequest request) {
         UserVO loginUser = userService.login(loginForm.getEmail(), loginForm.getPassword());
 
         // 사용자 확인 성공 시, 세션에 저장
         HttpSession session = request.getSession();
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
+        session.setAttribute(LOGIN_USER, loginUser);
 
-        return ResponseEntity.status(HttpStatus.OK).body(loginUser);
+        return loginUser;
     }
 
     /**
      * 비밀번호 문의 전, 이메일로 사용자 인증
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pw-inquiry")
-    public ResponseEntity<UserVO> identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
-        UserVO userFound = userService.findUserToResetPw(pwInquiry.getEmail());
-        return ResponseEntity.status(HttpStatus.OK).body(userFound);
+    public UserVO identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
+        return userService.findUserToResetPw(pwInquiry.getEmail());
     }
 
     /**
      * 계정 삭제
      */
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteAccount(@PathVariable Long id, HttpServletRequest request) {
+    public String deleteAccount(@PathVariable Long id, HttpServletRequest request) {
         userService.deleteAccount(id);
         HttpSession session = request.getSession(false);
 
         if (session != null)
             session.invalidate();
 
-        return ResponseEntity.status(HttpStatus.OK).body("success");
+        return "success";
     }
 
     /**
      * 닉네임 변경
      */
-    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
-    public ResponseEntity<UserVO> updateUsername(@PathVariable Long id,
-                                                 @Validated @RequestBody UpdateUsername updateUsername,
-                                                 HttpServletRequest request) {
+    public UserVO updateUsername(@PathVariable Long id,
+                                 @Validated @RequestBody UpdateUsername updateUsername,
+                                 HttpServletRequest request) {
 
         UserVO updatedUser = userService.updateUsername(id, updateUsername);
         HttpSession session = request.getSession(false);
 
         if (session != null) {
-            session.setAttribute(SessionConst.LOGIN_USER, updatedUser);
+            session.setAttribute(LOGIN_USER, updatedUser);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+        return updatedUser;
     }
 
     /**
      * 비밀번호 변경
      */
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-pw")
-    public ResponseEntity<UserVO> resetPw(@PathVariable Long id,
-                                          @Validated @RequestBody UpdatePassword updatePassword) {
+    public UserVO resetPw(@PathVariable Long id,
+                          @Validated @RequestBody UpdatePassword updatePassword) {
 
-        UserVO updatedUser = userService.updatePassword(id, updatePassword);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+        return userService.updatePassword(id, updatePassword);
     }
 
     /**
      * 사용자가 저장한 이미지 리스트
      */
+    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/images")
-    public ResponseEntity<Page<ImageVO>> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
-        Page<ImageVO> savedImages = userService.findSavedImages(id, pageable);
-        return ResponseEntity.status(HttpStatus.OK).body(savedImages);
+    public Page<ImageVO> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
+        return userService.findSavedImages(id, pageable);
     }
 }

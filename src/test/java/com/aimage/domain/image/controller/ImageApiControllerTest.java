@@ -88,7 +88,7 @@ class ImageApiControllerTest {
                                 fieldWithPath("ownerName").type(JsonFieldType.STRING).description("이미지 소유자 닉네임")
                         ))
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("prompt").value(imageResponse.prompt()))
                 .andExpect(jsonPath("url").value(imageResponse.url()))
                 .andExpect(jsonPath("ownerName").value(imageResponse.ownerName()));

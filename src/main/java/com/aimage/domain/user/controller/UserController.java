@@ -74,8 +74,8 @@ public class UserController {
 
     @GetMapping("/my-gallery/details")
     public String showImageDetails(@SessionAttribute(required = false) UserVO loginUser,
-                                 @RequestParam Long imageId,
-                                 Model model) {
+                                   @RequestParam Long imageId,
+                                   Model model) {
 
         ImageVO image = userService.findByOwnerIdAndImageId(loginUser.id(), imageId);
         model.addAttribute("image", image);

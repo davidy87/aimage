@@ -89,7 +89,7 @@ class UserApiControllerTest {
                                 fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
                         ))
                 )
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").value(testUser.getId()))
                 .andExpect(jsonPath("username").value(testUser.getUsername()))
                 .andExpect(jsonPath("email").value(testUser.getEmail()));

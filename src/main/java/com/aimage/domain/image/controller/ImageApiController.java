@@ -20,20 +20,19 @@ public class ImageApiController {
 
     private final ImageService imageService;
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<ImageVO> saveImage(@SessionAttribute UserVO loginUser,
-                                             @RequestBody ImageResult imageResult) {
+    public ImageVO saveImage(@SessionAttribute UserVO loginUser,
+                             @RequestBody ImageResult imageResult) {
 
-        ImageVO imageResponse = imageService.save(loginUser.id(), imageResult);
-        return ResponseEntity.status(HttpStatus.OK).body(imageResponse);
+        return imageService.save(loginUser.id(), imageResult);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteImage(@SessionAttribute UserVO loginUser,
-                                      @PathVariable Long id) {
-
+    public String deleteImage(@SessionAttribute UserVO loginUser, @PathVariable Long id) {
         imageService.delete(loginUser.id(), id);
-        return ResponseEntity.status(HttpStatus.OK).body("success");
+        return "success";
     }
 
 }
