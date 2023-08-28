@@ -49,6 +49,8 @@ public class UserService {
     }
 
     public UserVO login(String email, String password) {
+        log.info("--- In UserService (login) ---");
+
         User loginUser = userRepository.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
                 .orElseThrow(() -> new AimageException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다."));

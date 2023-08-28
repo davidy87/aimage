@@ -15,10 +15,10 @@
         <div class="field-error pb-3" id="loginError" style="display: none;"></div>
 
         <div class="md-form mb-4">
-          <input type="email" class="form-control form-control-lg" id="email" th:placeholder="#{placeholder.email}">
+          <input type="email" class="form-control form-control-lg" id="email" name="email" th:placeholder="#{placeholder.email}">
         </div>
         <div class="md-form mb-4">
-          <input type="password" class="form-control form-control-lg" id="password" th:placeholder="#{placeholder.password}">
+          <input type="password" class="form-control form-control-lg" id="password" name="password" th:placeholder="#{placeholder.password}">
           <p class="font-small blue-text d-flex justify-content-end">
             <a th:href="@{/pw-inquiry}" class="blue-text ml-1" th:text="#{login.info.forgot}"></a>
           </p>

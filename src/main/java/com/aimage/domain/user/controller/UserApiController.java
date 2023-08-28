@@ -35,6 +35,8 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public UserVO login(@RequestBody Login loginForm, HttpServletRequest request) {
+        log.info("--- In UserApiController (login) ---");
+
         UserVO loginUser = userService.login(loginForm.getEmail(), loginForm.getPassword());
 
         // 사용자 확인 성공 시, 세션에 저장
