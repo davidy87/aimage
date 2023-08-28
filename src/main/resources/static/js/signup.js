@@ -34,7 +34,7 @@ function onSignup() {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
+            if (xhr.status === 201) {
                 var result = xhr.response;
                 alert("회원가입이 완료되었습니다.");
                 window.location.replace('/');
