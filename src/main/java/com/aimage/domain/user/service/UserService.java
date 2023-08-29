@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,6 +32,8 @@ public class UserService {
 
     private final ImageRepository imageRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     public UserVO join(Signup signupDto) {
         // 비밀번호 재입력 일치 확인
         if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
@@ -40,7 +43,7 @@ public class UserService {
         User user = User.builder()
                 .username(signupDto.getUsername())
                 .email(signupDto.getEmail())
-                .password(signupDto.getPassword())
+                .password(passwordEncoder.encode(signupDto.getPassword()))
                 .build();
 
         userRepository.save(user);

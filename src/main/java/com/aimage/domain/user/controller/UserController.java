@@ -1,6 +1,8 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.user.dto.UserDto;
+import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.constant.SessionConst;
@@ -10,10 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import static com.aimage.constant.SessionConst.LOGIN_USER;
 import static com.aimage.domain.image.dto.ImageDto.*;
 
 @Slf4j
@@ -57,27 +62,27 @@ public class UserController {
     }
 
     @GetMapping("/user-info")
-    public String userInfo(@SessionAttribute(required = false) UserVO loginUser, Model model) {
+    public String userInfo() {
         return "user/user-info";
     }
 
     @GetMapping("/my-gallery")
-    public String myGallery(@SessionAttribute(required = false) UserVO loginUser,
+    public String myGallery(@AuthenticationPrincipal User loginUser,
                             Pageable pageable,
                             Model model) {
 
-        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.id(), pageable);
+        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.getId(), pageable);
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
         return "user/my-gallery";
     }
 
     @GetMapping("/my-gallery/details")
-    public String showImageDetails(@SessionAttribute(required = false) UserVO loginUser,
+    public String showImageDetails(@AuthenticationPrincipal User loginUser,
                                    @RequestParam Long imageId,
                                    Model model) {
 
-        ImageVO image = userService.findByOwnerIdAndImageId(loginUser.id(), imageId);
+        ImageVO image = userService.findByOwnerIdAndImageId(loginUser.getId(), imageId);
         model.addAttribute("image", image);
 
         return "features/image-details";

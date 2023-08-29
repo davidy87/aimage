@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-light" th:fragment="navbar">
   <div class="container">
@@ -21,8 +22,8 @@
         </li>
       </ul>
 
-      <div class="d-flex dropdown" th:if="${session.loginUser != null}">
-        <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" th:text="${session.loginUser.username}" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class="d-flex dropdown" sec:authorize="isAuthenticated()">
+        <button class="btn btn-info btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" sec:authentication="name" data-bs-toggle="dropdown" aria-expanded="false">
           USERNAME
         </button>
 
@@ -38,15 +39,7 @@
         </ul>
       </div>
 
-      <div class="d-flex" th:if="${session.loginUser == null}">
-<!--        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#loginModal">-->
-<!--          <span>Log in</span>-->
-<!--        </button>-->
-
-<!--        <button class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#signupModal">-->
-<!--          <span>Sign up</span>-->
-<!--        </button>-->
-
+      <div class="d-flex" sec:authorize="isAnonymous()">
         <button class="btn btn-secondary" th:onclick="|location.href='@{/login}'|" th:text="#{login.header}"></button>
         <button class="btn btn-primary ms-3" th:onclick="|location.href='@{/signup}'|" th:text="#{signup.header}"></button>
       </div>

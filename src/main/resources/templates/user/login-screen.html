@@ -11,7 +11,7 @@
     </div>
 
     <div class="container">
-      <form>
+      <form class="form-login" th:action="@{/login}" method="post">
         <div class="field-error pb-3" id="loginError" style="display: none;"></div>
 
         <div class="md-form mb-4">
@@ -28,7 +28,8 @@
             <button type="button" onclick="location.href='/'" class="btn btn-secondary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{button.cancel}">Cancel</button>
           </div>
           <div class="col text-center mb-3 py-3">
-            <button type="button" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" onclick="onLogin()" th:text="#{login.header}">Login</button>
+            <button type="submit" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect"th:text="#{login.header}">Login</button>
+<!--            <button type="button" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" onclick="onLogin()" th:text="#{login.header}">Login</button>-->
           </div>
         </div>
       </form>
@@ -49,6 +50,6 @@
       </p>
     </div>
   </div>
-  <script th:src="@{/js/login.js}"></script>
+<!--  <script th:src="@{/js/login.js}"></script>-->
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:insert="~{fragment/head :: head}">
   <title>Online AI Image Generator - AImage</title>
 </head>
@@ -18,12 +18,15 @@
             <p class="text-muted" th:text="#{home.summary}">Summary</p>
           </h5>
 
-          <div th:if="${user == null}">
+          <div sec:authorize="isAnonymous()">
             <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal" th:href="@{/}" th:text="#{home.generateButton}">Generate</a>
             <div th:insert="~{user/loginSuggestModal :: copy}"></div>
           </div>
 
-          <a class="btn btn-primary" th:href="@{/generator}" th:if="${user != null}" th:utext="#{home.generateButton}"></a>
+          <div sec:authorize="isAuthenticated()">
+            <a class="btn btn-primary" th:href="@{/generator}" th:utext="#{home.generateButton}"></a>
+          </div>
+
         </div>
         <div class="col-lg-6 py-5">
           <img th:src="@{/images/ai_image.jpeg}" alt="Image" class="img-fluid">

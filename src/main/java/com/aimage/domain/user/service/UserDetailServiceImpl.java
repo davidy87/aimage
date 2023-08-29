@@ -1,5 +1,6 @@
 package com.aimage.domain.user.service;
 
+import com.aimage.domain.user.dto.UserVO;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
