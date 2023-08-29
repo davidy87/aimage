@@ -38,18 +38,6 @@ public class UserController {
         return "user/login-screen";
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            log.info("User signed out = {}", session.getAttribute(SessionConst.LOGIN_USER));
-            session.invalidate();
-        }
-
-        return "redirect:/";
-    }
-
     @GetMapping("/pw-inquiry")
     public String findPasswordForm() {
         return "user/pw-inquiry";
