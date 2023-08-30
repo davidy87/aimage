@@ -12,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,11 +57,6 @@ public class UserApiController {
     @DeleteMapping("/{id}")
     public String deleteAccount(@PathVariable Long id, HttpServletRequest request) {
         userService.deleteAccount(id);
-        HttpSession session = request.getSession(false);
-
-        if (session != null)
-            session.invalidate();
-
         return "success";
     }
 
@@ -72,12 +70,6 @@ public class UserApiController {
                                  HttpServletRequest request) {
 
         UserVO updatedUser = userService.updateUsername(id, updateUsername);
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            session.setAttribute(LOGIN_USER, updatedUser);
-        }
-
         return updatedUser;
     }
 

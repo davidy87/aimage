@@ -14,6 +14,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,6 +80,9 @@ public class UserService {
 
         userToUpdate.updateUsername(newUsername);
 
+        // 새로운 인증 생성 및 추가
+        updateAuth(userToUpdate);
+
         return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
     }
 
@@ -92,6 +98,9 @@ public class UserService {
         }
 
         userToUpdate.updatePassword(newPassword);
+
+        // 새로운 인증 생성 및 추가
+        updateAuth(userToUpdate);
 
         return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
     }
@@ -117,5 +126,13 @@ public class UserService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
         return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
+    }
+
+    /**
+     * 새로운 인증 생성 및 추가
+     */
+    private void updateAuth(User updatedUser)  {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
