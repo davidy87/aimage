@@ -69,8 +69,7 @@ public class UserApiController {
                                  @Validated @RequestBody UpdateUsername updateUsername,
                                  HttpServletRequest request) {
 
-        UserVO updatedUser = userService.updateUsername(id, updateUsername);
-        return updatedUser;
+        return userService.updateUsername(id, updateUsername);
     }
 
     /**
