@@ -12,22 +12,23 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureRestDocs(outputDir = "build/generated-snippets/users")
 @WebMvcTest(UserApiController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@WithMockUser
 class UserApiControllerTest {
 
     @Autowired
@@ -72,6 +73,7 @@ class UserApiControllerTest {
         mockMvc.perform(post("/api/users")
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(print())
                 .andDo(document("signup",
@@ -112,6 +114,7 @@ class UserApiControllerTest {
         mockMvc.perform(post("/api/users/login")
                         .content(objectMapper.writeValueAsString(loginForm))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(print())
                 .andDo(document("login",
@@ -147,6 +150,7 @@ class UserApiControllerTest {
         mockMvc.perform(get("/api/users/pw-inquiry")
                         .content(objectMapper.writeValueAsString(pwInquiry))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(document("pw-inquiry",
                         preprocessRequest(prettyPrint()),
@@ -185,6 +189,7 @@ class UserApiControllerTest {
         mockMvc.perform(put(uri)
                         .content(objectMapper.writeValueAsString(updatePassword))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(document("new-pw",
                         preprocessRequest(prettyPrint()),
@@ -220,6 +225,7 @@ class UserApiControllerTest {
         mockMvc.perform(put(uri)
                         .content(objectMapper.writeValueAsString(updateUsername))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(document("new-username",
                         preprocessRequest(prettyPrint()),
@@ -250,6 +256,7 @@ class UserApiControllerTest {
         // When & Then
         mockMvc.perform(delete(uri)
                         .contentType(MediaType.TEXT_PLAIN)
+                        .with(csrf())
                 )
                 .andDo(document("delete-account",
                         preprocessRequest(prettyPrint()),

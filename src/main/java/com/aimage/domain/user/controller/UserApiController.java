@@ -3,22 +3,14 @@ package com.aimage.domain.user.controller;
 import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.domain.user.dto.UserVO;
-import com.aimage.constant.SessionConst;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import static com.aimage.constant.SessionConst.*;
 import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
@@ -37,7 +29,7 @@ public class UserApiController {
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public UserVO login(@RequestBody Login loginForm, HttpServletRequest request) {
+    public UserVO login(@RequestBody Login loginForm) {
         return userService.login(loginForm.getEmail(), loginForm.getPassword());
     }
 
@@ -55,7 +47,7 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public String deleteAccount(@PathVariable Long id, HttpServletRequest request) {
+    public String deleteAccount(@PathVariable Long id) {
         userService.deleteAccount(id);
         return "success";
     }
@@ -66,8 +58,7 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
     public UserVO updateUsername(@PathVariable Long id,
-                                 @Validated @RequestBody UpdateUsername updateUsername,
-                                 HttpServletRequest request) {
+                                 @Validated @RequestBody UpdateUsername updateUsername) {
 
         return userService.updateUsername(id, updateUsername);
     }

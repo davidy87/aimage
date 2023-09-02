@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +38,8 @@ public class UserService {
     private final ImageRepository imageRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final SessionRegistry sessionRegistry;
 
     public UserVO join(Signup signupDto) {
         // 비밀번호 재입력 일치 확인
@@ -108,6 +112,14 @@ public class UserService {
     public void deleteAccount(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AimageException("이미 존재하지 않는 사용자 입니다."));
+
+        // Spring Security session 삭제
+        sessionRegistry.getAllPrincipals()
+                .stream()
+                .filter(p -> p instanceof User prncp && prncp.getId().equals(userId))
+                .forEach(p -> sessionRegistry.getAllSessions(p, false)
+                        .forEach(SessionInformation::expireNow)
+                );
 
         userRepository.delete(user);
     }
