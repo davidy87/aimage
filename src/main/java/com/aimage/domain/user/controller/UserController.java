@@ -34,7 +34,11 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm() {
+    public String loginForm(@RequestParam(required = false) boolean error, Model model) {
+        if (error) {
+            model.addAttribute("loginError", "이메일 또는 비밀번호가 일치하지 않습니다.");
+        }
+
         return "user/login-screen";
     }
 

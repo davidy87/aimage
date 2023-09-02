@@ -14,6 +14,10 @@
       <form class="form-login" th:action="@{/login}" method="post">
         <div class="field-error pb-3" id="loginError" style="display: none;"></div>
 
+        <div class="field-error pb-3" th:if="${loginError} != null">
+          <p th:text="${loginError}"></p>
+        </div>
+
         <div class="md-form mb-4">
           <input type="email" class="form-control form-control-lg" id="email" name="email" th:placeholder="#{placeholder.email}">
         </div>
