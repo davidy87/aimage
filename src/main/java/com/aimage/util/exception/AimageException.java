@@ -1,4 +1,4 @@
-package com.aimage.web.exception;
+package com.aimage.util.exception;
 
 import lombok.Getter;
 
@@ -18,4 +18,8 @@ public class AimageException extends RuntimeException {
         this.message = message;
     }
 
+    public AimageException(ErrorCode errorCode) {
+        this.field = errorCode.getField();
+        this.message = errorCode.getMessage();
+    }
 }

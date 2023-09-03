@@ -6,7 +6,7 @@ import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.domain.user.dto.UserVO;
-import com.aimage.web.exception.AimageException;
+import com.aimage.util.exception.AimageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static com.aimage.constant.PageConst.PAGE_SIZE;
 import static com.aimage.domain.user.dto.UserDto.*;
+import static com.aimage.util.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -44,7 +45,7 @@ public class UserService {
     public UserVO join(Signup signupDto) {
         // 비밀번호 재입력 일치 확인
         if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
-            throw new AimageException("confirmPassword", "비밀번호를 다시 확인해주세요.");
+            throw new AimageException(CONFIRM_PASSWORD);
         }
 
         User user = User.builder()
@@ -63,14 +64,14 @@ public class UserService {
 
         User loginUser = userRepository.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
-                .orElseThrow(() -> new AimageException("loginError", "이메일 또는 비밀번호를 잘못 입력했습니다."));
+                .orElseThrow(() -> new AimageException(LOGIN_ERROR));
 
         return new UserVO(loginUser.getId(), loginUser.getUsername(), loginUser.getEmail());
     }
 
     public UserVO findUserToResetPw(String email) {
         User userFound = userRepository.findByEmail(email)
-                .orElseThrow(() -> new AimageException("pwInquiry", "계정을 찾을 수 없습니다."));
+                .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
         log.info("User found = {}", userFound);
         return new UserVO(userFound.getId(), userFound.getUsername(), userFound.getEmail());
@@ -80,7 +81,7 @@ public class UserService {
         String newUsername = updateUsername.getUsername();
         User userToUpdate = userRepository.findById(id)
                 .filter(user -> !user.getUsername().equals(newUsername))
-                .orElseThrow(() -> new AimageException("usernameUpdate", "닉네임이 이전과 같습니다."));
+                .orElseThrow(() -> new AimageException(USERNAME_UPDATE_FAILED));
 
         userToUpdate.updateUsername(newUsername);
 
@@ -95,10 +96,10 @@ public class UserService {
         String confirmPassword = updatePassword.getConfirmPassword();
 
         User userToUpdate = userRepository.findById(userId)
-                .orElseThrow(() -> new AimageException("pwInquiry", "계정을 찾을 수 없습니다."));
+                .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
         if (!newPassword.equals(confirmPassword)) {
-            throw new AimageException("confirmPassword", "비밀번호를 다시 확인해주세요.");
+            throw new AimageException(CONFIRM_PASSWORD);
         }
 
         userToUpdate.updatePassword(newPassword);
@@ -111,7 +112,7 @@ public class UserService {
 
     public void deleteAccount(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new AimageException("이미 존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new AimageException(USER_ALREADY_NOT_EXIST));
 
         // Spring Security session 삭제
         sessionRegistry.getAllPrincipals()

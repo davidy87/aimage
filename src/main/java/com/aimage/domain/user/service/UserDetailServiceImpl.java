@@ -1,11 +1,9 @@
 package com.aimage.domain.user.service;
 
-import com.aimage.domain.user.dto.UserVO;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -23,7 +21,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         log.info("email = {}", email);
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 계정입니다."));
 
         log.info("User found = {}", user);
 

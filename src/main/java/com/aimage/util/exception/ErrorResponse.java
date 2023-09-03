@@ -1,4 +1,4 @@
-package com.aimage.web.exception;
+package com.aimage.util.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

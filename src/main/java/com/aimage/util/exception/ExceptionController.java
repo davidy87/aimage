@@ -1,4 +1,4 @@
-package com.aimage.web.exception;
+package com.aimage.util.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,9 @@ public class ExceptionController {
     @ResponseBody
     @ExceptionHandler
     public ResponseEntity aimageExceptionHandler(AimageException e) {
-        log.info("In aimageExceptionHandler");
+        log.info("--- In aimageExceptionHandler ---");
+        log.info("Error field: {}", e.getField());
+        log.info("Error message: {}", e.getMessage());
 
         List<ErrorResponse> errorResponseList = new ArrayList<>();
         errorResponseList.add(new ErrorResponse(e.getField(), e.getMessage()));

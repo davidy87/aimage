@@ -1,6 +1,6 @@
-package com.aimage.web.config;
+package com.aimage.util.config;
 
-import com.aimage.web.auth.AuthFailureHandler;
+import com.aimage.util.auth.AuthFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,8 +71,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SessionInformationExpiredStrategy expireStrategy() {
+    public SessionInformationExpiredStrategy expireStrategy() {
         return new SimpleRedirectSessionInformationExpiredStrategy("/");
     }
-
 }

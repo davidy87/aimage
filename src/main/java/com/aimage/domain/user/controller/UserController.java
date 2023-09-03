@@ -1,25 +1,19 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.image.dto.ImageVO;
-import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
-import com.aimage.domain.user.dto.UserVO;
-import com.aimage.constant.SessionConst;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import static com.aimage.constant.SessionConst.LOGIN_USER;
 import static com.aimage.domain.image.dto.ImageDto.*;
+import static com.aimage.util.exception.ErrorCode.*;
 
 @Slf4j
 @Controller
@@ -36,7 +30,7 @@ public class UserController {
     @GetMapping("/login")
     public String loginForm(@RequestParam(required = false) boolean error, Model model) {
         if (error) {
-            model.addAttribute("loginError", "이메일 또는 비밀번호가 일치하지 않습니다.");
+            model.addAttribute(LOGIN_ERROR.getField(), LOGIN_ERROR.getMessage());
         }
 
         return "user/login-screen";

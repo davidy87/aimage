@@ -5,7 +5,7 @@ import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.web.exception.AimageException;
+import com.aimage.util.exception.AimageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static com.aimage.constant.PageConst.PAGE_SIZE;
 import static com.aimage.domain.image.dto.ImageDto.*;
+import static com.aimage.util.exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -32,7 +33,7 @@ public class ImageService {
 
     public ImageVO save(Long userId, ImageResult imageResult) {
         User owner = userRepository.findById(userId)
-                .orElseThrow(() -> new AimageException("이미지 저장에 실패했습니다."));
+                .orElseThrow(() -> new AimageException(IMAGE_SAVE_FAILED));
 
         Image image = Image.builder()
                 .prompt(imageResult.getPrompt())
@@ -53,7 +54,7 @@ public class ImageService {
 
     public ImageVO findImageById(Long imageId) {
         Image image = imageRepository.findById(imageId)
-                .orElseThrow(() -> new AimageException("이미지를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AimageException(IMAGE_NOT_FOUND));
 
         return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
     }
@@ -68,10 +69,10 @@ public class ImageService {
 
     public void delete(Long ownerId, Long imageId) {
         User owner = userRepository.findById(ownerId).orElseThrow(() ->
-                new AimageException("이미지를 삭제할 수 없습니다."));
+                new AimageException(IMAGE_DELETE_FAILED));
 
         Image imageToDelete = imageRepository.findById(imageId).orElseThrow(() ->
-                new AimageException("이미 존재하지 않는 이미지입니다."));
+                new AimageException(IMAGE_ALREADY_NOT_EXIST));
 
         imageToDelete.setOwner(null);
         imageRepository.delete(imageToDelete);
