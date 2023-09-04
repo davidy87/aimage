@@ -1,6 +1,5 @@
 package com.aimage.util.config;
 
-import com.aimage.util.auth.AuthFailureHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +19,11 @@ import org.springframework.security.web.session.SimpleRedirectSessionInformation
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final AuthenticationFailureHandler authFailureHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String[] blacklist = {"/generator", "/result", "/userInfo", "/my-gallery/**"};
+        String[] blacklist = {"/generator", "/result", "/user-info", "/my-gallery/**"};
 
         http.csrf(csrf -> csrf.disable());
 
@@ -37,7 +38,7 @@ public class SecurityConfig {
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .defaultSuccessUrl("/", true)
-                        .failureHandler(authenticationFailureHandler())
+                        .failureHandler(authFailureHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -58,11 +59,6 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationFailureHandler authenticationFailureHandler() {
-        return new AuthFailureHandler();
     }
 
     @Bean

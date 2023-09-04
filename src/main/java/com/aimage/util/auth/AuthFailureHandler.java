@@ -1,28 +1,26 @@
 package com.aimage.util.auth;
 
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-@Slf4j
-public class AuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+@Component
+public class AuthFailureHandler implements AuthenticationFailureHandler {
 
     private static final String ERROR_PATH = "/login?error=true";
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request,
                                         HttpServletResponse response,
-                                        AuthenticationException exception) throws IOException, ServletException {
+                                        AuthenticationException exception) throws IOException {
 
         if (exception instanceof BadCredentialsException) {
-            setDefaultFailureUrl(ERROR_PATH);
-            super.onAuthenticationFailure(request, response, exception);
+            response.sendRedirect(ERROR_PATH);
         }
     }
 }
