@@ -1,9 +1,11 @@
 package com.aimage.domain.image.controller;
 
 import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.image.service.ImageService;
 import com.aimage.domain.user.dto.UserVO;
 import com.aimage.domain.user.entity.User;
+import com.aimage.domain.image.entity.Image;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static com.aimage.domain.image.dto.ImageDto.*;
@@ -23,6 +28,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -41,37 +47,40 @@ class ImageApiControllerTest {
     @Autowired
     ObjectMapper om;
 
-    static MockHttpSession session;
-
+    static User testOwner;
 
     @BeforeAll
     static void createSession() {
-        session = new MockHttpSession();
-        User user = User.builder()
+        testOwner = User.builder()
+                .id(1L)
                 .username("tester")
                 .email("test@gmail.com")
                 .build();
-
-        session.setAttribute("loginUser", new UserVO(user.getId(), user.getUsername(), user.getEmail()));
     }
 
     @Test
     @Order(1)
     void saveImage() throws Exception {
         // Given
-        Long userId = ((UserVO) session.getAttribute("loginUser")).id();
-        String username = ((UserVO) session.getAttribute("loginUser")).username();
         ImageResult imageResult = new ImageResult("This is a test image", "256X256", "image.png");
-        ImageVO imageResponse = new ImageVO(1L, imageResult.getPrompt(), imageResult.getUrl(), username);
+        Image image = Image.builder()
+                .id(1L)
+                .prompt(imageResult.getPrompt())
+                .size(imageResult.getSize())
+                .url(imageResult.getUrl())
+                .build();
 
-        given(imageService.save(eq(userId), any(ImageResult.class)))
-                .willReturn(imageResponse);
+        image.setOwner(testOwner);
+
+        given(imageService.save(eq(testOwner.getId()), any(ImageResult.class)))
+                .willReturn(new ImageVO(image));
 
         // When & Then
         mockMvc.perform(post("/api/images")
-                        .session(session)
+                        .with(SecurityMockMvcRequestPostProcessors.user(testOwner))
                         .content(om.writeValueAsString(imageResult))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(document("new-image",
                         preprocessRequest(prettyPrint()),
@@ -85,24 +94,25 @@ class ImageApiControllerTest {
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("이미지 ID"),
                                 fieldWithPath("prompt").type(JsonFieldType.STRING).description("이미지 설명"),
                                 fieldWithPath("url").type(JsonFieldType.STRING).description("이미지 URL"),
-                                fieldWithPath("ownerName").type(JsonFieldType.STRING).description("이미지 소유자 닉네임")
+                                fieldWithPath("owner").type(JsonFieldType.STRING).description("이미지 소유자 닉네임")
                         ))
                 )
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("prompt").value(imageResponse.prompt()))
-                .andExpect(jsonPath("url").value(imageResponse.url()))
-                .andExpect(jsonPath("ownerName").value(imageResponse.ownerName()));
+                .andExpect(jsonPath("prompt").value(image.getPrompt()))
+                .andExpect(jsonPath("url").value(image.getUrl()))
+                .andExpect(jsonPath("owner").value(testOwner.getUsername()));
     }
 
     @Test
     @Order(2)
     void deleteImage() throws Exception {
-        Long imageId = 1L;
+        long imageId = 1L;
 
         // 요청 성공
         mockMvc.perform(delete("/api/images/" + imageId)
-                        .session(session)
+                        .with(SecurityMockMvcRequestPostProcessors.user(testOwner))
                         .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
                 )
                 .andDo(document("delete-image",
                         preprocessRequest(prettyPrint()),

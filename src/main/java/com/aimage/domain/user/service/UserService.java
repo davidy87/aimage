@@ -56,7 +56,7 @@ public class UserService {
 
         userRepository.save(user);
 
-        return new UserVO(user.getId(), user.getUsername(), user.getEmail());
+        return new UserVO(user);
     }
 
     public UserVO login(String email, String password) {
@@ -66,7 +66,7 @@ public class UserService {
                 .filter(user -> user.getPassword().equals(password))
                 .orElseThrow(() -> new AimageException(LOGIN_ERROR));
 
-        return new UserVO(loginUser.getId(), loginUser.getUsername(), loginUser.getEmail());
+        return new UserVO(loginUser);
     }
 
     public UserVO findUserToResetPw(String email) {
@@ -74,7 +74,8 @@ public class UserService {
                 .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
         log.info("User found = {}", userFound);
-        return new UserVO(userFound.getId(), userFound.getUsername(), userFound.getEmail());
+
+        return new UserVO(userFound);
     }
 
     public UserVO updateUsername(Long id, UpdateUsername updateUsername) {
@@ -88,7 +89,7 @@ public class UserService {
         // 새로운 인증 생성 및 추가
         updateAuth(userToUpdate);
 
-        return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
+        return new UserVO(userToUpdate);
     }
 
     public UserVO updatePassword(Long userId, UpdatePassword updatePassword) {
@@ -107,7 +108,7 @@ public class UserService {
         // 새로운 인증 생성 및 추가
         updateAuth(userToUpdate);
 
-        return new UserVO(userToUpdate.getId(), userToUpdate.getUsername(), userToUpdate.getEmail());
+        return new UserVO(userToUpdate);
     }
 
     public void deleteAccount(Long userId) {
@@ -115,12 +116,7 @@ public class UserService {
                 .orElseThrow(() -> new AimageException(USER_ALREADY_NOT_EXIST));
 
         // Spring Security session 삭제
-        sessionRegistry.getAllPrincipals()
-                .stream()
-                .filter(p -> p instanceof User prncp && prncp.getId().equals(userId))
-                .forEach(p -> sessionRegistry.getAllSessions(p, false)
-                        .forEach(SessionInformation::expireNow)
-                );
+        expireSession(userId);
 
         userRepository.delete(user);
     }
@@ -129,16 +125,14 @@ public class UserService {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
-        return imageRepository.findAllByOwnerId(userId, pageable)
-                .map(image ->
-                        new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));
+        return imageRepository.findAllByOwnerId(userId, pageable).map(ImageVO::new);
     }
 
     public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {
         Image image = imageRepository.findByOwnerIdAndId(userId, imageId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
+        return new ImageVO(image);
     }
 
     /**
@@ -148,4 +142,17 @@ public class UserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
+    /**
+     * Spring Security session 삭제
+     */
+    private void expireSession(Long userId) {
+        sessionRegistry.getAllPrincipals()
+                .stream()
+                .filter(p -> p instanceof User prncp && prncp.getId().equals(userId))
+                .forEach(p -> sessionRegistry.getAllSessions(p, false)
+                        .forEach(SessionInformation::expireNow)
+                );
+    }
+
 }

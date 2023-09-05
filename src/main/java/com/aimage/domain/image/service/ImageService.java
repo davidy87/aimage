@@ -44,7 +44,7 @@ public class ImageService {
         image.setOwner(owner);
         imageRepository.save(image);
 
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), owner.getUsername());
+        return new ImageVO(image);
     }
 
     public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
@@ -53,18 +53,17 @@ public class ImageService {
     }
 
     public ImageVO findImageById(Long imageId) {
-        Image image = imageRepository.findById(imageId)
+        Image imageFound = imageRepository.findById(imageId)
                 .orElseThrow(() -> new AimageException(IMAGE_NOT_FOUND));
 
-        return new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername());
+        return new ImageVO(imageFound);
     }
 
     public Page<ImageVO> findPagedImages(Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
-        return imageRepository.findAll(pageable)
-                .map(image -> new ImageVO(image.getId(), image.getPrompt(), image.getUrl(), image.getOwner().getUsername()));
+        return imageRepository.findAll(pageable).map(ImageVO::new);
     }
 
     public void delete(Long ownerId, Long imageId) {

@@ -76,11 +76,13 @@ class ImageServiceTest {
         ImageVO imageSaved = imageService.save(owner.getId(), imageResult);
 
         // When
-        ImageVO imageFound = imageService.findImageById(imageSaved.id());
+        ImageVO imageFound = imageService.findImageById(imageSaved.getId());
 
         // Then
-        assertThat(imageFound.id()).isEqualTo(imageSaved.id());
-        assertThat(imageFound).isEqualTo(imageSaved);
+        assertThat(imageFound.getId()).isEqualTo(imageSaved.getId());
+        assertThat(imageFound.getPrompt()).isEqualTo(imageSaved.getPrompt());
+        assertThat(imageFound.getUrl()).isEqualTo(imageSaved.getUrl());
+        assertThat(imageFound.getOwner()).isEqualTo(imageSaved.getOwner());
     }
 
     @Test
@@ -97,7 +99,7 @@ class ImageServiceTest {
         assertThat(pagedImages.getTotalPages()).isEqualTo(100 / 5);
     }
 
-    void saveMultipleImages() {
+    private void saveMultipleImages() {
         for (int i = 0; i < 100; i++) {
             ImageResult imageGenerated = new ImageResult("Test image", "256x256", "image.png");
             imageService.save(owner.getId(), imageGenerated);

@@ -1,6 +1,23 @@
 package com.aimage.domain.image.dto;
 
-import lombok.Builder;
+import com.aimage.domain.image.entity.Image;
 import lombok.Getter;
 
-public record ImageVO(Long id, String prompt, String url, String ownerName) {}
+@Getter
+public class ImageVO {
+
+    private final Long id;
+
+    private final String prompt;
+
+    private final String url;
+
+    private final String owner;
+
+    public ImageVO(Image image) {
+        this.id = image.getId();
+        this.prompt = image.getPrompt();
+        this.url = image.getUrl();
+        this.owner = image.getOwner().getUsername();
+    }
+}

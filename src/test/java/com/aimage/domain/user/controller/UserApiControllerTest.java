@@ -67,7 +67,7 @@ class UserApiControllerTest {
         String content = objectMapper.writeValueAsString(signupForm);
 
         given(userService.join(any(UserDto.Signup.class)))
-                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
+                .willReturn(new UserVO(testUser));
 
         // When & Then
         mockMvc.perform(post("/api/users")
@@ -108,7 +108,7 @@ class UserApiControllerTest {
                 testUser.getPassword());
 
         given(userService.login(testUser.getEmail(), testUser.getPassword()))
-                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
+                .willReturn(new UserVO(testUser));
 
         // When & Then
         mockMvc.perform(post("/api/users/login")
@@ -144,7 +144,7 @@ class UserApiControllerTest {
         // Given
         UserDto.PwInquiry pwInquiry = new UserDto.PwInquiry(testUser.getEmail());
         given(userService.findUserToResetPw(pwInquiry.getEmail()))
-                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
+                .willReturn(new UserVO(testUser));
 
         // When & Then
         mockMvc.perform(get("/api/users/pw-inquiry")
@@ -181,7 +181,7 @@ class UserApiControllerTest {
                 "testpass1234");
 
         given(userService.updatePassword(any(), any()))
-                .willReturn(new UserVO(testUser.getId(), testUser.getUsername(), testUser.getEmail()));
+                .willReturn(new UserVO(testUser));
 
         String uri = String.format("/api/users/%d/new-pw", testUser.getId());
 
@@ -216,10 +216,11 @@ class UserApiControllerTest {
     void updateUsername() throws Exception {
         // Given
         UserDto.UpdateUsername updateUsername = new UserDto.UpdateUsername("newTester");
+        testUser.updateUsername("newTester");
         String uri = String.format("/api/users/%d/new-username", testUser.getId());
 
         given(userService.updateUsername(any(), any()))
-                .willReturn(new UserVO(testUser.getId(), updateUsername.getUsername(), testUser.getEmail()));
+                .willReturn(new UserVO(testUser));
 
         // When & Then
         mockMvc.perform(put(uri)
