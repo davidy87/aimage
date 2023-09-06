@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head :: head}">
+  <title>Online AI Image Generator - AImage</title>
+</head>
+<body>
+  <header>
+    <div th:insert="~{fragment/navbar :: navbar}"></div>
+  </header>
+
+  <section>
+    <div class="text-center" style="padding: 18%;">
+      <div class="row">
+        <div class="col">
+          <img class="img-thumbnail" th:src="${image.url}">
+        </div>
+        <div class="col">
+          <div class="container p-5">
+            <p th:text="${image.prompt}">PROMPT HERE</p>
+          </div>
+          <div class="row">
+            <div class="col text-end">
+              <p><b>Owner: </b></p>
+            </div>
+            <div class="col text-start">
+              <p th:text="${image.ownerName}"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

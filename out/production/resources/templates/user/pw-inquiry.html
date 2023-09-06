@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head :: head}">
+  <title>Find Password | AImage</title>
+</head>
+<body>
+<div class="container" style="padding-top: 5%; max-width: 450px">
+  <div class="my-5">
+    <h2 class="text-center w-100" th:text="#{login.pwInquiry.header}"></h2>
+  </div>
+
+  <div class="container">
+    <form>
+<!--      <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--        <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>-->
+<!--      </div>-->
+      <div class="field-error pb-3" id="pwInquiryError" style="display: none;"></div>
+
+
+      <div class="md-form mb-4">
+        <input type="email" class="form-control form-control-lg" id="email" th:placeholder="#{placeholder.email}">
+        <div class="field-error pb-3" id="emailError" style="display: none;"></div>
+      </div>
+
+      <div class="row">
+        <div class="col text-center mb-3 py-3">
+          <button type="button" th:onclick="|location.href='@{/login}'|" class="btn btn-secondary btn-lg blue-gradient btn-block btn-rounded waves-effect" th:text="#{button.cancel}">Cancel</button>
+        </div>
+        <div class="col text-center mb-3 py-3">
+          <button type="button" class="btn btn-primary btn-lg blue-gradient btn-block btn-rounded waves-effect" onclick="onPwInquiry()" th:text="#{button.search}">Search</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+<script th:src="@{/js/pwInquiry.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragment/head :: head}">
+  <title>User Information | AImage</title>
+</head>
+
+<body style="background-color: #eee;">
+  <header>
+    <div th:insert="~{fragment/navbar :: navbar}"></div>
+  </header>
+
+  <section style="padding-top: 12%; padding-left: 20%; padding-right: 20%;">
+
+    <div id="loginUserId" sec:authentication="principal.id" style="display: none;"></div>
+
+    <div class="container px-5">
+      <div class="bg-white shadow rounded-lg d-block d-sm-flex">
+        <div class="profile-tab-nav border-right">
+          <div class="nav flex-column nav-pills nav-fill" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+            <a class="nav-link active" id="account-tab" data-bs-toggle="pill" href="#account" role="tab" aria-controls="account" aria-selected="true">
+              Info
+            </a>
+            <a class="nav-link" id="password-tab" data-bs-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false">
+              Password
+            </a>
+            <a class="nav-link" id="delete-tab" data-bs-toggle="pill" href="#delete" role="tab" aria-controls="password" aria-selected="false">
+              More
+            </a>
+          </div>
+        </div>
+
+        <div class="tab-content p-5 p-md-5 w-100" id="v-pills-tabContent">
+          <div class="tab-pane fade show active" id="account" role="tabpanel" aria-labelledby="account-tab">
+            <h3 class="mb-5" th:text="#{header.accountInfo}">Account Information</h3>
+
+            <p class="field-error" id="usernameUpdateError" style="display: none;"></p>
+            <div class="row">
+              <div class="col">
+                <label th:text="#{label.username}">Username</label>
+                <input type="text" class="form-control" id="nameInput" th:value=${#authentication.name} disabled>
+              </div>
+
+              <div class="col-6">
+                <div class="py-4" id="editDiv">
+                  <button class="btn btn-primary" id="editBtn" th:text="#{button.edit}">Edit</button>
+                </div>
+
+                <div class="py-4" id="updateDiv" style="display: none;">
+                  <button class="btn btn-primary" id="updateBtn" th:text="#{button.update}">Update</button>
+                  <button class="btn btn-secondary" id="cancelBtn" th:text="#{button.cancel}">Cancel</button>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row py-4">
+              <div class="col-6">
+                <label th:text="#{label.email}">Email</label>
+                <input type="text" class="form-control" id="emailInput" th:value="${#authentication.principal.email}" disabled>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+            <h3 class="mb-5" th:text="#{header.updatePw}">Update Password</h3>
+<!--            <div class="row">-->
+<!--              <div class="col">-->
+<!--                <div class="form-group">-->
+<!--                  <label>Current password</label>-->
+<!--                  <input type="password" class="form-control">-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            <form th:object="${updatePassword}" action="#" id="updateForm" method="post">-->
+<!--              <div th:if="${#fields.hasGlobalErrors()}">-->
+<!--                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>-->
+<!--              </div>-->
+              <p class="field-error" id="pwUpdateError"></p>
+              <div class="row">
+                <div class="col-6">
+                  <label th:text="#{placeholder.newPassword}">New password</label>
+                  <input type="password" class="form-control" id="passwordInput" th:placeholder="#{placeholder.password}">
+                  <p class="field-error" id="passwordError" style="display: none;"></p>
+                </div>
+              </div>
+              <div class="row py-4">
+                <div class="col-6">
+                  <label th:text="#{placeholder.confirmPassword}">Confirm password</label>
+                  <input type="password" class="form-control" id="confirmPasswordInput" th:placeholder="#{placeholder.confirmPassword}">
+                  <p class="field-error" id="confirmPasswordError" style="display: none;"></p>
+                </div>
+              </div>
+              <div class="py-4">
+                <button type="button" class="btn btn-primary" id="pwUpdateBtn" th:text="#{button.update}">Update</button>
+              </div>
+<!--            </form>-->
+          </div>
+
+          <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">
+            <h3 class="text-danger mb-5" th:text="#{header.deleteAccount}">Delete Account</h3>
+            <div>
+              <p class="text-sm text-muted" th:text="#{warning.deleteAccount1}">
+                Once you delete your account, there is no going back. Please be certain.
+              </p>
+            </div>
+
+            <form>
+<!--              <input type="hidden" name="_method" value="delete"/>-->
+              <div class="ms-auto">
+                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" >Delete</button>
+              </div>
+
+              <!-- Modal -->
+              <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModal" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="deleteModalLabel" th:text="#{warning}">Warning</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" th:text="#{warning.deleteAccount2}">
+                      Are you sure you want to delete your account? Again, there is no going back once you delete it.
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.cancel}">Cancel</button>
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="onDeleteAccount()" th:text="#{button.delete}">Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script th:src="@{/js/accountSettings.js}"></script>
+  <script th:src="@{/js/deleteAccount.js}"></script>
+</body>
+</html>

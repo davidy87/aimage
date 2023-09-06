@@ -14,7 +14,7 @@ function onSaveImage() {
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 201) {
+                if (xhr.status === 200) {
                     var result = xhr.response;
                     alert("이미지를 저장했습니다. 갤러리를 확인해 주세요.");
                     location.replace("/generator");

@@ -1,0 +1,28 @@
+<!-- Login Suggestion modal -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade" id="loginModal" role="dialog" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" th:fragment="copy">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-center w-100" id="loginModalLabel" th:text="#{warning.header}"></h2>
+      </div>
+      <div class="modal-body m-5">
+        <div class="text-center">
+<!--          <h5>To proceed, you need to login first.</h5>-->
+<!--          <h5>Would you like to login now?</h5>-->
+          <h5 th:utext="#{warning.info}"></h5>
+          <h5 th:utext="#{warning.suggestion}"></h5>
+        </div>
+        <div class="row mb-3 pt-5">
+          <div class="col">
+            <button type="button" class="btn btn-primary btn-md blue-gradient btn-block waves-effect" data-bs-dismiss="modal" th:onclick="|location.href='@{/login}'|" th:text="#{login.header}">Login</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-secondary btn-md blue-gradient btn-block waves-effect" data-bs-dismiss="modal" th:text="#{button.cancel}">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,8 @@ public class ImageApiController {
     public ImageVO saveImage(@AuthenticationPrincipal User loginUser,
                              @RequestBody ImageResult imageResult) {
 
+        log.info("Image result = {}", imageResult);
+
         return imageService.save(loginUser.getId(), imageResult);
     }
 

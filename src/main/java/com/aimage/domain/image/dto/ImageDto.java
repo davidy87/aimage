@@ -38,6 +38,7 @@ public class ImageDto {
     }
 
     @Getter
+    @ToString
     @RequiredArgsConstructor
     public static class ImageResult {
 

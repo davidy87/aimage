@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="~{fragment/head :: head}">
+</head>
+
+<body>
+  <header>
+    <div th:insert="~{fragment/navbar :: navbar}"></div>
+  </header>
+  
+  <div class="img-container center">
+    <h2 class="prompt center" id="prompt" th:text="${imageResult.prompt}">Image Prompt</h2>
+
+    <div id="size" th:text="${imageResult.size}" style="display: none;"></div>
+
+    <img class="img-result rounded center" id="url" th:src="${imageResult.url}">
+
+    <div class="py-5">
+      <button class="btn btn-primary center" onclick="onSaveImage()" th:text="#{button.image.save}"><i class="fa fa-save"></i>갤러리에 저장</button>
+    </div>
+  </div>
+
+<script th:src="@{/js/features/result.js}"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!-- Login modal -->
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade" id="openAiErrorModal" role="dialog" tabindex="-1" th:fragment="openAiErrorModal">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body mt-5">
+        <h5 class="text-center" th:text="#{warning.openai}"></h5>
+      </div>
+
+      <div class="text-center my-4">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{button.ok}"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<div class="modal fade" id="loginModal" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true" th:fragment="copy">-->
+<!--  <div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h2 class="modal-title text-center w-100" id="loginModalLabel">Sign in</h2>-->
+<!--        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>-->
+<!--      </div>-->
+<!--      <div class="modal-footer mx-5 pt-3 mb-1">-->
+<!--        <p class="font-small grey-text text-center">Not a member? <a href="#" class="blue-text ml-1">Sign Up</a></p>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
