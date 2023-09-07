@@ -48,12 +48,8 @@ public class UserService {
             throw new AimageException(CONFIRM_PASSWORD);
         }
 
-        User user = User.builder()
-                .username(signupDto.getUsername())
-                .email(signupDto.getEmail())
-                .password(passwordEncoder.encode(signupDto.getPassword()))
-                .build();
-
+        String encodedPassword = passwordEncoder.encode(signupDto.getPassword());
+        User user = signupDto.convertToEntity(encodedPassword);
         userRepository.save(user);
 
         return new UserVO(user);
@@ -149,7 +145,7 @@ public class UserService {
     private void expireSession(Long userId) {
         sessionRegistry.getAllPrincipals()
                 .stream()
-                .filter(p -> p instanceof User prncp && prncp.getId().equals(userId))
+                .filter(p -> p instanceof User principal && principal.getId().equals(userId))
                 .forEach(p -> sessionRegistry.getAllSessions(p, false)
                         .forEach(SessionInformation::expireNow)
                 );

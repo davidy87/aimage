@@ -1,5 +1,6 @@
 package com.aimage.domain.image.dto;
 
+import com.aimage.domain.image.entity.Image;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,14 @@ public class ImageDto {
         private final String size;
 
         private final String url;
+
+        public Image convertToEntity() {
+            return Image.builder()
+                    .prompt(prompt)
+                    .size(size)
+                    .url(url)
+                    .build();
+        }
     }
 
     @Getter

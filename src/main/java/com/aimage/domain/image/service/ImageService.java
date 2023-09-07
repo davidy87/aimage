@@ -35,12 +35,7 @@ public class ImageService {
         User owner = userRepository.findById(userId)
                 .orElseThrow(() -> new AimageException(IMAGE_SAVE_FAILED));
 
-        Image image = Image.builder()
-                .prompt(imageResult.getPrompt())
-                .size(imageResult.getSize())
-                .url(imageResult.getUrl())
-                .build();
-
+        Image image = imageResult.convertToEntity();
         image.setOwner(owner);
         imageRepository.save(image);
 

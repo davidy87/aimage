@@ -1,5 +1,6 @@
 package com.aimage.domain.user.dto;
 
+import com.aimage.domain.user.entity.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,6 +28,14 @@ public class UserDto {
 
         @NotBlank(message = "{notEmpty}")
         private String confirmPassword;
+
+        public User convertToEntity(String encodedPassword) {
+            return User.builder()
+                    .username(username)
+                    .email(email)
+                    .password(encodedPassword)
+                    .build();
+        }
     }
 
     @Getter
