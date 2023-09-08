@@ -1,6 +1,6 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
@@ -31,7 +31,7 @@ public class ImageService {
 
     private final OpenAiClientService openAiClientService;
 
-    public ImageVO save(Long userId, ImageResult imageResult) {
+    public ImageResponse save(Long userId, GeneratedImage imageResult) {
         User owner = userRepository.findById(userId)
                 .orElseThrow(() -> new AimageException(IMAGE_SAVE_FAILED));
 
@@ -39,26 +39,26 @@ public class ImageService {
         image.setOwner(owner);
         imageRepository.save(image);
 
-        return new ImageVO(image);
+        return new ImageResponse(image);
     }
 
-    public ImageResult requestImageToOpenAI(ImageRequest imageRequest) {
+    public GeneratedImage requestImageToOpenAI(ImageRequest imageRequest) {
         String imageUrl = openAiClientService.requestImage(imageRequest);
-        return new ImageResult(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
+        return new GeneratedImage(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
     }
 
-    public ImageVO findImageById(Long imageId) {
+    public ImageResponse findImageById(Long imageId) {
         Image imageFound = imageRepository.findById(imageId)
                 .orElseThrow(() -> new AimageException(IMAGE_NOT_FOUND));
 
-        return new ImageVO(imageFound);
+        return new ImageResponse(imageFound);
     }
 
-    public Page<ImageVO> findPagedImages(Pageable pageable) {
+    public Page<ImageResponse> findPagedImages(Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
-        return imageRepository.findAll(pageable).map(ImageVO::new);
+        return imageRepository.findAll(pageable).map(ImageResponse::new);
     }
 
     public void delete(Long ownerId, Long imageId) {

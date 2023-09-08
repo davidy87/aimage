@@ -1,9 +1,7 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageVO;
-import com.aimage.domain.image.repository.ImageRepository;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
-import com.aimage.domain.user.dto.UserVO;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.image.entity.Image;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,10 +11,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -62,7 +57,7 @@ class ImageApiControllerTest {
     @Order(1)
     void saveImage() throws Exception {
         // Given
-        ImageResult imageResult = new ImageResult("This is a test image", "256X256", "image.png");
+        GeneratedImage imageResult = new GeneratedImage("This is a test image", "256X256", "image.png");
         Image image = Image.builder()
                 .id(1L)
                 .prompt(imageResult.getPrompt())
@@ -72,8 +67,8 @@ class ImageApiControllerTest {
 
         image.setOwner(testOwner);
 
-        given(imageService.save(eq(testOwner.getId()), any(ImageResult.class)))
-                .willReturn(new ImageVO(image));
+        given(imageService.save(eq(testOwner.getId()), any(GeneratedImage.class)))
+                .willReturn(new ImageResponse(image));
 
         // When & Then
         mockMvc.perform(post("/api/images")

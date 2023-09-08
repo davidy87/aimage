@@ -1,7 +1,5 @@
 package com.aimage.domain.user.controller;
 
-import com.aimage.domain.user.dto.UserDto;
-import com.aimage.domain.user.dto.UserVO;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +13,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static com.aimage.domain.user.dto.UserDto.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -57,7 +56,7 @@ class UserApiControllerTest {
     @DisplayName("회원가입 API 테스트")
     void signup() throws Exception {
         // Given
-        UserDto.Signup signupForm = new UserDto.Signup(
+        Signup signupForm = new Signup(
                 testUser.getUsername(),
                 testUser.getEmail(),
                 testUser.getPassword(),
@@ -66,8 +65,8 @@ class UserApiControllerTest {
 
         String content = objectMapper.writeValueAsString(signupForm);
 
-        given(userService.join(any(UserDto.Signup.class)))
-                .willReturn(new UserVO(testUser));
+        given(userService.join(any(Signup.class)))
+                .willReturn(new UserResponse(testUser));
 
         // When & Then
         mockMvc.perform(post("/api/users")
@@ -103,12 +102,12 @@ class UserApiControllerTest {
     @DisplayName("로그인 API 테스트")
     void login() throws Exception {
         // Given
-        UserDto.Login loginForm = new UserDto.Login(
+        Login loginForm = new Login(
                 testUser.getEmail(),
                 testUser.getPassword());
 
         given(userService.login(testUser.getEmail(), testUser.getPassword()))
-                .willReturn(new UserVO(testUser));
+                .willReturn(new UserResponse(testUser));
 
         // When & Then
         mockMvc.perform(post("/api/users/login")
@@ -142,9 +141,9 @@ class UserApiControllerTest {
     @DisplayName("비밀번호 변경 전 이메일 인증 API 테스트")
     void findUserToResetPw() throws Exception {
         // Given
-        UserDto.PwInquiry pwInquiry = new UserDto.PwInquiry(testUser.getEmail());
+        PwInquiry pwInquiry = new PwInquiry(testUser.getEmail());
         given(userService.findUserToResetPw(pwInquiry.getEmail()))
-                .willReturn(new UserVO(testUser));
+                .willReturn(new UserResponse(testUser));
 
         // When & Then
         mockMvc.perform(get("/api/users/pw-inquiry")
@@ -176,12 +175,12 @@ class UserApiControllerTest {
     @DisplayName("비밀번호 변경 API 테스트")
     void resetPw() throws Exception {
         // Given
-        UserDto.UpdatePassword updatePassword = new UserDto.UpdatePassword(
+        UpdatePassword updatePassword = new UpdatePassword(
                 "testpass1234",
                 "testpass1234");
 
         given(userService.updatePassword(any(), any()))
-                .willReturn(new UserVO(testUser));
+                .willReturn(new UserResponse(testUser));
 
         String uri = String.format("/api/users/%d/new-pw", testUser.getId());
 
@@ -215,12 +214,12 @@ class UserApiControllerTest {
     @DisplayName("닉네임 변경 API 테스트")
     void updateUsername() throws Exception {
         // Given
-        UserDto.UpdateUsername updateUsername = new UserDto.UpdateUsername("newTester");
+        UpdateUsername updateUsername = new UpdateUsername("newTester");
         testUser.updateUsername("newTester");
         String uri = String.format("/api/users/%d/new-username", testUser.getId());
 
         given(userService.updateUsername(any(), any()))
-                .willReturn(new UserVO(testUser));
+                .willReturn(new UserResponse(testUser));
 
         // When & Then
         mockMvc.perform(put(uri)

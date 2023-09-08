@@ -41,7 +41,7 @@ public class ImageDto {
     @Getter
     @ToString
     @RequiredArgsConstructor
-    public static class ImageResult {
+    public static class GeneratedImage {
 
         private final String prompt;
 
@@ -65,9 +65,9 @@ public class ImageDto {
 
         private final int pageEnd;
 
-        private final Page<ImageVO> images;
+        private final Page<ImageResponse> images;
 
-        public PagedImages(Page<ImageVO> savedImages) {
+        public PagedImages(Page<ImageResponse> savedImages) {
             int number = savedImages.getNumber();
             int size = savedImages.getSize();
             int totalPage = savedImages.getTotalPages();
@@ -78,4 +78,22 @@ public class ImageDto {
         }
     }
 
+    @Getter
+    public static class ImageResponse {
+
+        private final Long id;
+
+        private final String prompt;
+
+        private final String url;
+
+        private final String owner;
+
+        public ImageResponse(Image image) {
+            this.id = image.getId();
+            this.prompt = image.getPrompt();
+            this.url = image.getUrl();
+            this.owner = image.getOwner().getUsername();
+        }
+    }
 }

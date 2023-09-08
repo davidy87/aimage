@@ -1,11 +1,10 @@
 package com.aimage.domain.user.service;
 
-import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
+import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.domain.user.dto.UserVO;
 import com.aimage.util.exception.AimageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import static com.aimage.constant.PageConst.PAGE_SIZE;
+import static com.aimage.domain.image.dto.ImageDto.*;
 import static com.aimage.domain.user.dto.UserDto.*;
 import static com.aimage.util.exception.ErrorCode.*;
 
@@ -42,7 +42,7 @@ public class UserService {
 
     private final SessionRegistry sessionRegistry;
 
-    public UserVO join(Signup signupDto) {
+    public UserResponse join(Signup signupDto) {
         // 비밀번호 재입력 일치 확인
         if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
             throw new AimageException(CONFIRM_PASSWORD);
@@ -52,29 +52,29 @@ public class UserService {
         User user = signupDto.convertToEntity(encodedPassword);
         userRepository.save(user);
 
-        return new UserVO(user);
+        return new UserResponse(user);
     }
 
-    public UserVO login(String email, String password) {
+    public UserResponse login(String email, String password) {
         log.info("--- In UserService (login) ---");
 
         User loginUser = userRepository.findByEmail(email)
                 .filter(user -> user.getPassword().equals(password))
                 .orElseThrow(() -> new AimageException(LOGIN_ERROR));
 
-        return new UserVO(loginUser);
+        return new UserResponse(loginUser);
     }
 
-    public UserVO findUserToResetPw(String email) {
+    public UserResponse findUserToResetPw(String email) {
         User userFound = userRepository.findByEmail(email)
                 .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
         log.info("User found = {}", userFound);
 
-        return new UserVO(userFound);
+        return new UserResponse(userFound);
     }
 
-    public UserVO updateUsername(Long id, UpdateUsername updateUsername) {
+    public UserResponse updateUsername(Long id, UpdateUsername updateUsername) {
         String newUsername = updateUsername.getUsername();
         User userToUpdate = userRepository.findById(id)
                 .filter(user -> !user.getUsername().equals(newUsername))
@@ -85,10 +85,10 @@ public class UserService {
         // 새로운 인증 생성 및 추가
         updateAuth(userToUpdate);
 
-        return new UserVO(userToUpdate);
+        return new UserResponse(userToUpdate);
     }
 
-    public UserVO updatePassword(Long userId, UpdatePassword updatePassword) {
+    public UserResponse updatePassword(Long userId, UpdatePassword updatePassword) {
         String newPassword = updatePassword.getPassword();
         String confirmPassword = updatePassword.getConfirmPassword();
 
@@ -104,7 +104,7 @@ public class UserService {
         // 새로운 인증 생성 및 추가
         updateAuth(userToUpdate);
 
-        return new UserVO(userToUpdate);
+        return new UserResponse(userToUpdate);
     }
 
     public void deleteAccount(Long userId) {
@@ -117,18 +117,18 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public Page<ImageVO> findSavedImages(Long userId, Pageable pageable) {
+    public Page<ImageResponse> findSavedImages(Long userId, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
         pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
 
-        return imageRepository.findAllByOwnerId(userId, pageable).map(ImageVO::new);
+        return imageRepository.findAllByOwnerId(userId, pageable).map(ImageResponse::new);
     }
 
-    public ImageVO findByOwnerIdAndImageId(Long userId, Long imageId) {
+    public ImageResponse findByOwnerIdAndImageId(Long userId, Long imageId) {
         Image image = imageRepository.findByOwnerIdAndId(userId, imageId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
 
-        return new ImageVO(image);
+        return new ImageResponse(image);
     }
 
     /**

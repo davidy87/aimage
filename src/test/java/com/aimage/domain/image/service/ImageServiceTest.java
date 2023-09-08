@@ -1,6 +1,6 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
@@ -49,7 +49,7 @@ class ImageServiceTest {
     @Order(1)
     void save() {
         // Given
-        ImageResult imageResult = new ImageResult(
+        GeneratedImage imageResult = new GeneratedImage(
                 "Spring",
                 "256x256",
                 "image.png");
@@ -68,15 +68,15 @@ class ImageServiceTest {
     @Test
     void findImageById() {
         // Given
-        ImageResult imageResult = new ImageResult(
+        GeneratedImage imageResult = new GeneratedImage(
                 "Spring",
                 "256x256",
                 "image.png");
 
-        ImageVO imageSaved = imageService.save(owner.getId(), imageResult);
+        ImageResponse imageSaved = imageService.save(owner.getId(), imageResult);
 
         // When
-        ImageVO imageFound = imageService.findImageById(imageSaved.getId());
+        ImageResponse imageFound = imageService.findImageById(imageSaved.getId());
 
         // Then
         assertThat(imageFound.getId()).isEqualTo(imageSaved.getId());
@@ -92,7 +92,7 @@ class ImageServiceTest {
         Pageable pageable = PageRequest.of(0, 5);
 
         // When
-        Page<ImageVO> pagedImages = imageService.findPagedImages(pageable);
+        Page<ImageResponse> pagedImages = imageService.findPagedImages(pageable);
 
         // Then
         assertThat(pagedImages.getTotalElements()).isEqualTo(100);
@@ -101,7 +101,7 @@ class ImageServiceTest {
 
     private void saveMultipleImages() {
         for (int i = 0; i < 100; i++) {
-            ImageResult imageGenerated = new ImageResult("Test image", "256x256", "image.png");
+            GeneratedImage imageGenerated = new GeneratedImage("Test image", "256x256", "image.png");
             imageService.save(owner.getId(), imageGenerated);
         }
     }
@@ -109,7 +109,7 @@ class ImageServiceTest {
     @Test
     void delete() {
         // Given
-        ImageResult imageResult = new ImageResult(
+        GeneratedImage imageResult = new GeneratedImage(
                 "Spring",
                 "256x256",
                 "image.png");

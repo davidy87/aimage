@@ -1,6 +1,5 @@
 package com.aimage.domain.user.controller;
 
-import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +56,7 @@ public class UserController {
                             Pageable pageable,
                             Model model) {
 
-        Page<ImageVO> savedImages = userService.findSavedImages(loginUser.getId(), pageable);
+        Page<ImageResponse> savedImages = userService.findSavedImages(loginUser.getId(), pageable);
         model.addAttribute("pagedImages", new PagedImages(savedImages));
 
         return "user/my-gallery";
@@ -68,7 +67,7 @@ public class UserController {
                                    @RequestParam Long imageId,
                                    Model model) {
 
-        ImageVO image = userService.findByOwnerIdAndImageId(loginUser.getId(), imageId);
+        ImageResponse image = userService.findByOwnerIdAndImageId(loginUser.getId(), imageId);
         model.addAttribute("image", image);
 
         return "features/image-details";

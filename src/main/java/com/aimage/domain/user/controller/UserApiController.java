@@ -1,8 +1,6 @@
 package com.aimage.domain.user.controller;
 
-import com.aimage.domain.image.dto.ImageVO;
 import com.aimage.domain.user.service.UserService;
-import com.aimage.domain.user.dto.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static com.aimage.domain.image.dto.ImageDto.*;
 import static com.aimage.domain.user.dto.UserDto.*;
 
 @Slf4j
@@ -23,13 +22,13 @@ public class UserApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserVO signup(@Validated @RequestBody Signup signupForm) {
+    public UserResponse signup(@Validated @RequestBody Signup signupForm) {
         return userService.join(signupForm);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public UserVO login(@RequestBody Login loginForm) {
+    public UserResponse login(@RequestBody Login loginForm) {
         return userService.login(loginForm.getEmail(), loginForm.getPassword());
     }
 
@@ -38,7 +37,7 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pw-inquiry")
-    public UserVO identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
+    public UserResponse identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
         return userService.findUserToResetPw(pwInquiry.getEmail());
     }
 
@@ -57,8 +56,8 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
-    public UserVO updateUsername(@PathVariable Long id,
-                                 @Validated @RequestBody UpdateUsername updateUsername) {
+    public UserResponse updateUsername(@PathVariable Long id,
+                                               @Validated @RequestBody UpdateUsername updateUsername) {
 
         return userService.updateUsername(id, updateUsername);
     }
@@ -68,8 +67,8 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-pw")
-    public UserVO resetPw(@PathVariable Long id,
-                          @Validated @RequestBody UpdatePassword updatePassword) {
+    public UserResponse resetPw(@PathVariable Long id,
+                                        @Validated @RequestBody UpdatePassword updatePassword) {
 
         return userService.updatePassword(id, updatePassword);
     }
@@ -79,7 +78,7 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/images")
-    public Page<ImageVO> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
+    public Page<ImageResponse> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
         return userService.findSavedImages(id, pageable);
     }
 }

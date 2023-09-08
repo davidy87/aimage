@@ -1,14 +1,12 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,7 +37,7 @@ public class ImageController {
             return "features/generator";
         }
 
-        ImageResult imageResult = imageService.requestImageToOpenAI(imageRequest);
+        GeneratedImage imageResult = imageService.requestImageToOpenAI(imageRequest);
         model.addAttribute("imageResult", imageResult);
 
         log.info("Image generated: {}", imageResult);
@@ -54,7 +52,7 @@ public class ImageController {
 
     @GetMapping("/public-gallery")
     public String publicGallery(Pageable pageable, Model model) {
-        Page<ImageVO> pagedImages = imageService.findPagedImages(pageable);
+        Page<ImageResponse> pagedImages = imageService.findPagedImages(pageable);
         model.addAttribute("pagedImages", new PagedImages(pagedImages));
 
         return "features/public-gallery";
@@ -62,7 +60,7 @@ public class ImageController {
 
     @GetMapping("/public-gallery/details")
     public String imageDetails(@RequestParam Long imageId, Model model) {
-        ImageVO image = imageService.findImageById(imageId);
+        ImageResponse image = imageService.findImageById(imageId);
         model.addAttribute("image", image);
 
         return "features/image-details";

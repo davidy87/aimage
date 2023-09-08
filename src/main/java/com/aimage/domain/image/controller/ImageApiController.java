@@ -1,14 +1,12 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageVO;
+import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
-import com.aimage.domain.user.dto.UserVO;
 
 import com.aimage.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +22,8 @@ public class ImageApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ImageVO saveImage(@AuthenticationPrincipal User loginUser,
-                             @RequestBody ImageResult imageResult) {
+    public ImageResponse saveImage(@AuthenticationPrincipal User loginUser,
+                                      @RequestBody GeneratedImage imageResult) {
 
         log.info("Image result = {}", imageResult);
 
