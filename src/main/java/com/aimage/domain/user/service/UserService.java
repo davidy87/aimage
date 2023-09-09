@@ -98,7 +98,7 @@ public class UserService {
             throw new AimageException(CONFIRM_PASSWORD);
         }
 
-        userToUpdate.updatePassword(newPassword);
+        userToUpdate.updatePassword(passwordEncoder.encode(newPassword));
 
         // 새로운 인증 생성 및 추가
         updateAuth(userToUpdate);
@@ -134,7 +134,7 @@ public class UserService {
      * 새로운 인증 생성 및 추가
      */
     private void updateAuth(User updatedUser)  {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword(), null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
