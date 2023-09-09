@@ -22,13 +22,13 @@ public class UserApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserResponse signup(@Validated @RequestBody Signup signupForm) {
+    public UserResponse signup(@Validated @RequestBody SignupRequest signupForm) {
         return userService.join(signupForm);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
-    public UserResponse login(@RequestBody Login loginForm) {
+    public UserResponse login(@RequestBody LoginRequest loginForm) {
         return userService.login(loginForm);
     }
 
@@ -37,8 +37,8 @@ public class UserApiController {
      */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pw-inquiry")
-    public UserResponse identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
-        return userService.findUserToResetPw(pwInquiry);
+    public UserResponse identifyUser(@Validated @RequestBody PasswordInquiry passwordInquiry) {
+        return userService.findUserToResetPw(passwordInquiry);
     }
 
     /**
@@ -57,9 +57,9 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
     public UserResponse updateUsername(@PathVariable Long id,
-                                       @Validated @RequestBody UpdateUsername updateUsername) {
+                                       @Validated @RequestBody UsernameUpdate usernameUpdate) {
 
-        return userService.updateUsername(id, updateUsername);
+        return userService.updateUsername(id, usernameUpdate);
     }
 
     /**
@@ -68,9 +68,9 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-pw")
     public UserResponse resetPw(@PathVariable Long id,
-                                @Validated @RequestBody UpdatePassword updatePassword) {
+                                @Validated @RequestBody PasswordUpdate passwordUpdate) {
 
-        return userService.updatePassword(id, updatePassword);
+        return userService.updatePassword(id, passwordUpdate);
     }
 
     /**

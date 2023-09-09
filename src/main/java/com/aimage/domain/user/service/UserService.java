@@ -41,20 +41,20 @@ public class UserService {
 
     private final SessionRegistry sessionRegistry;
 
-    public UserResponse join(Signup signupDto) {
+    public UserResponse join(SignupRequest signupForm) {
         // 비밀번호 재입력 일치 확인
-        if (!signupDto.getPassword().equals(signupDto.getConfirmPassword())) {
+        if (!signupForm.getPassword().equals(signupForm.getConfirmPassword())) {
             throw new AimageException(CONFIRM_PASSWORD);
         }
 
-        String encodedPassword = passwordEncoder.encode(signupDto.getPassword());
-        User user = signupDto.convertToEntity(encodedPassword);
+        String encodedPassword = passwordEncoder.encode(signupForm.getPassword());
+        User user = signupForm.convertToEntity(encodedPassword);
         userRepository.save(user);
 
         return new UserResponse(user);
     }
 
-    public UserResponse login(Login loginForm) {
+    public UserResponse login(LoginRequest loginForm) {
         log.info("--- In UserService (login) ---");
 
         User loginUser = userRepository.findByEmail(loginForm.getEmail())
@@ -64,7 +64,7 @@ public class UserService {
         return new UserResponse(loginUser);
     }
 
-    public UserResponse findUserToResetPw(PwInquiry pwInquiry) {
+    public UserResponse findUserToResetPw(PasswordInquiry pwInquiry) {
         User userFound = userRepository.findByEmail(pwInquiry.getEmail())
                 .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
@@ -73,8 +73,8 @@ public class UserService {
         return new UserResponse(userFound);
     }
 
-    public UserResponse updateUsername(Long id, UpdateUsername updateUsername) {
-        String newUsername = updateUsername.getUsername();
+    public UserResponse updateUsername(Long id, UsernameUpdate usernameUpdate) {
+        String newUsername = usernameUpdate.getUsername();
         User userToUpdate = userRepository.findById(id)
                 .filter(user -> !user.getUsername().equals(newUsername))
                 .orElseThrow(() -> new AimageException(USERNAME_UPDATE_FAILED));
@@ -87,9 +87,9 @@ public class UserService {
         return new UserResponse(userToUpdate);
     }
 
-    public UserResponse updatePassword(Long userId, UpdatePassword updatePassword) {
-        String newPassword = updatePassword.getPassword();
-        String confirmPassword = updatePassword.getConfirmPassword();
+    public UserResponse updatePassword(Long userId, PasswordUpdate passwordUpdate) {
+        String newPassword = passwordUpdate.getPassword();
+        String confirmPassword = passwordUpdate.getConfirmPassword();
 
         User userToUpdate = userRepository.findById(userId)
                 .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));

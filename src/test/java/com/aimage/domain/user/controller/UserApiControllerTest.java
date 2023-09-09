@@ -56,7 +56,7 @@ class UserApiControllerTest {
     @DisplayName("회원가입 API 테스트")
     void signup() throws Exception {
         // Given
-        Signup signupForm = new Signup(
+        SignupRequest signupForm = new SignupRequest(
                 testUser.getUsername(),
                 testUser.getEmail(),
                 testUser.getPassword(),
@@ -65,7 +65,7 @@ class UserApiControllerTest {
 
         String content = objectMapper.writeValueAsString(signupForm);
 
-        given(userService.join(any(Signup.class)))
+        given(userService.join(any(SignupRequest.class)))
                 .willReturn(new UserResponse(testUser));
 
         // When & Then
@@ -102,11 +102,11 @@ class UserApiControllerTest {
     @DisplayName("로그인 API 테스트")
     void login() throws Exception {
         // Given
-        Login loginForm = new Login(
+        LoginRequest loginForm = new LoginRequest(
                 testUser.getEmail(),
                 testUser.getPassword());
 
-        given(userService.login(any(Login.class)))
+        given(userService.login(any(LoginRequest.class)))
                 .willReturn(new UserResponse(testUser));
 
         // When & Then
@@ -141,8 +141,8 @@ class UserApiControllerTest {
     @DisplayName("비밀번호 변경 전 이메일 인증 API 테스트")
     void findUserToResetPw() throws Exception {
         // Given
-        PwInquiry pwInquiry = new PwInquiry(testUser.getEmail());
-        given(userService.findUserToResetPw(any(PwInquiry.class)))
+        PasswordInquiry pwInquiry = new PasswordInquiry(testUser.getEmail());
+        given(userService.findUserToResetPw(any(PasswordInquiry.class)))
                 .willReturn(new UserResponse(testUser));
 
         // When & Then
@@ -175,7 +175,7 @@ class UserApiControllerTest {
     @DisplayName("비밀번호 변경 API 테스트")
     void resetPw() throws Exception {
         // Given
-        UpdatePassword updatePassword = new UpdatePassword(
+        PasswordUpdate passwordUpdate = new PasswordUpdate(
                 "testpass1234",
                 "testpass1234");
 
@@ -186,7 +186,7 @@ class UserApiControllerTest {
 
         // When & Then
         mockMvc.perform(put(uri)
-                        .content(objectMapper.writeValueAsString(updatePassword))
+                        .content(objectMapper.writeValueAsString(passwordUpdate))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                 )
@@ -214,7 +214,7 @@ class UserApiControllerTest {
     @DisplayName("닉네임 변경 API 테스트")
     void updateUsername() throws Exception {
         // Given
-        UpdateUsername updateUsername = new UpdateUsername("newTester");
+        UsernameUpdate usernameUpdate = new UsernameUpdate("newTester");
         testUser.updateUsername("newTester");
         String uri = String.format("/api/users/%d/new-username", testUser.getId());
 
@@ -223,7 +223,7 @@ class UserApiControllerTest {
 
         // When & Then
         mockMvc.perform(put(uri)
-                        .content(objectMapper.writeValueAsString(updateUsername))
+                        .content(objectMapper.writeValueAsString(usernameUpdate))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                 )
@@ -241,7 +241,7 @@ class UserApiControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(testUser.getId()))
-                .andExpect(jsonPath("username").value(updateUsername.getUsername()))
+                .andExpect(jsonPath("username").value(usernameUpdate.getUsername()))
                 .andExpect(jsonPath("email").value(testUser.getEmail()));
 
     }

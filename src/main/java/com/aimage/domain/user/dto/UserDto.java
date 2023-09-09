@@ -13,7 +13,7 @@ public class UserDto {
     @Getter
     @ToString
     @AllArgsConstructor
-    public static class Signup {
+    public static class SignupRequest {
 
         @NotBlank(message = "{notEmpty}")
         private String username;
@@ -41,7 +41,7 @@ public class UserDto {
     @Getter
     @ToString
     @AllArgsConstructor
-    public static class Login {
+    public static class LoginRequest {
 
         private String email;
 
@@ -50,29 +50,29 @@ public class UserDto {
 
     @Getter
     @AllArgsConstructor
-    public static class PwInquiry {
+    public static class PasswordInquiry {
 
         @NotBlank(message = "{notEmpty}")
         private String email;
 
-        public PwInquiry() {}
+        public PasswordInquiry() {}
     }
 
     @Getter
     @ToString
     @AllArgsConstructor
-    public static class UpdateUsername {
+    public static class UsernameUpdate {
 
         @NotBlank(message = "{notEmpty}")
         private String username;
 
-        public UpdateUsername() {}
+        public UsernameUpdate() {}
     }
 
     @Getter
     @ToString
     @AllArgsConstructor
-    public static class UpdatePassword {
+    public static class PasswordUpdate {
 
         @NotBlank(message = "{notEmpty}")
         @Size(min = 8, max = 16, message = "{signup.password.size}")
