@@ -106,7 +106,7 @@ class UserApiControllerTest {
                 testUser.getEmail(),
                 testUser.getPassword());
 
-        given(userService.login(testUser.getEmail(), testUser.getPassword()))
+        given(userService.login(any(Login.class)))
                 .willReturn(new UserResponse(testUser));
 
         // When & Then
@@ -142,7 +142,7 @@ class UserApiControllerTest {
     void findUserToResetPw() throws Exception {
         // Given
         PwInquiry pwInquiry = new PwInquiry(testUser.getEmail());
-        given(userService.findUserToResetPw(pwInquiry.getEmail()))
+        given(userService.findUserToResetPw(any(PwInquiry.class)))
                 .willReturn(new UserResponse(testUser));
 
         // When & Then

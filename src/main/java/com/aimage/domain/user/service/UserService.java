@@ -2,7 +2,6 @@ package com.aimage.domain.user.service;
 
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
-import com.aimage.domain.user.dto.UserDto;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.util.exception.AimageException;
@@ -55,18 +54,18 @@ public class UserService {
         return new UserResponse(user);
     }
 
-    public UserResponse login(String email, String password) {
+    public UserResponse login(Login loginForm) {
         log.info("--- In UserService (login) ---");
 
-        User loginUser = userRepository.findByEmail(email)
-                .filter(user -> user.getPassword().equals(password))
+        User loginUser = userRepository.findByEmail(loginForm.getEmail())
+                .filter(user -> user.getPassword().equals(loginForm.getPassword()))
                 .orElseThrow(() -> new AimageException(LOGIN_ERROR));
 
         return new UserResponse(loginUser);
     }
 
-    public UserResponse findUserToResetPw(String email) {
-        User userFound = userRepository.findByEmail(email)
+    public UserResponse findUserToResetPw(PwInquiry pwInquiry) {
+        User userFound = userRepository.findByEmail(pwInquiry.getEmail())
                 .orElseThrow(() -> new AimageException(PASSWORD_INQUIRE_FAILED));
 
         log.info("User found = {}", userFound);

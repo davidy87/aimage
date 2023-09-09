@@ -31,7 +31,6 @@ class ImageServiceTest {
 
     User owner;
 
-
     @BeforeEach
     void userSignup() {
         imageService = new ImageService(imageRepository, userRepository, null);
@@ -118,7 +117,7 @@ class ImageServiceTest {
         Image savedImage = imageRepository.findAllByOwnerId(owner.getId()).get(0);
 
         // When
-        imageService.delete(owner.getId(), savedImage.getId());
+        imageService.delete(savedImage.getId());
 
         // Then
         assertThat(userRepository.count()).isEqualTo(1);

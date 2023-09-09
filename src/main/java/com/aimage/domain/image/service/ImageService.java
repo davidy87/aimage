@@ -1,6 +1,5 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
@@ -61,10 +60,7 @@ public class ImageService {
         return imageRepository.findAll(pageable).map(ImageResponse::new);
     }
 
-    public void delete(Long ownerId, Long imageId) {
-        User owner = userRepository.findById(ownerId).orElseThrow(() ->
-                new AimageException(IMAGE_DELETE_FAILED));
-
+    public void delete(Long imageId) {
         Image imageToDelete = imageRepository.findById(imageId).orElseThrow(() ->
                 new AimageException(IMAGE_ALREADY_NOT_EXIST));
 

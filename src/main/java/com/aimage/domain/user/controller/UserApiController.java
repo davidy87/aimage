@@ -29,7 +29,7 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public UserResponse login(@RequestBody Login loginForm) {
-        return userService.login(loginForm.getEmail(), loginForm.getPassword());
+        return userService.login(loginForm);
     }
 
     /**
@@ -38,7 +38,7 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pw-inquiry")
     public UserResponse identifyUser(@Validated @RequestBody PwInquiry pwInquiry) {
-        return userService.findUserToResetPw(pwInquiry.getEmail());
+        return userService.findUserToResetPw(pwInquiry);
     }
 
     /**
@@ -57,7 +57,7 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
     public UserResponse updateUsername(@PathVariable Long id,
-                                               @Validated @RequestBody UpdateUsername updateUsername) {
+                                       @Validated @RequestBody UpdateUsername updateUsername) {
 
         return userService.updateUsername(id, updateUsername);
     }
@@ -68,7 +68,7 @@ public class UserApiController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-pw")
     public UserResponse resetPw(@PathVariable Long id,
-                                        @Validated @RequestBody UpdatePassword updatePassword) {
+                                @Validated @RequestBody UpdatePassword updatePassword) {
 
         return userService.updatePassword(id, updatePassword);
     }

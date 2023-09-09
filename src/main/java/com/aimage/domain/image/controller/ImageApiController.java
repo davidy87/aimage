@@ -1,6 +1,5 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
 
 import com.aimage.domain.user.entity.User;
@@ -23,7 +22,7 @@ public class ImageApiController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ImageResponse saveImage(@AuthenticationPrincipal User loginUser,
-                                      @RequestBody GeneratedImage imageResult) {
+                                   @RequestBody GeneratedImage imageResult) {
 
         log.info("Image result = {}", imageResult);
 
@@ -32,10 +31,9 @@ public class ImageApiController {
 
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    public String deleteImage(@AuthenticationPrincipal User loginUser,
-                              @PathVariable Long id) {
+    public String deleteImage(@PathVariable Long id) {
 
-        imageService.delete(loginUser.getId(), id);
+        imageService.delete(id);
         return "success";
     }
 
