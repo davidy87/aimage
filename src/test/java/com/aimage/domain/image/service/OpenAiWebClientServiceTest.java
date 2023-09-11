@@ -1,7 +1,7 @@
 package com.aimage.domain.image.service;
 
 import com.aimage.domain.image.dto.ImageDto;
-import com.aimage.domain.image.entity.ImageSizeConst;
+import com.aimage.constant.ImageSizeConst;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
