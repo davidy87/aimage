@@ -14,7 +14,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -112,7 +114,6 @@ public class UserService {
 
         // Spring Security session 삭제
         expireSession(userId);
-
         userRepository.delete(user);
     }
 
@@ -131,7 +132,8 @@ public class UserService {
     }
 
     /**
-     * 새로운 인증 생성 및 추가
+     * Spring Security 인증 객체 수정
+     * 사용자 닉네임 or 비밀번호 수정 시 호출
      */
     private void updateAuth(User updatedUser)  {
         Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword(), null);
@@ -140,6 +142,7 @@ public class UserService {
 
     /**
      * Spring Security session 삭제
+     * 사용자 계정 삭제 시 호출
      */
     private void expireSession(Long userId) {
         sessionRegistry.getAllPrincipals()
@@ -148,6 +151,8 @@ public class UserService {
                 .forEach(p -> sessionRegistry.getAllSessions(p, false)
                         .forEach(SessionInformation::expireNow)
                 );
+
+        SecurityContextHolder.clearContext();
     }
 
 }
