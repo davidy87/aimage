@@ -1,5 +1,6 @@
 package com.aimage.util.config;
 
+import com.aimage.util.auth.AuthModificationHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -68,4 +69,13 @@ public class SecurityConfig {
     public SessionInformationExpiredStrategy expireStrategy() {
         return new SimpleRedirectSessionInformationExpiredStrategy("/");
     }
+
+    /**
+     * Custom authentication handler
+     */
+    @Bean
+    public AuthModificationHandler authModificationHandler() {
+        return new AuthModificationHandler(sessionRegistry());
+    }
+
 }
