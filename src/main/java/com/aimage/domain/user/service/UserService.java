@@ -6,6 +6,8 @@ import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.util.auth.AuthModificationHandler;
 import com.aimage.util.exception.AimageException;
+import com.aimage.util.jwt.JwtTokenProvider;
+import com.aimage.util.jwt.TokenInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -14,11 +16,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -42,6 +46,10 @@ public class UserService {
 
     private final AuthModificationHandler authModificationHandler;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+
     public UserResponse join(SignupRequest signupForm) {
         // 비밀번호 재입력 일치 확인
         if (!signupForm.getPassword().equals(signupForm.getConfirmPassword())) {
@@ -63,6 +71,19 @@ public class UserService {
                 .orElseThrow(() -> new AimageException(LOGIN_ERROR));
 
         return new UserResponse(loginUser);
+    }
+
+    public TokenInfo loginWithToken(LoginRequest loginForm) {
+//        User loginUser = userRepository.findByEmail(loginForm.getEmail())
+//                .filter(user -> user.getPassword().equals(loginForm.getPassword()))
+//                .orElseThrow(() -> new AimageException(LOGIN_ERROR));
+//
+//        log.info("User logging in: {}", loginUser.getEmail());
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword());
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        return jwtTokenProvider.generateToken(authentication);
     }
 
     public UserResponse findUserToResetPw(PasswordInquiry pwInquiry) {

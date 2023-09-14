@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Arrays;
@@ -22,17 +23,17 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component
+@Service
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+//    @Value("${jwt.secret}")
+//    private String JWT_SECRET;
 
-    private SecretKey key;
+    private final SecretKey key;
 
     private final int DURATION = 1000 * 60 * 30; // 30 mins
 
-    public JwtTokenProvider() {
+    public JwtTokenProvider(@Value("${jwt.secret}") String jwtSecret) {
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
     }
 

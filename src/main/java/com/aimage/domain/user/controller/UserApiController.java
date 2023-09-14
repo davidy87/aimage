@@ -1,6 +1,7 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.user.service.UserService;
+import com.aimage.util.jwt.TokenInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -30,6 +31,12 @@ public class UserApiController {
     @PostMapping("/login")
     public UserResponse login(@RequestBody LoginRequest loginForm) {
         return userService.login(loginForm);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PostMapping("/jwt-login")
+    public TokenInfo loginWithToken(@RequestBody LoginRequest loginForm) {
+        return userService.loginWithToken(loginForm);
     }
 
     /**

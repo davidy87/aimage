@@ -1,55 +1,46 @@
 package com.aimage.util.config;
 
 import com.aimage.util.auth.AuthModificationHandler;
+import com.aimage.util.jwt.JwtAuthenticationFilter;
+import com.aimage.util.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.session.SessionInformationExpiredStrategy;
-import org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class JwtSecurityConfig {
 
-    private final AuthenticationFailureHandler authFailureHandler;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         String[] blacklist = {"/generator", "/result", "/user-info", "/my-gallery/**"};
 
-        http.csrf(csrf -> csrf.disable());
-
         http
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(blacklist).authenticated()
                         .anyRequest().permitAll()
                 )
-                .formLogin(login -> login
-                        .loginPage("/login")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/")
-                        .failureHandler(authFailureHandler)
-                        .permitAll()
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .deleteCookies("JSESSIONID")
-                        .permitAll()
-                )
                 .sessionManagement(session -> session
-                        .maximumSessions(1)
-                        .sessionRegistry(sessionRegistry())
-                        .expiredSessionStrategy(expireStrategy())
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .addFilterBefore(
+                        new JwtAuthenticationFilter(jwtTokenProvider),
+                        UsernamePasswordAuthenticationFilter.class
                 );
 
         return http.build();
@@ -65,11 +56,6 @@ public class SecurityConfig {
         return new SessionRegistryImpl();
     }
 
-    @Bean
-    public SessionInformationExpiredStrategy expireStrategy() {
-        return new SimpleRedirectSessionInformationExpiredStrategy("/");
-    }
-
     /**
      * Custom authentication handler
      */
@@ -77,5 +63,4 @@ public class SecurityConfig {
     public AuthModificationHandler authModificationHandler() {
         return new AuthModificationHandler(sessionRegistry());
     }
-
 }
