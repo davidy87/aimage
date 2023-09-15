@@ -70,12 +70,6 @@ public class UserService {
     }
 
     public TokenInfo loginWithToken(LoginRequest loginForm) {
-//        User loginUser = userRepository.findByEmail(loginForm.getEmail())
-//                .filter(user -> user.getPassword().equals(loginForm.getPassword()))
-//                .orElseThrow(() -> new AimageException(LOGIN_ERROR));
-//
-//        log.info("User logging in: {}", loginUser.getEmail());
-
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 

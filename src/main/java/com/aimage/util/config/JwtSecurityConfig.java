@@ -26,7 +26,7 @@ public class JwtSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        String[] blacklist = {"/generator", "/result", "/user-info", "/my-gallery/**"};
+        String[] blacklist = {"/generator", "/result", "/user-info", "/my-gallery/**", "/api/users/jwt-test"};
 
         http
                 .httpBasic(AbstractHttpConfigurer::disable)

@@ -39,6 +39,11 @@ public class UserApiController {
         return userService.loginWithToken(loginForm);
     }
 
+    @RequestMapping("/jwt-test")
+    public String jwtTest() {
+        return "SUCCESS";
+    }
+
     /**
      * 비밀번호 문의 전, 이메일로 사용자 인증
      */
