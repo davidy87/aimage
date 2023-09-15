@@ -1,4 +1,4 @@
-package com.aimage.util.jwt;
+package com.aimage.util.auth.jwt;
 
 import lombok.Builder;
 import lombok.Getter;

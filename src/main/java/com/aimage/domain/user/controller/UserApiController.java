@@ -1,7 +1,7 @@
 package com.aimage.domain.user.controller;
 
 import com.aimage.domain.user.service.UserService;
-import com.aimage.util.jwt.TokenInfo;
+import com.aimage.util.auth.jwt.TokenInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.aimage.util.jwt;
+package com.aimage.util.auth.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

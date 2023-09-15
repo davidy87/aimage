@@ -1,4 +1,4 @@
-package com.aimage.util.auth;
+package com.aimage.util.auth.session;
 
 import com.aimage.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;

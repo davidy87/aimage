@@ -1,8 +1,8 @@
 package com.aimage.util.config;
 
-import com.aimage.util.auth.AuthModificationHandler;
-import com.aimage.util.jwt.JwtAuthenticationFilter;
-import com.aimage.util.jwt.JwtTokenProvider;
+import com.aimage.util.auth.session.AuthModificationHandler;
+import com.aimage.util.auth.jwt.JwtAuthenticationFilter;
+import com.aimage.util.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
