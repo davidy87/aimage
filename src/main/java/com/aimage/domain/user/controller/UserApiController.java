@@ -27,13 +27,11 @@ public class UserApiController {
         return userService.join(signupForm);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/login")
     public UserResponse login(@RequestBody LoginRequest loginForm) {
         return userService.login(loginForm);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/jwt-login")
     public TokenInfo loginWithToken(@RequestBody LoginRequest loginForm) {
         return userService.loginWithToken(loginForm);
@@ -42,7 +40,6 @@ public class UserApiController {
     /**
      * 비밀번호 문의 전, 이메일로 사용자 인증
      */
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/pw-inquiry")
     public UserResponse identifyUser(@Validated @RequestBody PasswordInquiry passwordInquiry) {
         return userService.findUserToResetPw(passwordInquiry);
@@ -51,7 +48,6 @@ public class UserApiController {
     /**
      * 계정 삭제
      */
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public String deleteAccount(@PathVariable Long id) {
         userService.deleteAccount(id);
@@ -61,7 +57,6 @@ public class UserApiController {
     /**
      * 닉네임 변경
      */
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-username")
     public UserResponse updateUsername(@PathVariable Long id,
                                        @Validated @RequestBody UsernameUpdate usernameUpdate) {
@@ -72,7 +67,6 @@ public class UserApiController {
     /**
      * 비밀번호 변경
      */
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}/new-pw")
     public UserResponse resetPw(@PathVariable Long id,
                                 @Validated @RequestBody PasswordUpdate passwordUpdate) {
@@ -83,7 +77,6 @@ public class UserApiController {
     /**
      * 사용자가 저장한 이미지 리스트
      */
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{id}/images")
     public Page<ImageResponse> getUserSavedImages(@PathVariable Long id, Pageable pageable) {
         return userService.findSavedImages(id, pageable);

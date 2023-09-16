@@ -29,7 +29,6 @@ public class ImageApiController {
         return imageService.save(loginUser.getId(), imageResult);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     public String deleteImage(@PathVariable Long id) {
 
