@@ -27,11 +27,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         log.info("User found = {}", user);
 
-        UserDetails userDetails = CustomUserDetails.builder()
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .build();
-
-        return userDetails;
+        return new CustomUserDetails(user.getEmail(), user.getPassword());
     }
 }
