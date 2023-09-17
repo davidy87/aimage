@@ -123,7 +123,7 @@ public class UserService {
                 .orElseThrow(() -> new AimageException(USER_ALREADY_NOT_EXIST));
 
         // Spring Security session 삭제
-        authModificationHandler.expireSession(userId);
+        authModificationHandler.expireSession(user.getEmail());
         userRepository.delete(user);
     }
 

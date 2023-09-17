@@ -2,8 +2,10 @@ package com.aimage.domain.user.service;
 
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
+import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -16,7 +18,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public User loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         log.info("--- In UserDetailService (loadByUsername) ---");
         log.info("email = {}", email);
 
@@ -25,6 +27,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         log.info("User found = {}", user);
 
-        return user;
+        UserDetails userDetails = CustomUserDetails.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .build();
+
+        return userDetails;
     }
 }

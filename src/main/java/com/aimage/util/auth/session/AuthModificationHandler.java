@@ -1,12 +1,14 @@
 package com.aimage.util.auth.session;
 
 import com.aimage.domain.user.entity.User;
+import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @RequiredArgsConstructor
 public class AuthModificationHandler {
@@ -26,10 +28,10 @@ public class AuthModificationHandler {
      * Spring Security session 삭제
      * 사용자 계정 삭제 시 호출
      */
-    public void expireSession(Long userId) {
+    public void expireSession(String email) {
         sessionRegistry.getAllPrincipals()
                 .stream()
-                .filter(p -> p instanceof User principal && principal.getId().equals(userId))
+                .filter(p -> p instanceof CustomUserDetails principal && principal.getUsername().equals(email))
                 .forEach(p -> sessionRegistry.getAllSessions(p, false)
                         .forEach(SessionInformation::expireNow)
                 );
