@@ -25,9 +25,6 @@ import java.util.stream.Collectors;
 @Service
 public class JwtTokenProvider {
 
-//    @Value("${jwt.secret}")
-//    private String JWT_SECRET;
-
     private final SecretKey key;
 
     private final int DURATION = 1000 * 60 * 30; // 30 mins
