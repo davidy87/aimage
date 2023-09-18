@@ -9,7 +9,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
 public class AuthModificationHandler {
 
@@ -20,7 +22,8 @@ public class AuthModificationHandler {
      * 사용자 닉네임 or 비밀번호 수정 시 호출
      */
     public void updateAuth(User updatedUser)  {
-        Authentication authentication = new UsernamePasswordAuthenticationToken(updatedUser, updatedUser.getPassword(), null);
+        CustomUserDetails principal = new CustomUserDetails(updatedUser);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), null);
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
