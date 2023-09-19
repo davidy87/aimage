@@ -59,6 +59,9 @@ public class UserService {
         return new UserResponse(user);
     }
 
+    /**
+     * session 기반 로그인
+     */
     public UserResponse login(LoginRequest loginForm) {
         log.info("--- In UserService (login) ---");
 
@@ -69,6 +72,9 @@ public class UserService {
         return new UserResponse(loginUser);
     }
 
+    /**
+     * JWT 기반 로그인
+     */
     public TokenInfo loginWithToken(LoginRequest loginForm) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);

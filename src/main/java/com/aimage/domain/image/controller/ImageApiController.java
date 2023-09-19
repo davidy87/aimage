@@ -3,6 +3,7 @@ package com.aimage.domain.image.controller;
 import com.aimage.domain.image.service.ImageService;
 
 import com.aimage.domain.user.entity.User;
+import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ImageApiController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ImageResponse saveImage(@AuthenticationPrincipal User loginUser,
+    public ImageResponse saveImage(@AuthenticationPrincipal CustomUserDetails loginUser,
                                    @RequestBody GeneratedImage imageResult) {
 
         log.info("Image result = {}", imageResult);

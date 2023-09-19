@@ -2,6 +2,7 @@ package com.aimage.domain.user.controller;
 
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
+import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/my-gallery")
-    public String myGallery(@AuthenticationPrincipal User loginUser,
+    public String myGallery(@AuthenticationPrincipal CustomUserDetails loginUser,
                             Pageable pageable,
                             Model model) {
 
@@ -63,7 +64,7 @@ public class UserController {
     }
 
     @GetMapping("/my-gallery/details")
-    public String showImageDetails(@AuthenticationPrincipal User loginUser,
+    public String showImageDetails(@AuthenticationPrincipal CustomUserDetails loginUser,
                                    @RequestParam Long imageId,
                                    Model model) {
 
