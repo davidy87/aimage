@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.security.web.session.SimpleRedirectSessionInformationExpiredStrategy;
 
@@ -18,6 +19,8 @@ import org.springframework.security.web.session.SimpleRedirectSessionInformation
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SessionSecurityConfig {
+
+    private final AuthenticationSuccessHandler authSuccessHandler;
 
     private final AuthenticationFailureHandler authFailureHandler;
 
@@ -36,7 +39,7 @@ public class SessionSecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
-                        .defaultSuccessUrl("/")
+                        .successHandler(authSuccessHandler)
                         .failureHandler(authFailureHandler)
                         .permitAll()
                 )
