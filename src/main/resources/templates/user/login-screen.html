@@ -41,9 +41,9 @@
       <form action="#" method="GET" class="form-signin">
         <p class="font-small dark-grey-text text-center my-4" th:text="#{login.info.alt}"></p>
         <div class="row justify-content-center">
-          <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-facebook-f"></i></button>
+          <button type="button" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-facebook-f"></i></button>
           <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-twitter"></i></button>
-          <button type="submit" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-google-plus-g"></i></button>
+          <button type="button" onclick="location.href='/oauth2/authorization/google';" class="btn btn-primary btn-lg btn-rounded btn-floating mx-2 waves-effect"><i class="fab fa-google"></i></button>
         </div>
       </form>
     </div>
