@@ -38,13 +38,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
                 });
 
-        String username = oAuth2User.getName();
+        String username = email.split("@")[0];
         String uuid = UUID.randomUUID().toString().substring(0, 16);
         String password = passwordEncoder.encode(uuid);
 
         User newUser = User.builder()
                 .email(email)
-                .username(email.split("@")[0])
+                .username(username)
                 .password(password)
                 .build();
 

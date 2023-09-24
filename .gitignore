@@ -1,4 +1,5 @@
-application-API-KEY.properties
+# Properties
+*.properties
 
 # Compiled class file
 *.class
