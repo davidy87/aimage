@@ -29,8 +29,26 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      */
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        String provider = userRequest.getClientRegistration().getRegistrationId();
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        String email = oAuth2User.getAttribute("email");
+
+        return new CustomUserDetails(registerUser(provider, oAuth2User), oAuth2User.getAttributes());
+    }
+
+    private User registerUser(String provider, OAuth2User oAuth2User) {
+        String email = "";
+        String username = "";
+        String uuid = UUID.randomUUID().toString().substring(0, 16);
+        String password = passwordEncoder.encode(uuid);
+
+        if (provider.equals("kakao")) {
+            KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
+            email = kakaoUserInfo.getEmail();
+            username = kakaoUserInfo.getNickname();
+        } else {
+            email = oAuth2User.getAttribute("email");
+            username = email.split("@")[0];
+        }
 
         // 소셜 계정의 email로 사용자 조회를 시도하고, 이미 존재하는 사용자일 경우, 해당 계정으로 로그인 하도록 예외 처리
         userRepository.findByEmail(email)
@@ -38,18 +56,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                     throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
                 });
 
-        String username = email.split("@")[0];
-        String uuid = UUID.randomUUID().toString().substring(0, 16);
-        String password = passwordEncoder.encode(uuid);
-
         User newUser = User.builder()
                 .email(email)
                 .username(username)
                 .password(password)
                 .build();
 
-        userRepository.save(newUser);
-
-        return new CustomUserDetails(newUser, oAuth2User.getAttributes());
+        return userRepository.save(newUser);
     }
 }
