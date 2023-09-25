@@ -42,10 +42,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String uuid = UUID.randomUUID().toString().substring(0, 16);
         String password = passwordEncoder.encode(uuid);
 
+        log.info("Provider = {}", provider);
+        log.info("oAuth2User = {}", oAuth2User.toString());
+
         if (provider.equals("kakao")) {
             KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
             email = kakaoUserInfo.getEmail();
             username = kakaoUserInfo.getNickname();
+        } else if (provider.equals("naver")) {
+            NaverUserInfo naverUserInfo = new NaverUserInfo(oAuth2User.getAttributes());
+            email = naverUserInfo.getEmail();
+            username = naverUserInfo.getNickname();
         } else {
             email = oAuth2User.getAttribute("email");
             username = email.split("@")[0];
