@@ -28,9 +28,13 @@ public class UserController {
     }
 
     @GetMapping("/login")
-    public String loginForm(@RequestParam(required = false) boolean error, Model model) {
+    public String loginForm(@RequestParam(required = false) boolean error,
+                            @RequestParam(required = false) boolean oauth2Error,
+                            Model model) {
         if (error) {
             model.addAttribute(LOGIN_ERROR.getField(), LOGIN_ERROR.getMessage());
+        } else if (oauth2Error) {
+            model.addAttribute(OAUTH2_LOGIN_ERROR.getField(), OAUTH2_LOGIN_ERROR.getMessage());
         }
 
         return "user/login-screen";

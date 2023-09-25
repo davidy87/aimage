@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -51,15 +52,23 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         // 소셜 계정의 email로 사용자 조회를 시도하고, 이미 존재하는 사용자일 경우, 해당 계정으로 로그인 하도록 예외 처리
-        userRepository.findByEmail(email)
-                .ifPresent(user -> {
-                    throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
-                });
+        Optional<User> byEmail = userRepository.findByEmail(email);
 
-        User newUser = User.builder()
+        if (byEmail.isPresent()) {
+            User user = byEmail.get();
+
+            if (user.getProvider() == null) {
+                throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
+            } else {
+                return user;
+            }
+        }
+
+        User newUser = User.JoinOAuth2()
                 .email(email)
                 .username(username)
                 .password(password)
+                .provider(provider)
                 .build();
 
         return userRepository.save(newUser);

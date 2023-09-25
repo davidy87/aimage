@@ -8,6 +8,7 @@ public enum ErrorCode {
     // User
     CONFIRM_PASSWORD("confirmPassword", "비밀번호를 다시 확인해주세요."),
     LOGIN_ERROR("loginError", "이메일 또는 비밀번호가 일치하지 않습니다."),
+    OAUTH2_LOGIN_ERROR("loginError", "이미 해당 이메일로 가입된 계정이 존재합니다."),
     PASSWORD_INQUIRE_FAILED("pwInquiry", "계정을 찾을 수 없습니다."),
     USERNAME_UPDATE_FAILED("usernameUpdate", "닉네임이 이전과 같습니다."),
     USER_ALREADY_NOT_EXIST("userNotExist", "이미 존재하지 않는 사용자 입니다."),

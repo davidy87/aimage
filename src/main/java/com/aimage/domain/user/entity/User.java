@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "Member")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User{
+public class User {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,12 +25,23 @@ public class User{
 
     private String password;
 
+    private String provider;
+
     @Builder
     public User(Long id, String username, String email, String password) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    @Builder(builderClassName = "JoinOAuth2", builderMethodName = "JoinOAuth2")
+    public User(Long id, String username, String email, String password, String provider) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.provider = provider;
     }
 
     public void updateUsername(String newUsername) {
