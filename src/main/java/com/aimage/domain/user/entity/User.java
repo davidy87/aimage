@@ -33,6 +33,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.provider = "none";
     }
 
     @Builder(builderClassName = "JoinOAuth2", builderMethodName = "JoinOAuth2")

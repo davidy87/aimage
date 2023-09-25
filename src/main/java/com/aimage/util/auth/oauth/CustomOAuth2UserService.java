@@ -5,6 +5,8 @@ import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -31,44 +33,27 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         String provider = userRequest.getClientRegistration().getRegistrationId();
-        OAuth2User oAuth2User = super.loadUser(userRequest);
+        OAuth2User oauth2User = super.loadUser(userRequest);
 
-        return new CustomUserDetails(registerUser(provider, oAuth2User), oAuth2User.getAttributes());
+        return new CustomUserDetails(registerUser(provider, oauth2User), oauth2User.getAttributes());
     }
 
-    private User registerUser(String provider, OAuth2User oAuth2User) {
-        String email = "";
-        String username = "";
+    private User registerUser(String provider, OAuth2User oauth2User) {
+        log.info("Provider = {}", provider);
+        log.info("oAuth2User.getAttributes() = {}", oauth2User.getAttributes());
+
+        OAuth2UserInfo oAuth2UserInfo = getOAuth2UserInfo(provider, oauth2User);
+
+        String email = oAuth2UserInfo.getEmail();
+        String username = oAuth2UserInfo.getNickname();
         String uuid = UUID.randomUUID().toString().substring(0, 16);
         String password = passwordEncoder.encode(uuid);
 
-        log.info("Provider = {}", provider);
-        log.info("oAuth2User = {}", oAuth2User.toString());
-
-        if (provider.equals("kakao")) {
-            KakaoUserInfo kakaoUserInfo = new KakaoUserInfo(oAuth2User.getAttributes());
-            email = kakaoUserInfo.getEmail();
-            username = kakaoUserInfo.getNickname();
-        } else if (provider.equals("naver")) {
-            NaverUserInfo naverUserInfo = new NaverUserInfo(oAuth2User.getAttributes());
-            email = naverUserInfo.getEmail();
-            username = naverUserInfo.getNickname();
-        } else {
-            email = oAuth2User.getAttribute("email");
-            username = email.split("@")[0];
-        }
-
         // 소셜 계정의 email로 사용자 조회를 시도하고, 이미 존재하는 사용자일 경우, 해당 계정으로 로그인 하도록 예외 처리
-        Optional<User> byEmail = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email).orElse(null);
 
-        if (byEmail.isPresent()) {
-            User user = byEmail.get();
-
-            if (user.getProvider() == null) {
-                throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
-            } else {
-                return user;
-            }
+        if (isUserRegistered(user, provider)) {
+            return user;
         }
 
         User newUser = User.JoinOAuth2()
@@ -79,5 +64,29 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .build();
 
         return userRepository.save(newUser);
+    }
+
+    private boolean isUserRegistered(User user, String provider) {
+        if (user == null) {
+            return false;
+        } else if (!user.getProvider().equals(provider)) {
+            throw new OAuth2AuthenticationException("이미 해당 이메일로 가입된 계정이 존재합니다.");
+        }
+
+        return true;
+    }
+
+    private OAuth2UserInfo getOAuth2UserInfo(String provider, OAuth2User oauth2User) {
+        OAuth2UserInfo oauth2UserInfo;
+
+        if (provider.equals("kakao")) {
+            oauth2UserInfo = new KakaoOAuth2UserInfo(oauth2User.getAttributes());
+        } else if (provider.equals("naver")) {
+            oauth2UserInfo = new NaverOAuth2UserInfo(oauth2User.getAttributes());
+        } else {
+            oauth2UserInfo = new GoogleOAuth2UserInfo(oauth2User.getAttributes());
+        }
+
+        return oauth2UserInfo;
     }
 }
