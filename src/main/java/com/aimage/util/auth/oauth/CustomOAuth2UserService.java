@@ -5,8 +5,6 @@ import com.aimage.domain.user.repository.UserRepository;
 import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -14,7 +12,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -49,11 +46,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         String uuid = UUID.randomUUID().toString().substring(0, 16);
         String password = passwordEncoder.encode(uuid);
 
-        // 소셜 계정의 email로 사용자 조회를 시도하고, 이미 존재하는 사용자일 경우, 해당 계정으로 로그인 하도록 예외 처리
-        User user = userRepository.findByEmail(email).orElse(null);
+        // 소셜 계정의 email로 사용자 조회를 시도하고, 이미 존재하는 사용자일 경우, 해당 계정으로 로그인 하도록 처리
+        User existingUser = userRepository.findByEmail(email).orElse(null);
 
-        if (isUserRegistered(user, provider)) {
-            return user;
+        if (checkUserExistence(existingUser, provider)) {
+            return existingUser;
         }
 
         User newUser = User.JoinOAuth2()
@@ -66,7 +63,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return userRepository.save(newUser);
     }
 
-    private boolean isUserRegistered(User user, String provider) {
+    private boolean checkUserExistence(User user, String provider) {
         if (user == null) {
             return false;
         } else if (!user.getProvider().equals(provider)) {
@@ -77,13 +74,13 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private OAuth2UserInfo getOAuth2UserInfo(String provider, OAuth2User oauth2User) {
-        OAuth2UserInfo oauth2UserInfo;
+        OAuth2UserInfo oauth2UserInfo = null;
 
         if (provider.equals("kakao")) {
             oauth2UserInfo = new KakaoOAuth2UserInfo(oauth2User.getAttributes());
         } else if (provider.equals("naver")) {
             oauth2UserInfo = new NaverOAuth2UserInfo(oauth2User.getAttributes());
-        } else {
+        } else if (provider.equals("google")) {
             oauth2UserInfo = new GoogleOAuth2UserInfo(oauth2User.getAttributes());
         }
 
