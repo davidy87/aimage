@@ -64,19 +64,8 @@
 
           <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
             <h3 class="mb-5" th:text="#{header.updatePw}">Update Password</h3>
-<!--            <div class="row">-->
-<!--              <div class="col">-->
-<!--                <div class="form-group">-->
-<!--                  <label>Current password</label>-->
-<!--                  <input type="password" class="form-control">-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
 
-<!--            <form th:object="${updatePassword}" action="#" id="updateForm" method="post">-->
-<!--              <div th:if="${#fields.hasGlobalErrors()}">-->
-<!--                <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>-->
-<!--              </div>-->
+            <div th:if="${#strings.equals(#authentication.principal.provider, 'none')}">
               <p class="field-error" id="pwUpdateError"></p>
               <div class="row">
                 <div class="col-6">
@@ -95,7 +84,12 @@
               <div class="py-4">
                 <button type="button" class="btn btn-primary" id="pwUpdateBtn" th:text="#{button.update}">Update</button>
               </div>
-<!--            </form>-->
+            </div>
+
+            <div th:unless="${#strings.equals(#authentication.principal.provider, 'none')}">
+              <p th:text="#{updatePassword.oauth}"></p>
+            </div>
+
           </div>
 
           <div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="delete-tab">

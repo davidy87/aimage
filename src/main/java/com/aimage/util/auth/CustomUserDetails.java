@@ -62,6 +62,10 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return user.getEmail();
     }
 
+    public String getProvider() {
+        return user.getProvider();
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
