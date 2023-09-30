@@ -12,13 +12,13 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
-
 import java.util.UUID;
 
+import static com.aimage.constant.OAuthProviderConst.*;
+
 @Slf4j
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     private final UserRepository userRepository;
@@ -79,14 +79,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2UserInfo getOAuth2UserInfo(String provider, OAuth2User oauth2User) {
         OAuth2UserInfo oauth2UserInfo = null;
 
-        if (provider.equals("kakao")) {
+        if (provider.equals(KAKAO)) {
             oauth2UserInfo = new KakaoOAuth2UserInfo(oauth2User.getAttributes());
-        } else if (provider.equals("naver")) {
+        } else if (provider.equals(NAVER)) {
             oauth2UserInfo = new NaverOAuth2UserInfo(oauth2User.getAttributes());
-        } else if (provider.equals("google")) {
+        } else if (provider.equals(GOOGLE)) {
             oauth2UserInfo = new GoogleOAuth2UserInfo(oauth2User.getAttributes());
         }
 
         return oauth2UserInfo;
     }
 }
+
