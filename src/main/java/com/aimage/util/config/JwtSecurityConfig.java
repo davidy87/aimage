@@ -55,12 +55,4 @@ public class JwtSecurityConfig {
     public SessionRegistry sessionRegistry() {
         return new SessionRegistryImpl();
     }
-
-    /**
-     * Custom authentication handler
-     */
-    @Bean
-    public AuthModificationHandler authModificationHandler() {
-        return new AuthModificationHandler(sessionRegistry());
-    }
 }
