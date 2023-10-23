@@ -1,5 +1,6 @@
 package com.aimage.domain.image.entity;
 
+import com.aimage.domain.BaseTimeEntity;
 import com.aimage.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +8,7 @@ import lombok.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Image {
+public class Image extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -1,6 +1,5 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
@@ -58,7 +57,6 @@ class ImageServiceTest {
 
         // Then
         Image imageFound = imageRepository.findAllByOwnerId(owner.getId()).get(0);
-        assertThat(imageFound.getId()).isEqualTo(1L);
         assertThat(imageFound.getPrompt()).isEqualTo(imageResult.getPrompt());
         assertThat(imageFound.getUrl()).isEqualTo(imageResult.getUrl());
         assertThat(imageFound.getOwner()).isEqualTo(owner);

@@ -6,14 +6,17 @@ import com.aimage.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.aimage.constant.ImageSizeConst.*;
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@Transactional
+@SpringBootTest
 class ImageRepositoryTest {
 
     @Autowired
@@ -148,7 +151,8 @@ class ImageRepositoryTest {
         }
 
         // When
-        Image imageToDelete = imageRepository.findById(1L).get();
+        List<Image> imageList = imageRepository.findAll();
+        Image imageToDelete = imageList.get(0);
         imageToDelete.setOwner(null);
         imageRepository.delete(imageToDelete);
 
@@ -176,6 +180,25 @@ class ImageRepositoryTest {
                 .url("Image3.png")
                 .build();
 
-        return new Image[]{image1, image2, image3};
+        return new Image[] {image1, image2, image3};
+    }
+
+    @Test
+    void baseTimeEntityTest() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        imageRepository.save(Image.builder()
+                .prompt("Test image")
+                .size(SMALL)
+                .url("Image.png")
+                .build());
+
+        // when
+        List<Image> imageList = imageRepository.findAll();
+
+        // then
+        Image image = imageList.get(0);
+        assertThat(image.getCreatedDate()).isAfter(now);
+        assertThat(image.getModifiedDate()).isAfter(now);
     }
 }

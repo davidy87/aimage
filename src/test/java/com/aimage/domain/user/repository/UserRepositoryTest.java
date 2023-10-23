@@ -4,13 +4,16 @@ import com.aimage.domain.user.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.*;
 
-@DataJpaTest
+@Transactional
+@SpringBootTest
 class UserRepositoryTest {
 
     @Autowired
@@ -78,5 +81,20 @@ class UserRepositoryTest {
         for (User user : users) {
             assertThat(user).isEqualTo(savedUser);
         }
+    }
+
+    @Test
+    void baseTimeEntityTest() {
+        // given
+        LocalDateTime now = LocalDateTime.now();
+        userRepository.save(user);
+
+        // when
+        List<User> userList = userRepository.findAll();
+
+        // then
+        User userFound = userList.get(0);
+        assertThat(userFound.getCreatedDate()).isAfter(now);
+        assertThat(userFound.getModifiedDate()).isAfter(now);
     }
 }
