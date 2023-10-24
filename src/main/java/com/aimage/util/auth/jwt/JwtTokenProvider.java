@@ -30,7 +30,11 @@ public class JwtTokenProvider {
     private final int DURATION = 1000 * 60 * 30; // 30 mins
 
     public JwtTokenProvider(@Value("${jwt.secret}") String jwtSecret) {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        if (jwtSecret.equals("test")) {
+            this.key = null;
+        } else {
+            this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+        }
     }
 
     public TokenInfo generateToken(Authentication authentication) {
