@@ -13,11 +13,13 @@ public class Image extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String prompt;
 
-    @Column(name = "IMAGE_SIZE")
+    @Column(name = "IMAGE_SIZE", nullable = false)
     private String size;
 
+    @Column(nullable = false)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
