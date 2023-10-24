@@ -14,6 +14,24 @@ cache:
 
 script: "./gradlew clean build"
 
+before_deploy:
+  - zip -r aimage *
+  - mkdir -p deploy
+  - mv aimage.zip deploy/aimage.zip
+
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY  # Travis repo setting에서 설정한 값
+    secret_access_key: $AWS_SECRET_KEY  # Travis repo setting에서 설정한 값
+    bucket: aimage-build
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private  # zip 파일 접근 권한 -> private
+    local_dir: deploy # before_deploy 에서 생성한 디렉토리
+    wait-until-deployed: true
+    on:
+      branch: main
+
 # CI 실행 완료 시 메일로 알람
 notifications:
   email:
