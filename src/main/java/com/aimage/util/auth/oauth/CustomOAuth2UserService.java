@@ -14,7 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
 
-import static com.aimage.constant.OAuthProviderConst.*;
+import static com.aimage.enums.OAuthProvider.*;
+
 
 @Slf4j
 @Service
@@ -32,7 +33,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     @Override
     @Transactional
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        String provider = userRequest.getClientRegistration().getRegistrationId();
+        String provider = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
         OAuth2User oauth2User = super.loadUser(userRequest);
 
         return new CustomUserDetails(registerUser(provider, oauth2User), oauth2User.getAttributes());
@@ -79,11 +80,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private OAuth2UserInfo getOAuth2UserInfo(String provider, OAuth2User oauth2User) {
         OAuth2UserInfo oauth2UserInfo = null;
 
-        if (provider.equals(KAKAO)) {
+        if (provider.equals(KAKAO.name())) {
             oauth2UserInfo = new KakaoOAuth2UserInfo(oauth2User.getAttributes());
-        } else if (provider.equals(NAVER)) {
+        } else if (provider.equals(NAVER.name())) {
             oauth2UserInfo = new NaverOAuth2UserInfo(oauth2User.getAttributes());
-        } else if (provider.equals(GOOGLE)) {
+        } else if (provider.equals(GOOGLE.name())) {
             oauth2UserInfo = new GoogleOAuth2UserInfo(oauth2User.getAttributes());
         }
 
