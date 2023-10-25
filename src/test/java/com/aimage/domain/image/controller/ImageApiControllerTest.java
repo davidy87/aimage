@@ -1,10 +1,10 @@
 package com.aimage.domain.image.controller;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.util.auth.CustomUserDetails;
+import com.aimage.web.image.ImageApiController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 

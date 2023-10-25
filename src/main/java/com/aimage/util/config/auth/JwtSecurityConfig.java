@@ -1,4 +1,4 @@
-package com.aimage.util.config;
+package com.aimage.util.config.auth;
 
 import com.aimage.util.auth.session.AuthModificationHandler;
 import com.aimage.util.auth.jwt.JwtAuthenticationFilter;

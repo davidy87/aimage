@@ -1,6 +1,7 @@
 package com.aimage;
 
 
+import com.aimage.web.ProfileController;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.env.MockEnvironment;

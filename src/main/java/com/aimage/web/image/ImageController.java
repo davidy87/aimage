@@ -1,6 +1,5 @@
-package com.aimage.domain.image.controller;
+package com.aimage.web.image;
 
-import com.aimage.domain.image.dto.ImageDto;
 import com.aimage.domain.image.service.ImageService;
 
 import lombok.RequiredArgsConstructor;

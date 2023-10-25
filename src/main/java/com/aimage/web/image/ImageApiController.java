@@ -1,8 +1,7 @@
-package com.aimage.domain.image.controller;
+package com.aimage.web.image;
 
 import com.aimage.domain.image.service.ImageService;
 
-import com.aimage.domain.user.entity.User;
 import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
