@@ -2,6 +2,7 @@ package com.aimage.domain.user.controller;
 
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
+import com.aimage.web.user.UserApiController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

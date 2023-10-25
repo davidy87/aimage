@@ -1,6 +1,5 @@
-package com.aimage.domain.user.controller;
+package com.aimage.web.user;
 
-import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.service.UserService;
 import com.aimage.util.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
