@@ -73,7 +73,7 @@ public class ImageDto {
             int totalPage = savedImages.getTotalPages();
 
             pageStart = (int) Math.floor((double) number / size) * size + 1;
-            pageEnd = Math.min(pageStart + size - 1, totalPage);
+            pageEnd = totalPage == 0 ? 1 : Math.min(pageStart + size - 1, totalPage);
             this.images = savedImages;
         }
     }

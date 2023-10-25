@@ -19,7 +19,7 @@ public class Image extends BaseTimeEntity {
     @Column(name = "IMAGE_SIZE", nullable = false)
     private String size;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
