@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import static com.aimage.constant.PageConst.PAGE_SIZE;
+import static com.aimage.enums.PageInfo.PAGE_SIZE;
 import static com.aimage.domain.image.dto.ImageDto.*;
 import static com.aimage.domain.user.dto.UserDto.*;
 import static com.aimage.util.exception.ErrorCode.*;
@@ -135,7 +135,7 @@ public class UserService {
 
     public Page<ImageResponse> findSavedImages(Long userId, Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
+        pageable = PageRequest.of(page, PAGE_SIZE.getSize(), Sort.Direction.DESC, "id");
 
         return imageRepository.findAllByOwnerId(userId, pageable).map(ImageResponse::new);
     }

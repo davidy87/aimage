@@ -30,7 +30,7 @@ public class User extends BaseTimeEntity {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.provider = "none";
+        this.provider = "NONE";
     }
 
     @Builder(builderClassName = "JoinOAuth2", builderMethodName = "JoinOAuth2")

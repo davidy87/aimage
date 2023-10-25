@@ -14,7 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.aimage.constant.PageConst.PAGE_SIZE;
+import static com.aimage.enums.PageInfo.*;
 import static com.aimage.domain.image.dto.ImageDto.*;
 import static com.aimage.util.exception.ErrorCode.*;
 
@@ -55,7 +55,7 @@ public class ImageService {
 
     public Page<ImageResponse> findPagedImages(Pageable pageable) {
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber() - 1);
-        pageable = PageRequest.of(page, PAGE_SIZE, Sort.Direction.DESC, "id");
+        pageable = PageRequest.of(page, PAGE_SIZE.getSize(), Sort.Direction.DESC, "id");
 
         return imageRepository.findAll(pageable).map(ImageResponse::new);
     }

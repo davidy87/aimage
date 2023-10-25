@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.aimage.constant.ImageSizeConst.*;
+import static com.aimage.enums.ImageSize.*;
 import static org.assertj.core.api.Assertions.*;
 
 @Transactional
@@ -45,7 +45,7 @@ class ImageRepositoryTest {
         // Given
         Image image = Image.builder()
                 .prompt("Test image")
-                .size(SMALL)
+                .size(SMALL.getSize())
                 .url("Image.png")
                 .build();
 
@@ -91,7 +91,7 @@ class ImageRepositoryTest {
         }
 
         // When
-        List<Image> imagesFound = imageRepository.findAllBySize(SMALL);
+        List<Image> imagesFound = imageRepository.findAllBySize(SMALL.getSize());
 
         // Then
         assertThat(imagesFound.size()).isEqualTo(2);
@@ -164,19 +164,19 @@ class ImageRepositoryTest {
     private Image[] getImages() {
         Image image1 = Image.builder()
                 .prompt("Test image 1")
-                .size(SMALL)
+                .size(SMALL.getSize())
                 .url("Image1.png")
                 .build();
 
         Image image2 = Image.builder()
                 .prompt("Test image 2")
-                .size(LARGE)
+                .size(LARGE.getSize())
                 .url("Image2.png")
                 .build();
 
         Image image3 = Image.builder()
                 .prompt("Test image 3")
-                .size(SMALL)
+                .size(SMALL.getSize())
                 .url("Image3.png")
                 .build();
 
@@ -189,7 +189,7 @@ class ImageRepositoryTest {
         LocalDateTime now = LocalDateTime.now();
         imageRepository.save(Image.builder()
                 .prompt("Test image")
-                .size(SMALL)
+                .size(SMALL.getSize())
                 .url("Image.png")
                 .build());
 

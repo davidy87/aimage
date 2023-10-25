@@ -34,7 +34,7 @@ public class AuthModificationHandler {
     public void expireSession(String email) {
         sessionRegistry.getAllPrincipals()
                 .stream()
-                .filter(p -> p instanceof CustomUserDetails principal && principal.getUsername().equals(email))
+                .filter(p -> p instanceof CustomUserDetails principal && principal.getEmail().equals(email))
                 .forEach(p -> sessionRegistry.getAllSessions(p, false)
                         .forEach(SessionInformation::expireNow)
                 );
