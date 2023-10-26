@@ -32,10 +32,7 @@ public class SessionSecurityConfig {
 
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
-
-
-        http
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(blacklist).authenticated()
                         .anyRequest().permitAll()
