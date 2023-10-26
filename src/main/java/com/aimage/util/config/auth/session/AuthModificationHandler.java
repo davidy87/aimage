@@ -1,14 +1,13 @@
-package com.aimage.util.auth.session;
+package com.aimage.util.config.auth.session;
 
 import com.aimage.domain.user.entity.User;
-import com.aimage.util.auth.CustomUserDetails;
+import com.aimage.util.config.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 @Component

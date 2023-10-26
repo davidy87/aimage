@@ -1,32 +1,27 @@
-package com.aimage.util.auth;
+package com.aimage.util.config.auth;
 
 import com.aimage.domain.user.entity.User;
+import com.aimage.util.config.auth.dto.OAuth2Attributes;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class CustomUserDetails implements UserDetails, OAuth2User {
 
     private final User user;
 
-    private Map<String, Object> attributes;
-
-    public CustomUserDetails(User user, Map<String, Object> attributes) {
-        this.user = user;
-        this.attributes = attributes;
-    }
+    private OAuth2Attributes attributes;
 
     @Override
     public Map<String, Object> getAttributes() {
-        return attributes;
+        return attributes.getAttributes();
     }
 
     @Override
@@ -36,12 +31,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<String> roles = new ArrayList<>();
-        roles.add("USER");
-
-        return roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        return Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

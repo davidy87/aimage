@@ -2,7 +2,7 @@ package com.aimage.web.image;
 
 import com.aimage.domain.image.service.ImageService;
 
-import com.aimage.util.auth.CustomUserDetails;
+import com.aimage.util.config.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

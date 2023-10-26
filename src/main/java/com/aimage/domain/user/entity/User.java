@@ -10,7 +10,8 @@ import lombok.*;
 @Table(name = "Member")
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -42,8 +43,9 @@ public class User extends BaseTimeEntity {
         this.provider = provider;
     }
 
-    public void updateUsername(String newUsername) {
+    public User updateUsername(String newUsername) {
         username = newUsername;
+        return this;
     }
 
     public void updatePassword(String newPassword) {

@@ -4,10 +4,10 @@ import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.util.auth.session.AuthModificationHandler;
+import com.aimage.util.config.auth.session.AuthModificationHandler;
 import com.aimage.util.exception.AimageException;
-import com.aimage.util.auth.jwt.JwtTokenProvider;
-import com.aimage.util.auth.jwt.TokenInfo;
+import com.aimage.util.config.auth.jwt.JwtTokenProvider;
+import com.aimage.util.config.auth.jwt.TokenInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -60,7 +60,7 @@ public class UserService {
     }
 
     /**
-     * session 기반 로그인
+     * session 기반 로그인 (Spring Security X)
      */
     public UserResponse login(LoginRequest loginForm) {
         log.info("--- In UserService (login) ---");
