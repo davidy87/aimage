@@ -1,7 +1,7 @@
 package com.aimage.web.user;
 
 import com.aimage.domain.user.service.UserService;
-import com.aimage.util.auth.CustomUserDetails;
+import com.aimage.util.config.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.aimage.util.auth.session;
+package com.aimage.util.config.auth.session;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

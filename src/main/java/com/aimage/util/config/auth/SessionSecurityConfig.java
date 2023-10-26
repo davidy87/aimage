@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,9 +30,9 @@ public class SessionSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         String[] blacklist = {"/generator", "/result", "/user-info", "/my-gallery/**"};
 
-        http.csrf(AbstractHttpConfigurer::disable);
-
         http
+                .csrf(AbstractHttpConfigurer::disable)
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(blacklist).authenticated()
                         .anyRequest().permitAll()

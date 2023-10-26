@@ -1,8 +1,8 @@
-package com.aimage.domain.user.service;
+package com.aimage.util.config.auth.session;
 
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
-import com.aimage.util.auth.CustomUserDetails;
+import com.aimage.util.config.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
