@@ -73,7 +73,7 @@ class ImageApiControllerTest {
 
         // When & Then
         mockMvc.perform(post("/api/images")
-                        .with(SecurityMockMvcRequestPostProcessors.user(new CustomUserDetails(testOwner)))
+                        .with(SecurityMockMvcRequestPostProcessors.user(CustomUserDetails.of(testOwner, null)))
                         .content(om.writeValueAsString(imageResult))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
@@ -106,7 +106,7 @@ class ImageApiControllerTest {
 
         // 요청 성공
         mockMvc.perform(delete("/api/images/" + imageId)
-                        .with(SecurityMockMvcRequestPostProcessors.user(new CustomUserDetails(testOwner)))
+                        .with(SecurityMockMvcRequestPostProcessors.user(CustomUserDetails.of(testOwner, null)))
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf())
                 )

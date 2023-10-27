@@ -47,7 +47,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         OAuth2Attributes attributes = OAuth2Attributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         User user = saveOrUpdate(attributes, registrationId);
 
-        return new CustomUserDetails(user, attributes);
+        return CustomUserDetails.of(user, attributes);
     }
 
     private User saveOrUpdate(OAuth2Attributes attributes, String registrationId) {

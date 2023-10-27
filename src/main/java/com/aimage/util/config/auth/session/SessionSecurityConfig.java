@@ -1,4 +1,4 @@
-package com.aimage.util.config.auth;
+package com.aimage.util.config.auth.session;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
