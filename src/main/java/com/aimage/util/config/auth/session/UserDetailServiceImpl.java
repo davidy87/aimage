@@ -27,6 +27,6 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         log.info("User found = {}", user);
 
-        return new CustomUserDetails(user);
+        return CustomUserDetails.of(user, null);
     }
 }

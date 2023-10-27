@@ -21,8 +21,8 @@ public class AuthModificationHandler {
      * 사용자 닉네임 or 비밀번호 수정 시 호출
      */
     public void updateAuth(User updatedUser)  {
-        CustomUserDetails principal = new CustomUserDetails(updatedUser);
-        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), null);
+        CustomUserDetails principal = CustomUserDetails.of(updatedUser, null);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, principal.getPassword(), principal.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

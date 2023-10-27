@@ -2,8 +2,7 @@ package com.aimage.util.config.auth;
 
 import com.aimage.domain.user.entity.User;
 import com.aimage.util.config.auth.dto.OAuth2Attributes;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,13 +10,34 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.*;
 
-@RequiredArgsConstructor
-@AllArgsConstructor
+@Builder
 public class CustomUserDetails implements UserDetails, OAuth2User {
 
-    private final User user;
+    private User user;
 
     private OAuth2Attributes attributes;
+
+    public static CustomUserDetails of(User user, OAuth2Attributes attributes) {
+        if (attributes == null) {
+            return ofFormLogin(user);
+        }
+
+        return ofOAuth2Login(user, attributes);
+    }
+
+    private static CustomUserDetails ofFormLogin(User user) {
+        return CustomUserDetails.builder()
+                .user(user)
+                .build();
+    }
+
+    private static CustomUserDetails ofOAuth2Login(User user, OAuth2Attributes attributes) {
+        return CustomUserDetails.builder()
+                .user(user)
+                .attributes(attributes)
+                .build();
+    }
+
 
     @Override
     public Map<String, Object> getAttributes() {
