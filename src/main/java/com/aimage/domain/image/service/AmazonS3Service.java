@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +18,7 @@ import java.time.Instant;
 import static com.aimage.util.exception.ErrorCode.IMAGE_SAVE_FAILED;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class AmazonS3Service {
 
