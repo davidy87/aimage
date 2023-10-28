@@ -3,6 +3,7 @@ package com.aimage.util.config.auth;
 import com.aimage.domain.user.entity.User;
 import com.aimage.util.config.auth.dto.OAuth2Attributes;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,7 +19,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
 
     private OAuth2Attributes attributes;
 
-    public static CustomUserDetails of(User user, @Nullable OAuth2Attributes attributes) {
+    public static CustomUserDetails of(@NotNull User user, @Nullable OAuth2Attributes attributes) {
         if (attributes == null) {
             return ofFormLogin(user);
         }

@@ -4,6 +4,7 @@ import com.aimage.util.exception.AimageException;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,7 @@ public class AmazonS3Service {
 
     private final S3Template s3Template;
 
-    public String upload(String imageKey, InputStream imageInputStream) {
+    public String upload(@NotNull String imageKey, @NotNull InputStream imageInputStream) {
         ObjectMetadata metadata = ObjectMetadata.builder()
                 .expires(Instant.now().plusSeconds(3600))
                 .build();
@@ -40,7 +41,7 @@ public class AmazonS3Service {
         }
     }
 
-    public void uploadPermanently(String imageKey) {
+    public void uploadPermanently(@NotNull String imageKey) {
         S3Resource imageResource = s3Template.download(BUCKET_NAME, imageKey);
 
         if (imageResource.exists()) {
