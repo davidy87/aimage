@@ -1,8 +1,10 @@
 package com.aimage.domain.image.service;
 
-import com.aimage.domain.image.dto.ImageDto;
+import java.io.InputStream;
+
+import static com.aimage.domain.image.dto.ImageDto.*;
 
 public interface OpenAiClientService {
 
-    public String requestImage(ImageDto.ImageRequest imageRequestForm);
+    InputStream requestImageInputStream(ImageRequest imageRequestForm);
 }

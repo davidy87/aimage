@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com'
-version = '1.0.0-SNAPSHOT-'+new Date().format("yyyy-MM-dd, HH:mm:ss")
+version = '1.0.0-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
 
 java {
 	sourceCompatibility = '17'
@@ -79,6 +79,10 @@ dependencies {
 
 	// OAuth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	// Spring Cloud (S3)
+	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
+	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'

@@ -58,7 +58,12 @@ class ImageApiControllerTest {
     @Order(1)
     void saveImage() throws Exception {
         // Given
-        GeneratedImage imageResult = new GeneratedImage("This is a test image", "256X256", "image.png");
+        GeneratedImage imageResult = GeneratedImage.builder()
+                .prompt("This is a test image")
+                .size("256X256")
+                .url("image.png")
+                .build();
+
         Image image = Image.builder()
                 .id(1L)
                 .prompt(imageResult.getPrompt())
