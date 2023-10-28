@@ -14,6 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
+
 import static com.aimage.enums.PageInfo.*;
 import static com.aimage.domain.image.dto.ImageDto.*;
 import static com.aimage.util.exception.ErrorCode.*;
@@ -30,20 +32,30 @@ public class ImageService {
 
     private final OpenAiClientService openAiClientService;
 
+    private final AmazonS3Service s3Service;
+
     public ImageResponse save(Long userId, GeneratedImage imageResult) {
         User owner = userRepository.findById(userId)
                 .orElseThrow(() -> new AimageException(IMAGE_SAVE_FAILED));
 
-        Image image = imageResult.convertToEntity();
+        Image image = imageResult.toEntity();
         image.setOwner(owner);
         imageRepository.save(image);
+        s3Service.uploadPermanently(image.getPrompt() + ".png");
 
         return new ImageResponse(image);
     }
 
     public GeneratedImage requestImageToOpenAI(ImageRequest imageRequest) {
-        String imageUrl = openAiClientService.requestImage(imageRequest);
-        return new GeneratedImage(imageRequest.getPrompt(), imageRequest.getSize(), imageUrl);
+        log.info("--- In ImageService.requestImageToOpenAI ---");
+        String imageKey = imageRequest.getPrompt() + ".png";
+        InputStream imageInputStream = openAiClientService.requestImageInputStream(imageRequest);
+
+        return GeneratedImage.builder()
+                .prompt(imageRequest.getPrompt())
+                .size(imageRequest.getSize())
+                .url(s3Service.upload(imageKey, imageInputStream))
+                .build();
     }
 
     public ImageResponse findImageById(Long imageId) {

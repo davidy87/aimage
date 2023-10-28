@@ -1,9 +1,10 @@
 package com.aimage.domain.image.dto;
 
 import com.aimage.domain.image.entity.Image;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.domain.Page;
 
@@ -22,6 +23,9 @@ public class ImageDto {
         @NotBlank(message = "{image.size.notEmpty}")
         private String size;
 
+//        @JsonProperty(value = "response_format", defaultValue = "b64_json")
+        private String response_format = "b64_json";
+
         // 테스트용
         public ImageRequest(String prompt, String size) {
             this.prompt = prompt;
@@ -35,12 +39,15 @@ public class ImageDto {
 
         private List<OpenAiResponse> data;
 
-        private String url;
+//        private String url;
+
+        @JsonProperty("b64_json")
+        private String b64_json;
     }
 
     @Getter
     @ToString
-    @RequiredArgsConstructor
+    @Builder
     public static class GeneratedImage {
 
         private final String prompt;
@@ -49,7 +56,7 @@ public class ImageDto {
 
         private final String url;
 
-        public Image convertToEntity() {
+        public Image toEntity() {
             return Image.builder()
                     .prompt(prompt)
                     .size(size)

@@ -28,11 +28,14 @@ class ImageServiceTest {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    AmazonS3Service s3Service;
+
     User owner;
 
     @BeforeEach
     void userSignup() {
-        imageService = new ImageService(imageRepository, userRepository, null);
+        imageService = new ImageService(imageRepository, userRepository, null, s3Service);
 
         owner = User.builder()
                 .username("tester")
@@ -47,10 +50,11 @@ class ImageServiceTest {
     @Order(1)
     void save() {
         // Given
-        GeneratedImage imageResult = new GeneratedImage(
-                "Spring",
-                "256x256",
-                "image.png");
+        GeneratedImage imageResult = GeneratedImage.builder()
+                .prompt("Spring")
+                .size("256x256")
+                .url("image.png")
+                .build();
 
         // When
         imageService.save(owner.getId(), imageResult);
@@ -65,10 +69,11 @@ class ImageServiceTest {
     @Test
     void findImageById() {
         // Given
-        GeneratedImage imageResult = new GeneratedImage(
-                "Spring",
-                "256x256",
-                "image.png");
+        GeneratedImage imageResult = GeneratedImage.builder()
+                .prompt("Spring")
+                .size("256x256")
+                .url("image.png")
+                .build();
 
         ImageResponse imageSaved = imageService.save(owner.getId(), imageResult);
 
@@ -98,7 +103,12 @@ class ImageServiceTest {
 
     private void saveMultipleImages() {
         for (int i = 0; i < 100; i++) {
-            GeneratedImage imageGenerated = new GeneratedImage("Test image", "256x256", "image.png");
+            GeneratedImage imageGenerated = GeneratedImage.builder()
+                    .prompt("Test image")
+                    .size("256x256")
+                    .url("image.png")
+                    .build();
+
             imageService.save(owner.getId(), imageGenerated);
         }
     }
@@ -106,10 +116,11 @@ class ImageServiceTest {
     @Test
     void delete() {
         // Given
-        GeneratedImage imageResult = new GeneratedImage(
-                "Spring",
-                "256x256",
-                "image.png");
+        GeneratedImage imageResult = GeneratedImage.builder()
+                .prompt("Test image")
+                .size("256x256")
+                .url("image.png")
+                .build();
 
         imageService.save(owner.getId(), imageResult);
         Image savedImage = imageRepository.findAllByOwnerId(owner.getId()).get(0);

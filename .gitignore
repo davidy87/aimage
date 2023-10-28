@@ -1,6 +1,7 @@
 # Properties
 application-API-KEY.properties
 application-oauth.properties
+application-aws.properties
 
 # Compiled class file
 *.class
