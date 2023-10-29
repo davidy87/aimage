@@ -2,9 +2,6 @@ language: java
 jdk:
   - openjdk17
 
-git:
-  depth: false
-
 branches:
   only:
     - main
