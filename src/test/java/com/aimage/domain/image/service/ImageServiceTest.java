@@ -1,12 +1,15 @@
 package com.aimage.domain.image.service;
 
+import com.aimage.S3MockConfig;
 import com.aimage.domain.image.entity.Image;
 import com.aimage.domain.image.repository.ImageRepository;
 import com.aimage.domain.user.entity.User;
 import com.aimage.domain.user.repository.UserRepository;
+import io.findify.s3mock.S3Mock;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +21,7 @@ import static org.assertj.core.api.Assertions.*;
 @SpringBootTest
 @Transactional
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Import(S3MockConfig.class)
 class ImageServiceTest {
 
     ImageService imageService;
@@ -31,10 +35,14 @@ class ImageServiceTest {
     @Autowired
     AmazonS3Service s3Service;
 
+    @Autowired
+    S3Mock s3Mock;
+
     User owner;
 
     @BeforeEach
     void userSignup() {
+        s3Mock.start();
         imageService = new ImageService(imageRepository, userRepository, null, s3Service);
 
         owner = User.builder()
@@ -44,6 +52,11 @@ class ImageServiceTest {
                 .build();
 
         userRepository.save(owner);
+    }
+
+    @AfterEach
+    void afterEach() {
+        s3Mock.stop();
     }
 
     @Test

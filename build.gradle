@@ -83,9 +83,12 @@ dependencies {
 	// Spring Cloud (S3)
 	implementation platform("io.awspring.cloud:spring-cloud-aws-dependencies:3.0.0")
 	implementation 'io.awspring.cloud:spring-cloud-aws-starter-s3'
+	testImplementation 'io.findify:s3mock_2.13:0.2.6'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
