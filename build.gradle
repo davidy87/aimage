@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com'
-version = '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+version = '1.0.2-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
 
 java {
 	sourceCompatibility = '17'
