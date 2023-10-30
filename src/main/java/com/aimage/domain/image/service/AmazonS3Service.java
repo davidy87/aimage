@@ -1,6 +1,7 @@
 package com.aimage.domain.image.service;
 
 import com.aimage.util.exception.AimageException;
+import io.awspring.cloud.s3.Location;
 import io.awspring.cloud.s3.ObjectMetadata;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
@@ -51,6 +52,14 @@ public class AmazonS3Service {
                 // TODO: need to find better way to handle exception
                 throw new AimageException(IMAGE_SAVE_FAILED);
             }
+        }
+    }
+
+    public void delete(@NotNull String imageKey) {
+        S3Resource imageResource = s3Template.download(BUCKET_NAME, imageKey);
+
+        if (imageResource.exists()) {
+            s3Template.deleteObject(BUCKET_NAME, imageKey);
         }
     }
 }

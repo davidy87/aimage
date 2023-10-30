@@ -78,5 +78,6 @@ public class ImageService {
 
         imageToDelete.setOwner(null);
         imageRepository.delete(imageToDelete);
+        s3Service.delete(imageToDelete.getPrompt() + ".png");
     }
 }
