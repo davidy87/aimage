@@ -27,14 +27,13 @@
           <div class="row">
 
             <div class="col" th:each="image : ${images.content}">
-              <div class="card" id="imageCard">
-                <div id="imageId" th:text="${image.id}" style="display: none;"></div>
+              <div class="card" th:id="${image.id}">
                 <a th:href="@{/my-gallery/details(imageId=${image.id})}">
                   <img th:src="${image.url}" class="card-img-top float-left" />
                 </a>
                 <div class="card-body">
                   <p class="card-text" th:text="${image.prompt}"></p>
-                  <button type="button" class="btn btn-danger" onclick="onDeleteImage()" th:text="#{button.delete}"></button>
+                  <button type="button" class="btn btn-danger" th:onclick="onDeleteImage([[${image.id}]]);" th:text="#{button.delete}"></button>
                 </div>
               </div>
             </div>
