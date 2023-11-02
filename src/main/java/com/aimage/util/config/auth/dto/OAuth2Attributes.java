@@ -75,11 +75,10 @@ public class OAuth2Attributes {
                 .build();
     }
 
-    public User toEntity(String password) {
+    public User toEntity() {
         return User.JoinOAuth2()
                 .email(email)
                 .username(username)
-                .password(password)
                 .provider(registrationId)
                 .build();
     }

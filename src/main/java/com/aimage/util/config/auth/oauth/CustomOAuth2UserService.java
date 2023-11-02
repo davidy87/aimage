@@ -58,7 +58,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = userRepository.findByEmail(attributes.getEmail())
                 .filter(entity -> checkUserExistence(entity, registrationId))
                 .map(entity -> entity.updateUsername(attributes.getUsername()))
-                .orElse(attributes.toEntity(password));
+                .orElse(attributes.toEntity());
+
+        user.updatePassword(password);
 
         return userRepository.save(user);
     }
