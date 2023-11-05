@@ -4,9 +4,11 @@ OpenAI의 이미지 생성 모델 DALL·E를 활용한 AI 이미지 생성 사�
 <br>
 
 ## Tech. Stack(s)
-* **Front-end**: Bootstrap
-* **Back-end**: Spring, Spring Boot, Thymeleaf, MyBatis, JPA, Spring Data JPA
-* **Database**: MySQL
+**Front-end**: Bootstrap
+
+**Back-end**: Spring, Spring Boot, Thymeleaf, JPA, Spring Data JPA
+
+**Infra**: AWS EC2, AWS S3, AWS RDS, Travis CI
 
 <br>
 
