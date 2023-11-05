@@ -3,6 +3,10 @@ application-API-KEY.properties
 application-oauth.properties
 application-aws.properties
 
+# Image file
+*.png
+*.img
+
 # Compiled class file
 *.class
 
