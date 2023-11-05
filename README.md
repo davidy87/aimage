@@ -11,7 +11,6 @@ OpenAI의 이미지 생성 모델 DALL·E를 활용한 AI 이미지 생성 사�
 <br>
 
 ## Details
-<hr>
 
 ### API Documentation
 [AImage API 문서](src/doc/asciidoc/aimage-api.html)
