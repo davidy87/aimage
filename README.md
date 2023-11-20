@@ -20,7 +20,7 @@ OpenAI의 이미지 생성 모델 DALL·E를 활용한 AI 이미지 생성 사�
 <br>
 
 ### Architecture
-![AImage - AI 이미지 생성 사이트](https://file.notion.so/f/f/bee4ea21-631f-42d3-8a43-a1be6c18e590/d041bf79-6416-4ee9-9198-3e25987a3333/Aimage_Workflow.png?id=eaa7aa15-2bfd-489e-bc6d-ca859a7e8806&table=block&spaceId=bee4ea21-631f-42d3-8a43-a1be6c18e590&expirationTimestamp=1699279200000&signature=AT6PXkXhSdrv91YtSirWEDYR9QP-n8Oal8vRViKagEs&downloadName=Aimage+Workflow.png)
+![AImage - AI 이미지 생성 사이트](workflow.png)
 
 <br>
 
