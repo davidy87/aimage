@@ -6,7 +6,7 @@ application-aws.properties
 # Image file
 *.png
 *.img
-\!workflow.png
+!/workflow.png
 
 # Compiled class file
 *.class
